@@ -11,7 +11,7 @@
     </div>
 
     <div class="container" style="width:25em">
-        <form method="POST" action="/login">
+        <form>
             <div class="form-group">
                 <label>Account</label>
                 <input type="text" id="uname" class="form-control" placeholder="Email" name="uname">
@@ -21,7 +21,9 @@
                 <input type="password" id="pwd" class="form-control" placeholder="Password" name="pwd">
             </div>
             <div class="form-group">
-                <button type="default" class="btn btn-default" onclick="return checkInput();">Login</button>
+                <button type="button" class="btn btn-default" onclick="signIn()">Sign In</button>
+                <button type="button" class="btn btn-default" onclick="signUp()">Sign Up</button>
+
                 <script type="text/javascript">
                     function checkInput() {
                         var uname = document.getElementById("uname")
@@ -35,6 +37,20 @@
                             alert("Invalid password.")
                             return false;
                         }
+                    }
+
+                    function signIn() {    
+                        var uname = document.getElementById("uname").value
+                        var pwd = document.getElementById("pwd").value
+
+                        $.post("/login/signin", {"uname": uname, "pwd": pwd})
+                    }
+
+                    function signUp() {
+                        var uname = document.getElementById("uname").value
+                        var pwd = document.getElementById("pwd").value
+
+                        $.post("/login/signup", {"uname": uname, "pwd": pwd})
                     }
                 </script>
             </div>
