@@ -1,7 +1,7 @@
 package models
 
 import (
-	"FFQATracking/src/utils"
+	"FFQATracking/utils"
 	"fmt"
 	"time"
 
@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	// AccountTable account db name
 	AccountTable string = "account"
 )
 
@@ -60,7 +61,11 @@ func InstallAdminAccount() {
 	acc.Job = jobManager
 	acc.Pwd = utils.MD5("admin")
 
-	UpdateAccount(acc)
+	UpdateAccount(acc.ID, map[string]interface{}{
+		"Rule": acc.Rule,
+		"Job":  acc.Job,
+		"Pwd":  acc.Pwd,
+	})
 }
 
 // AddAccount insert new account with name and email
@@ -87,7 +92,16 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 // AccountWithUname get account with uname
 func AccountWithUname(uname string) (*AccountModel, error) {
 
-	return nil, nil
+	o := orm.NewOrm()
+	acc := &AccountModel{Name: uname}
+
+	filterErr := o.QueryTable(AccountTable).Filter("name", uname).One(acc)
+	if filterErr == nil {
+
+		return nil, filterErr
+	}
+
+	return acc, nil
 }
 
 // AccountWithEmail get account with email
@@ -98,8 +112,10 @@ func AccountWithEmail(email string) (*AccountModel, error) {
 
 	filterErr := o.QueryTable(AccountTable).Filter("email", email).One(acc)
 	if filterErr == nil {
+
 		return acc, nil
 	}
+
 	return nil, filterErr
 }
 
@@ -111,41 +127,36 @@ func AccountWithID(id IndexType) (*AccountModel, error) {
 
 	filterErr := o.QueryTable(AccountTable).Filter("id", fmt.Sprintf("%d", id)).One(acc)
 	if filterErr == nil {
+
 		return acc, nil
 	}
+
 	return nil, filterErr
 }
 
 // UpdateAccount [WIP] update account's content
-func UpdateAccount(account *AccountModel) (*AccountModel, error) {
+func UpdateAccount(id IndexType, params map[string]interface{}) error {
 
 	o := orm.NewOrm()
 	qs := o.QueryTable(AccountTable)
 
-	acc, err := AccountWithID(account.ID)
+	_, err := AccountWithID(id)
 	if err != nil {
-		beego.Debug("could not find account: %s.", account.Email)
-		return nil, err
+
+		beego.Debug("could not find account: %d.", id)
+
+		return err
 	}
 
-	source := utils.Struct2Map(*account)
-	param := orm.Params{}
-
-	for key, value := range source {
-		if key == "ID" || key == "Email" || key == "Create" {
-			continue
-		}
-
-		param[key] = value
-	}
-
-	_, err = qs.Filter("id", fmt.Sprintf("%d", account.ID)).Update(param)
+	_, err = qs.Filter("id", fmt.Sprintf("%d", id)).Update(params)
 	if err != nil {
+
 		beego.Error("[orm] fails to update account")
-		return nil, err
+
+		return err
 	}
 
-	return acc, nil
+	return nil
 }
 
 // DeleteAccount [DONE] delete account with id

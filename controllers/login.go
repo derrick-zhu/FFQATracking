@@ -9,13 +9,9 @@ type LoginController struct {
 }
 
 func (c *LoginController) Get() {
+
 	c.Data["Title"] = "Farfetch Q&A"
 	c.TplName = "login.html"
-
-	if c.Input().Get("error") != "0" {
-		c.Data["ErrorMsg"] = "something wrong"
-		return
-	}
 }
 
 func (c *LoginController) Post() {
@@ -26,10 +22,16 @@ func (c *LoginController) Post() {
 	if beego.AppConfig.String("adminName") != uname ||
 		beego.AppConfig.String("adminPwd") != pwd {
 
-		c.Redirect("/login?error=1", 302)
+		c.Redirect("/login/error", 302)
 		return
 	}
 
 	c.Redirect("/", 302)
 	return
+}
+
+func (c *LoginController) Error() {
+
+	beego.Error("something wrong")
+	c.Redirect("/login", 302)
 }

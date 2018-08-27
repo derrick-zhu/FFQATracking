@@ -8,9 +8,14 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+func init() {
+	models.RegisterDB()
+}
+
 func main() {
 	orm.Debug = true
-	models.RegisterDB()
+	// 自动建表
+	orm.RunSyncdb("default", false, true)
 
 	beego.Run()
 }
