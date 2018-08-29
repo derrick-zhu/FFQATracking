@@ -69,6 +69,7 @@ func InstallAdminAccount() {
 	acc.Job = jobManager
 	acc.Pwd = utils.MD5("admin")
 
+	beego.Info(acc)
 	UpdateAccount(acc.ID, map[string]interface{}{
 		"Rule": acc.Rule,
 		"Job":  acc.Job,
@@ -87,14 +88,14 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 
 	filterErr := o.QueryTable(AccountTable).Filter("email", email).One(account)
 	if filterErr == nil { // account has already existed
-		return nil, filterErr
+		return account, nil
 	}
 
 	_, insertErr := o.Insert(account)
 	if insertErr != nil {
 		return nil, insertErr
 	}
-	return nil, nil
+	return account, nil
 }
 
 // AccountWithUname get account with uname
@@ -104,8 +105,7 @@ func AccountWithUname(uname string) (*AccountModel, error) {
 	acc := &AccountModel{Name: uname}
 
 	filterErr := o.QueryTable(AccountTable).Filter("name", uname).One(acc)
-	if filterErr == nil {
-
+	if filterErr != nil {
 		return nil, filterErr
 	}
 
@@ -119,12 +119,11 @@ func AccountWithEmail(email string) (*AccountModel, error) {
 	acc := &AccountModel{Email: email}
 
 	filterErr := o.QueryTable(AccountTable).Filter("email", email).One(acc)
-	if filterErr == nil {
-
-		return acc, nil
+	if filterErr != nil {
+		return nil, filterErr
 	}
 
-	return nil, filterErr
+	return acc, nil
 }
 
 // AccountWithID get account with id
@@ -134,12 +133,11 @@ func AccountWithID(id IndexType) (*AccountModel, error) {
 	acc := &AccountModel{ID: id}
 
 	filterErr := o.QueryTable(AccountTable).Filter("id", fmt.Sprintf("%d", id)).One(acc)
-	if filterErr == nil {
-
-		return acc, nil
+	if filterErr != nil {
+		return nil, filterErr
 	}
 
-	return nil, filterErr
+	return acc, nil
 }
 
 // UpdateAccount [WIP] update account's content
@@ -156,6 +154,7 @@ func UpdateAccount(id IndexType, params map[string]interface{}) error {
 		return err
 	}
 
+	beego.Info(params)
 	_, err = qs.Filter("id", fmt.Sprintf("%d", id)).Update(params)
 	if err != nil {
 

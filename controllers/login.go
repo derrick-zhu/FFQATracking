@@ -13,7 +13,7 @@ type LoginController struct {
 }
 
 func (c *LoginController) Get() {
-	beego.Info("??????()")
+
 	op := c.Input().Get("op")
 	beego.Info(fmt.Sprintf("GET op = %s", op))
 

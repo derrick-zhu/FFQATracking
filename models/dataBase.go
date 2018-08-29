@@ -17,9 +17,9 @@ const (
 )
 
 // RegisterDB register and init the DB
-func RegisterDB() {
+func RegisterDB(force bool) {
 
-	bInit := com.IsExist(_dbFileName)
+	bInit := !force && com.IsExist(_dbFileName)
 	if !bInit {
 		os.MkdirAll(path.Dir(_dbFileName), os.ModePerm)
 		os.Create(_dbFileName)
@@ -27,7 +27,6 @@ func RegisterDB() {
 
 	orm.RegisterDataBase("default", _dbSqlite3Drv, _dbFileName, 10)
 	orm.RegisterDriver(_dbSqlite3Drv, orm.DRSqlite)
-	//orm.RegisterModel(new(AccountModel), new(BugModel))
 
 	// 自动建表
 	beego.Info("create db table `default`...")
