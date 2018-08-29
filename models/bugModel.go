@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/astaxie/beego/orm"
+)
 
 // BugStatus bug status type
 type BugStatus string
@@ -45,4 +49,12 @@ type BugModel struct {
 	Priority    PriorityStatus `orm:"index"` // bug's priority type
 	Creator     IndexType      `orm:"index"` // bug's founder
 	Assignor    IndexType      `orm:"index"` // who should solve this bug
+}
+
+func init() {
+	orm.RegisterModel(new(BugModel))
+}
+
+func (this *BugModel) TableName() string {
+	return "bugmodel"
 }

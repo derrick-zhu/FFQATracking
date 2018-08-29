@@ -11,7 +11,7 @@ import (
 
 const (
 	// AccountTable account db name
-	AccountTable string = "account"
+	AccountTable string = "accountmodel"
 )
 
 // IndexType all data type of Index
@@ -47,6 +47,14 @@ type AccountModel struct {
 	Rule   RuleType
 	Job    JobType
 	Pwd    string
+}
+
+func init() {
+	orm.RegisterModel(new(AccountModel))
+}
+
+func (this *AccountModel) TableName() string {
+	return AccountTable
 }
 
 // InstallAdminAccount install the admin account, ONLY ONCE

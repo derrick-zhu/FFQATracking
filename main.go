@@ -9,13 +9,12 @@ import (
 )
 
 func init() {
+	orm.Debug = true
 	models.RegisterDB()
+
 }
 
 func main() {
-	orm.Debug = true
-	// 自动建表
-	orm.RunSyncdb("default", false, true)
 
 	beego.Run()
 }

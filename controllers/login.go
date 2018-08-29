@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"FFQATracking/biz"
+	"FFQATracking/utils"
 	"fmt"
 
 	"github.com/astaxie/beego"
@@ -12,6 +14,9 @@ type LoginController struct {
 
 func (c *LoginController) Get() {
 	beego.Info("??????()")
+	op := c.Input().Get("op")
+	beego.Info(fmt.Sprintf("GET op = %s", op))
+
 	c.Data["Title"] = "Farfetch Q&A"
 
 	if c.Input().Get("exit") == "1" {
@@ -21,20 +26,24 @@ func (c *LoginController) Get() {
 	c.TplName = "login.html"
 }
 
-func (c *LoginController) Post() {
+func (c *LoginController) Signin() {
 
 	uname := c.Input().Get("uname")
 	pwd := c.Input().Get("pwd")
 
-	beego.Info(fmt.Sprintf("Post() %s, %s", uname, pwd))
-	if beego.AppConfig.String("adminName") != uname ||
-		beego.AppConfig.String("adminPwd") != pwd {
+	if biz.CheckAccount(uname, pwd) {
 
-		c.Redirect("/login/error", 302)
+		utils.CookieInstance().Set(c.Ctx, "uname", uname, -1)
+		utils.CookieInstance().SetSecret(c.Ctx, "pwd", pwd, -1)
+
+		c.Redirect("/", 302)
 		return
 	}
+	c.Redirect("/login/error", 302)
+}
 
-	c.Redirect("/", 302)
+func (this *LoginController) Signup() {
+	this.Redirect("/signup", 302)
 	return
 }
 

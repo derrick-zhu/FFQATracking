@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/base64"
+	"sync"
 
 	"github.com/astaxie/beego/context"
 )
@@ -10,6 +11,16 @@ import (
 type CookiesUtils struct {
 	Version string
 	Data    map[string]string
+}
+
+var cookieInstance *CookiesUtils
+var cookieOnce sync.Once
+
+func CookieInstance() *CookiesUtils {
+	cookieOnce.Do(func() {
+		cookieInstance = &CookiesUtils{}
+	})
+	return cookieInstance
 }
 
 // Init initialize the cookie manager
