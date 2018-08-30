@@ -1,6 +1,7 @@
 package biz
 
 import (
+	"FFQATracking/constants"
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"errors"
@@ -31,10 +32,12 @@ func AccountManagerInstance() *AccountManager {
 // Login login with account's uname and pwd
 func (am *AccountManager) Login(ctx *context.Context, uname, pwd string) (bool, error) {
 
-	if AccountManagerInstance().CheckAccount(uname, pwd) == false {
+	result, acc, _ := AccountManagerInstance().CheckAccount(uname, pwd)
+	if false == result {
 
-		utils.CookieInstance().Set(ctx, "uname", uname, -1)
-		utils.CookieInstance().SetSecret(ctx, "pwd", pwd, -1)
+		utils.CookieInstance().Set(ctx, constants.KeyUID, strconv.Itoa(int(acc.ID)), -1)
+		utils.CookieInstance().Set(ctx, constants.KeyUNAME, uname, -1)
+		utils.CookieInstance().SetSecret(ctx, constants.KeyPWD, pwd, -1)
 
 		return false, errors.New("invalid user account or password")
 	}
@@ -48,9 +51,8 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 	var id int64
 
 	id, err = strconv.ParseInt(uid, 10, 64)
-
 	if err != nil {
-		beego.Error("invalid UID")
+		beego.Error(err)
 		return false
 	}
 
@@ -60,8 +62,9 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 		return false
 	}
 
-	utils.CookieInstance().Set(ctx, "uname", "", -1)
-	utils.CookieInstance().SetSecret(ctx, "pwd", "", -1)
+	utils.CookieInstance().Set(ctx, constants.KeyUID, "", -1)
+	utils.CookieInstance().Set(ctx, constants.KeyUNAME, "", -1)
+	utils.CookieInstance().SetSecret(ctx, constants.KeyPWD, "", -1)
 
 	return true
 }
@@ -69,13 +72,13 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 // HadLogin check account login state
 func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 
-	ckUname := utils.CookieInstance().Get(ctx, "uname")
+	ckUname := utils.CookieInstance().Get(ctx, constants.KeyUNAME)
 	beego.Info("ckUname = " + ckUname)
 	if len(ckUname) <= 0 {
 		return false
 	}
 
-	ckPwd := utils.CookieInstance().GetSecret(ctx, "pwd")
+	ckPwd := utils.CookieInstance().GetSecret(ctx, constants.KeyPWD)
 	beego.Info("ckPwd = " + ckPwd)
 	if len(ckPwd) <= 0 {
 		return false
@@ -102,7 +105,7 @@ func (am *AccountManager) AccountWithUname(uname string) (*models.AccountModel, 
 }
 
 // CheckAccount check user account is matched in db
-func (am *AccountManager) CheckAccount(uname, pwd string) bool {
+func (am *AccountManager) CheckAccount(uname, pwd string) (bool, *models.AccountModel, error) {
 
 	var acc *models.AccountModel
 	var err error
@@ -115,16 +118,17 @@ func (am *AccountManager) CheckAccount(uname, pwd string) bool {
 
 	if err != nil {
 		beego.Error(err)
-		return false
+		return false, nil, err
 	}
 
 	base64Pwd := utils.Base64Encode(utils.MD5(pwd))
-	return (acc.Pwd == base64Pwd)
+	return (acc.Pwd == base64Pwd), acc, nil
 }
 
 // CheckAccount check user account is matched in db
-func CheckAccount(uname, pwd string) bool {
-	return AccountManagerInstance().CheckAccount(uname, pwd)
+func CheckAccount(uname, pwd string) (bool, *models.AccountModel) {
+	result, acc, _ := AccountManagerInstance().CheckAccount(uname, pwd)
+	return result, acc
 }
 
 // Login login with user account and password
@@ -133,7 +137,8 @@ func Login(ctx *context.Context, uname, pwd string) (bool, error) {
 }
 
 // Logout logout user account with uid
-func Logout(ctx *context.Context, uid string) bool {
+func Logout(ctx *context.Context) bool {
+	uid := utils.CookieInstance().Get(ctx, constants.KeyUID)
 	return AccountManagerInstance().Logout(ctx, uid)
 }
 

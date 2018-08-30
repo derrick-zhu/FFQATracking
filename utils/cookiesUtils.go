@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"FFQATracking/constants"
 	"encoding/base64"
 	"strconv"
 	"sync"
@@ -34,7 +35,7 @@ func (cm *CookiesUtils) Init(ctx context.Context, version string) {
 // Set set value for key into cookie
 func (cm *CookiesUtils) Set(ctx *context.Context, key string, value string, life int) {
 	if life <= 0 {
-		life = 1<<32 - 1
+		life = constants.MAXINT
 	}
 	beego.Info("key: " + key + ", value: " + value + ", life: " + strconv.Itoa(life))
 	ctx.SetCookie(key, value, life, "/")

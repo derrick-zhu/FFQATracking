@@ -20,6 +20,7 @@ func MD5(origin string) string {
 	return result
 }
 
+// Base64Encode encode string with base64
 func Base64Encode(origin string) string {
 	result := base64.StdEncoding.EncodeToString([]byte(origin))
 
@@ -27,6 +28,7 @@ func Base64Encode(origin string) string {
 	return result
 }
 
+// Base64Decode decode encoded string with base64
 func Base64Decode(encoded string) string {
 	result, err := base64.StdEncoding.DecodeString(encoded)
 	if err != nil {

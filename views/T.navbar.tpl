@@ -3,19 +3,19 @@
 <a class="navbar-brand" href="/">{{.Title}}</a>
 <div>
     <ul class="nav navbar-nav">
-        <li {{if .IsHome}} class="active" {{end}}><a href="/">首页</a></li>
-        <li {{if .IsCategory}} class="active" {{end}}><a href="/category">分类</a></li>
-        <li {{if .IsTopic}} class="active" {{end}}><a href="/topic">文章</a></li>
+        <li {{if .IsHome}} class="active" {{end}}><a href="/">Home</a></li>
+        <li {{if .IsBugs}} class="active" {{end}}><a href="/bugs">Bugs</a></li>
+        <li {{if .IsAnalysis}} class="active" {{end}}><a href="/analysis">Analysis</a></li>
     </ul>
 </div>
 
 <div class="pull-right">
     <ul class="nav navbar-nav">
         {{if .IsLogin}}
-        <li><a href="/login?exit=1">退出登录</a></li>
+        <li><a href="/login/exit">Logout</a></li>
         {{else}}
-        <li><a href="/register">注册</a></li>
-        <li><a href="/login">登录</a></li>
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
         {{end}}
     </ul>
 </div>

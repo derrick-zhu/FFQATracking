@@ -1,5 +1,7 @@
 package controllers
 
+import "FFQATracking/constants"
+
 // MainController struct
 type MainController struct {
 	FFBaseController
@@ -8,5 +10,8 @@ type MainController struct {
 // Get handle HTTP GET request
 func (c *MainController) Get() {
 	c.FFBaseController.Get()
+
+	c.Data[constants.KeyIsHome] = 1
+
 	c.TplName = "index.html"
 }
