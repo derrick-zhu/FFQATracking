@@ -8,12 +8,21 @@ import (
 )
 
 func CheckAccount(uname, pwd string) bool {
-	acc, err := models.AccountWithUname(uname)
+
+	var acc *models.AccountModel
+	var err error
+
+	if utils.MatchRegexEmail(uname) {
+		acc, err = models.AccountWithEmail(uname)
+	} else {
+		acc, err = models.AccountWithUname(uname)
+	}
+
 	if err != nil {
 		beego.Error(err)
 		return false
 	}
 
-	digistPwd := utils.MD5(pwd)
-	return (acc.Pwd == digistPwd)
+	base64Pwd := utils.Base64Encode(utils.MD5(pwd))
+	return (acc.Pwd == base64Pwd)
 }

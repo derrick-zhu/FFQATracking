@@ -60,14 +60,14 @@ func (this *AccountModel) TableName() string {
 // InstallAdminAccount install the admin account, ONLY ONCE
 func InstallAdminAccount() {
 	acc, err := AddAccount("admin", "root@farfetch.com")
-	if err == nil {
+	if err != nil {
 		beego.Error(err)
 		return
 	}
 
 	acc.Rule = ruleAdmin
 	acc.Job = jobManager
-	acc.Pwd = utils.MD5("admin")
+	acc.Pwd = utils.Base64Encode(utils.MD5("admin"))
 
 	beego.Info(acc)
 	UpdateAccount(acc.ID, map[string]interface{}{

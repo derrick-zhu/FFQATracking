@@ -2,6 +2,7 @@ package utils
 
 import (
 	"crypto/md5"
+	"encoding/base64"
 	"fmt"
 	"io"
 
@@ -17,4 +18,21 @@ func MD5(origin string) string {
 	beego.Debug("MD5: %s -> %s", origin, result)
 
 	return result
+}
+
+func Base64Encode(origin string) string {
+	result := base64.StdEncoding.EncodeToString([]byte(origin))
+
+	beego.Debug("`Base64Encode`: %s -> %s", origin, result)
+	return result
+}
+
+func Base64Decode(encoded string) string {
+	result, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		beego.Error(fmt.Sprintf("decode error: %s", err))
+		return ""
+	}
+	beego.Debug("`Base64Decode`: %s -> %s", encoded, result)
+	return string(result)
 }
