@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"FFQATracking/biz"
+	"FFQATracking/constants"
+
 	"github.com/astaxie/beego"
 )
 
@@ -11,6 +14,7 @@ type MainController struct {
 
 // Get handle HTTP GET request
 func (c *MainController) Get() {
-	c.Data["Title"] = "Farfetch Q&A"
+	c.Data[constants.Title] = "Farfetch Q&A"
+	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 	c.TplName = "index.html"
 }

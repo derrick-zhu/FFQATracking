@@ -44,12 +44,14 @@ func (cm *CookiesUtils) Get(ctx *context.Context, key string) string {
 
 // SetSecret set value for key into cookie
 func (cm *CookiesUtils) SetSecret(ctx *context.Context, key string, value string, life int) {
-	encodedValue := base64.StdEncoding.EncodeToString([]byte(value))
+
+	encodedValue := Base64Encode(value)
 	cm.Set(ctx, key, encodedValue, life)
 }
 
 // GetSecret get secret value from cookie
 func (cm *CookiesUtils) GetSecret(ctx *context.Context, key string) string {
+
 	encodedString := cm.Get(ctx, key)
 	decodedData, err := base64.StdEncoding.DecodeString(encodedString)
 	if err != nil {

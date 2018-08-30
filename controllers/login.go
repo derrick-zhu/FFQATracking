@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"FFQATracking/biz"
+	"FFQATracking/constants"
 	"FFQATracking/utils"
 	"fmt"
 
@@ -17,7 +18,7 @@ func (c *LoginController) Get() {
 	op := c.Input().Get("op")
 	beego.Info(fmt.Sprintf("GET op = %s", op))
 
-	c.Data["Title"] = "Farfetch Q&A"
+	c.Data[constants.Title] = "Farfetch Q&A"
 
 	if c.Input().Get("exit") == "1" {
 		c.Redirect("/", 302)
