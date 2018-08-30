@@ -17,3 +17,8 @@ func (c *FFBaseController) Get() {
 	c.Data[constants.Title] = "Farfetch Q&A"
 	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 }
+
+// Post is the POST method for handler default Post request
+func (c *FFBaseController) Post() {
+
+}

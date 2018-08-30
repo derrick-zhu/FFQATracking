@@ -125,10 +125,32 @@ func (am *AccountManager) CheckAccount(uname, pwd string) (bool, *models.Account
 	return (acc.Pwd == base64Pwd), acc, nil
 }
 
+// HasAccountIfNot check whether account is existed or not
+func HasAccountIfNot(uname string) bool {
+
+	var err error
+
+	if utils.MatchRegexEmail(uname) {
+		_, err = models.AccountWithEmail(uname)
+	} else {
+		_, err = models.AccountWithUname(uname)
+	}
+
+	if err != nil {
+		beego.Debug(err)
+		return false
+	}
+	return true
+}
+
 // CheckAccount check user account is matched in db
 func CheckAccount(uname, pwd string) (bool, *models.AccountModel) {
 	result, acc, _ := AccountManagerInstance().CheckAccount(uname, pwd)
 	return result, acc
+}
+
+func Register(uname, pwd string) (bool, *models.AccountModel, error) {
+	return false, nil, nil
 }
 
 // Login login with user account and password
