@@ -15,7 +15,6 @@ type LoginController struct {
 func (c *LoginController) Get() {
 	c.FFBaseController.Get()
 
-	c.Data[constants.Title] = "Farfetch Q&A"
 	c.TplName = "login.html"
 }
 

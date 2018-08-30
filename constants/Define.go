@@ -4,10 +4,13 @@ const (
 	Title   = "Title"
 	IsLogin = "IsLogin"
 
-	KeyUID   = "uid"
-	KeyUNAME = "uname"
-	KeyPWD   = "pwd"
+	/// login & signup
+	KeyUID         = "uid"
+	KeyUNAME       = "uname"
+	KeyPWD         = "pwd"
+	KeyPermissions = "PersmissionRules"
 
+	/// KeyIsHome
 	KeyIsHome = "IsHome"
 )
 
