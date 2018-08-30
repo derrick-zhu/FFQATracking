@@ -10,10 +10,11 @@ import (
 )
 
 type LoginController struct {
-	beego.Controller
+	FFBaseController
 }
 
 func (c *LoginController) Get() {
+	c.FFBaseController.Get()
 
 	op := c.Input().Get("op")
 	beego.Info(fmt.Sprintf("GET op = %s", op))
