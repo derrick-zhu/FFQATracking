@@ -11,6 +11,7 @@ type LoginController struct {
 	FFBaseController
 }
 
+// Get for handling GET request
 func (c *LoginController) Get() {
 	c.FFBaseController.Get()
 
@@ -18,6 +19,7 @@ func (c *LoginController) Get() {
 	c.TplName = "login.html"
 }
 
+// Signin for handling signin POST request
 func (c *LoginController) Signin() {
 
 	uname := c.Input().Get(constants.KeyUNAME)
@@ -36,11 +38,13 @@ func (c *LoginController) Signin() {
 	c.Redirect("/login/error", 302)
 }
 
+// Signup for handling signup GET request
 func (c *LoginController) Signup() {
 	c.Redirect("/signup", 302)
 	return
 }
 
+// Exit for handling exit GET request
 func (c *LoginController) Exit() {
 	if biz.Logout(c.Ctx) {
 		c.Redirect("/", 302)
@@ -49,18 +53,3 @@ func (c *LoginController) Exit() {
 	c.Redirect("/login", 302)
 	return
 }
-
-// func (c *LoginController) Signup() {
-
-// 	uname := c.Input().Get("uname")
-// 	pwd := c.Input().Get("pwd")
-// 	beego.Info(fmt.Sprintf("Signup() %s, %s", uname, pwd))
-// 	c.Redirect("/", 302)
-// 	return
-// }
-
-// func (c *LoginController) Error() {
-
-// 	beego.Error("something wrong")
-// 	c.Redirect("/login", 302)
-// }
