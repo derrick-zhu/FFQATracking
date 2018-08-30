@@ -7,9 +7,8 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/astaxie/beego/context"
-
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
 )
 
 // AccountManager class
@@ -71,11 +70,13 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 
 	ckUname := utils.CookieInstance().Get(ctx, "uname")
+	beego.Info("ckUname = " + ckUname)
 	if len(ckUname) <= 0 {
 		return false
 	}
 
 	ckPwd := utils.CookieInstance().GetSecret(ctx, "pwd")
+	beego.Info("ckPwd = " + ckPwd)
 	if len(ckPwd) <= 0 {
 		return false
 	}
@@ -85,6 +86,8 @@ func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 		beego.Error(err)
 		return false
 	}
+	beego.Info("account = " + acc.Pwd)
+
 	return (acc.Pwd == utils.Base64Encode(utils.MD5(ckPwd)))
 }
 
@@ -136,5 +139,6 @@ func Logout(ctx *context.Context, uid string) bool {
 
 // HadLogin check account login state
 func HadLogin(ctx *context.Context) bool {
+	beego.Info("biz.HadLogin()")
 	return AccountManagerInstance().HadLogin(ctx)
 }

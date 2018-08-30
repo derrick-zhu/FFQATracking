@@ -2,8 +2,10 @@ package utils
 
 import (
 	"encoding/base64"
+	"strconv"
 	"sync"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 )
 
@@ -16,6 +18,7 @@ type CookiesUtils struct {
 var cookieInstance *CookiesUtils
 var cookieOnce sync.Once
 
+// CookieInstance cookie instance
 func CookieInstance() *CookiesUtils {
 	cookieOnce.Do(func() {
 		cookieInstance = &CookiesUtils{}
@@ -30,13 +33,19 @@ func (cm *CookiesUtils) Init(ctx context.Context, version string) {
 
 // Set set value for key into cookie
 func (cm *CookiesUtils) Set(ctx *context.Context, key string, value string, life int) {
+	if life <= 0 {
+		life = 1<<32 - 1
+	}
+	beego.Info("key: " + key + ", value: " + value + ", life: " + strconv.Itoa(life))
 	ctx.SetCookie(key, value, life, "/")
 }
 
 // Get get value for key from cookie
 func (cm *CookiesUtils) Get(ctx *context.Context, key string) string {
+	beego.Info("Cookie Get value for:" + key)
 	ck, err := ctx.Request.Cookie(key)
 	if err != nil {
+		beego.Error(err)
 		return ""
 	}
 	return ck.Value
