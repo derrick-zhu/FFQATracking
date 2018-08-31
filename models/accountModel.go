@@ -21,20 +21,20 @@ type IndexType int64
 type RuleType int64
 
 const (
-	ruleAdmin RuleType = 0
-	ruleUser  RuleType = 1
-	ruleGuest RuleType = 2
+	RuleAdmin RuleType = 0
+	RuleUser  RuleType = 1
+	RuleGuest RuleType = 2
 )
 
 // JobType about job type in FF
 type JobType int64
 
 const (
-	jobManager      JobType = 0
-	jobLeader       JobType = 1
-	jobDeveloper    JobType = 2
-	jobQATester     JobType = 3
-	jobProductOwner JobType = 4
+	JobManager      JobType = 0
+	JobLeader       JobType = 1
+	JobDeveloper    JobType = 2
+	JobQATester     JobType = 3
+	JobProductOwner JobType = 4
 )
 
 // AccountModel user account model
@@ -65,16 +65,20 @@ func InstallAdminAccount() {
 		return
 	}
 
-	acc.Rule = ruleAdmin
-	acc.Job = jobManager
+	acc.Rule = RuleAdmin
+	acc.Job = JobManager
 	acc.Pwd = utils.Base64Encode(utils.MD5("admin"))
 
 	beego.Info(acc)
-	UpdateAccount(acc.ID, map[string]interface{}{
+	err = UpdateAccount(acc.ID, map[string]interface{}{
 		"Rule": acc.Rule,
 		"Job":  acc.Job,
 		"Pwd":  acc.Pwd,
 	})
+
+	if err != nil {
+		beego.Debug(err)
+	}
 }
 
 // AddAccount insert new account with name and email

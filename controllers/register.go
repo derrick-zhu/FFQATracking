@@ -3,6 +3,7 @@ package controllers
 import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
+	"FFQATracking/models"
 
 	"github.com/astaxie/beego"
 )
@@ -29,6 +30,8 @@ func (c *RegisterController) Post() {
 	uname := c.Input().Get(constants.KeyUNAME)
 	pwd := c.Input().Get(constants.KeyPWD)
 
+	beego.Info("register: uname: " + uname + ", pwd: " + pwd)
+
 	if biz.HasAccountIfNot(uname) == true {
 		result, err = biz.Login(c.Ctx, uname, pwd)
 		if err != nil || result == false {
@@ -40,7 +43,7 @@ func (c *RegisterController) Post() {
 		return
 	}
 
-	result, _, err = biz.Register(uname, pwd)
+	result, _, err = biz.Register(uname, pwd, models.RuleUser)
 	if err != nil || result == false {
 		beego.Error(err)
 		c.Redirect("#", 302)

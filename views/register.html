@@ -13,44 +13,18 @@
     <div class="container" style="width:30em">
         <form method="POST" action="/register">
             <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Account: *</span>
-                    <input type="text" name="uname" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
-                </div>
+                <label>Account: *</label>
+                <input type="text" name="uname" class="form-control" placeholder="Email">
             </div>
 
             <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Nick Name: </span>
-                    <input type="text" name="nickname" class="form-control" placeholder="Nick name" aria-describedby="basic-addon1">
-                </div>
+                <label>Nick Name: </label>
+                <input type="text" name="nickname" class="form-control" placeholder="Nick name">
             </div>
 
-            <!-- 
             <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Permission: </span>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Select permission</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {{range .PersmissionRules}}
-                            <li><a href="#">{{.}}</a></li>
-                            {{end}}
-                        </ul>
-                    </div>
-                </div>
-            </div> 
-            -->
-
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Password: </span>
-                    <input type="password" name="pwd" class="form-control" placeholder="Password">
-                </div>
+                <label>Password:</label>
+                <input type="password" name="pwd" class="form-control" placeholder="Password">
             </div>
 
             <div class="form-group"></div>

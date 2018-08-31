@@ -6,6 +6,7 @@ import (
 	"FFQATracking/utils"
 	"errors"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/astaxie/beego"
@@ -149,8 +150,37 @@ func CheckAccount(uname, pwd string) (bool, *models.AccountModel) {
 	return result, acc
 }
 
-func Register(uname, pwd string) (bool, *models.AccountModel, error) {
-	return false, nil, nil
+// Register for helping user to register a new account
+func Register(uname, pwd string, rule models.RuleType) (bool, *models.AccountModel, error) {
+	var nickName string
+
+	if utils.MatchRegexEmail(uname) {
+		nickName = uname[0:strings.Index(uname, "@")]
+	} else {
+		nickName = uname
+	}
+
+	acc, err := models.AddAccount(nickName, uname)
+	if err != nil {
+		beego.Debug(err)
+		return false, nil, err
+	}
+
+	acc.Rule = rule
+	acc.Job = models.JobDeveloper
+	acc.Pwd = utils.Base64Encode(utils.MD5(pwd))
+
+	err = models.UpdateAccount(acc.ID, map[string]interface{}{
+		"Rule": acc.Rule,
+		"Job":  acc.Job,
+		"Pwd":  acc.Pwd,
+	})
+
+	if err != nil {
+		return false, nil, err
+	} else {
+		return true, acc, nil
+	}
 }
 
 // Login login with user account and password
