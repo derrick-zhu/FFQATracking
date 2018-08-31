@@ -10,7 +10,7 @@ import (
 
 func init() {
 	orm.Debug = true
-	models.RegisterDB(true)
+	models.RegisterDB(false)
 
 }
 

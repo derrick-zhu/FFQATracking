@@ -30,7 +30,7 @@ func (c *RegisterController) Post() {
 	uname := c.Input().Get(constants.KeyUNAME)
 	pwd := c.Input().Get(constants.KeyPWD)
 
-	beego.Info("register: uname: " + uname + ", pwd: " + pwd)
+	beego.Info("Get ready for register account uname: " + uname + ", pwd: " + pwd)
 
 	if biz.HasAccountIfNot(uname) == true {
 		result, err = biz.Login(c.Ctx, uname, pwd)
@@ -43,6 +43,7 @@ func (c *RegisterController) Post() {
 		return
 	}
 
+	beego.Info("Do registering ...")
 	result, _, err = biz.Register(uname, pwd, models.RuleUser)
 	if err != nil || result == false {
 		beego.Error(err)
@@ -50,6 +51,7 @@ func (c *RegisterController) Post() {
 		return
 	}
 
+	beego.Info("Do login ...")
 	result, err = biz.Login(c.Ctx, uname, pwd)
 	if err != nil || result == false {
 		beego.Error(err)
@@ -57,6 +59,7 @@ func (c *RegisterController) Post() {
 		return
 	}
 
+	beego.Info("Finish register progress ...")
 	c.Redirect("/", 302)
 	return
 }
