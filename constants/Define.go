@@ -13,7 +13,8 @@ const (
 	KeyPermissions = "PersmissionRules"
 
 	// KeyIsHome flag for show HOME page.
-	KeyIsHome = "IsHome"
+	KeyIsHome      = "IsHome"
+	KeyIsIssueList = "IsIssueList"
 )
 
 const (
