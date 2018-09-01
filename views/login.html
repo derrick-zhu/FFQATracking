@@ -14,30 +14,36 @@
         <form method="POST" action="/login/signin">
             <div class="form-group">
                 <label>Account</label>
-                <input type="text" name="uname" class="form-control" placeholder="Email">
+                <input type="text" name="uname" class="form-control" placeholder="Email" id="uname">
             </div>
             
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="pwd" class="form-control" placeholder="Password">
+                <input type="password" name="pwd" class="form-control" placeholder="Password" id="pwd">
             </div>
 
-            <div class="form-group"></div>
+            <div class="form-group">
                 <input type="submit" class="btn btn-default" onclick="return checkInput();" value="Sign in">
-                <script type="text/javascript">
-                    function checkInput() {
-                        var uname = document.getElementById("uname")
-                        if (uname.value.length == 0) {
-                            alert("Invalid account.")
+                <script type="text/javascript" >
+                    function checkInput() 
+                    {
+                        if (checkInputLength('uname', 1, 1024) == false) {
+
+                            alert('Invalid account')
                             return false;
                         }
 
-                        var pwd = document.getElementById("pwd")
-                        if (pwd.value.length == 0) {
-                            alert("Invalid password.")
+                        if (false == checkWithRegex('uname', "[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?")) {
+                            alert('Invalid email account format')
+                            return false
+                        }
+
+                        if (checkInputLength('pwd', 1, 1024) == false) {
+
+                            alert('Invalid password')
                             return false;
                         }
-                    }
+                    }                    
                 </script>
             </div>
         </form>

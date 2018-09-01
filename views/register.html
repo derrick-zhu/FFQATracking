@@ -14,7 +14,7 @@
         <form method="POST" action="/register">
             <div class="form-group">
                 <label>Account: *</label>
-                <input type="text" name="uname" class="form-control" placeholder="Email">
+                <input type="text" name="uname" class="form-control" placeholder="Email" id="uname">
             </div>
 
             <div class="form-group">
@@ -24,28 +24,29 @@
 
             <div class="form-group">
                 <label>Password:</label>
-                <input type="password" name="pwd" class="form-control" placeholder="Password">
+                <input type="password" name="pwd" class="form-control" placeholder="Password" id="pwd">
             </div>
 
-            <div class="form-group"></div>
-            <input type="submit" class="btn btn-default" onclick="return checkInput();" value="Register">
-            <script type="text/javascript">
-                function checkInput() {
-                    var uname = document.getElementById("uname")
-                    if (uname.value.length == 0) {
-                        alert("Invalid account.")
-                        return false;
-                    }
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" onclick="return checkInput();" value="Register">
+                <script type="text/javascript">
+                    function checkInput() {
+                        var uname = document.getElementById("uname")
+                        if (uname.value.length == 0) {
+                            alert("Email is needed.")
+                            return false;
+                        }
 
-                    var pwd = document.getElementById("pwd")
-                    if (pwd.value.length == 0) {
-                        alert("Invalid password.")
-                        return false;
+                        var pwd = document.getElementById("pwd")
+                        alert(pwd)
+                        if (pwd.value.length == 0) {
+                            alert("Invalid password.")
+                            return false;
+                        }
                     }
-                }
-            </script>
-    </div>
-    </form>
+                </script>
+            </div>
+        </form>
     </div>
 
 </body>
