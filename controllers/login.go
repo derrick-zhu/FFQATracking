@@ -21,14 +21,14 @@ func (c *LoginController) Get() {
 // Signin for handling signin POST request
 func (c *LoginController) Signin() {
 
-	uname := c.Input().Get(constants.KeyUNAME)
+	email := c.Input().Get(constants.KeyEMAIL)
 	pwd := c.Input().Get(constants.KeyPWD)
 
-	result, acc := biz.CheckAccount(uname, pwd)
+	result, acc := biz.CheckAccount(email, pwd)
 	if result == true {
 
 		utils.CookieInstance().Set(c.Ctx, constants.KeyUID, utils.I64toa(int64(acc.ID)), -1)
-		utils.CookieInstance().Set(c.Ctx, constants.KeyUNAME, uname, -1)
+		utils.CookieInstance().Set(c.Ctx, constants.KeyEMAIL, email, -1)
 		utils.CookieInstance().SetSecret(c.Ctx, constants.KeyPWD, pwd, -1)
 
 		c.Redirect("/", 302)

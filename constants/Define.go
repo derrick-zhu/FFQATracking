@@ -8,10 +8,11 @@ const (
 	/// login & signup
 	KeyUID         = "uid"
 	KeyUNAME       = "uname"
+	KeyEMAIL       = "email"
 	KeyPWD         = "pwd"
 	KeyPermissions = "PersmissionRules"
 
-	/// KeyIsHome
+	// KeyIsHome flag for show HOME page.
 	KeyIsHome = "IsHome"
 )
 

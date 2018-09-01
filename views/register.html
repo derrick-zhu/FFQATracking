@@ -14,7 +14,7 @@
         <form method="POST" action="/register">
             <div class="form-group">
                 <label>Account: *</label>
-                <input type="text" name="uname" class="form-control" placeholder="Email" id="uname">
+                <input type="text" name="email" class="form-control" placeholder="Email" id="email">
             </div>
 
             <div class="form-group">
@@ -30,20 +30,26 @@
             <div class="form-group">
                 <input type="submit" class="btn btn-default" onclick="return checkInput();" value="Register">
                 <script type="text/javascript">
-                    function checkInput() {
-                        var uname = document.getElementById("uname")
-                        if (uname.value.length == 0) {
-                            alert("Email is needed.")
+                    function checkInput() 
+                    {
+                        if (checkInputLength('email', 1, 1024) == false) {
+
+                            alert('Invalid account')
                             return false;
                         }
 
-                        var pwd = document.getElementById("pwd")
-                        alert(pwd)
-                        if (pwd.value.length == 0) {
-                            alert("Invalid password.")
+                        if (false == checkWithRegex('email', "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?")) {
+
+                            alert('Invalid email account format')
+                            return false
+                        }
+
+                        if (checkInputLength('pwd', 1, 1024) == false) {
+
+                            alert('Invalid password')
                             return false;
                         }
-                    }
+                    }  
                 </script>
             </div>
         </form>

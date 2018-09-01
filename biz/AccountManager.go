@@ -29,19 +29,20 @@ func AccountManagerInstance() *AccountManager {
 	return AccMgrInstance
 }
 
-// Login login with account's uname and pwd
-func (am *AccountManager) Login(ctx *context.Context, uname, pwd string) (bool, error) {
+// Login login with account's email and pwd
+func (am *AccountManager) Login(ctx *context.Context, email, pwd string) (bool, error) {
 
-	result, acc, _ := AccountManagerInstance().CheckAccount(uname, pwd)
-	if false == result {
+	result, acc, _ := AccountManagerInstance().CheckAccount(email, pwd)
+	if true == result {
 
 		utils.CookieInstance().Set(ctx, constants.KeyUID, strconv.Itoa(int(acc.ID)), -1)
-		utils.CookieInstance().Set(ctx, constants.KeyUNAME, uname, -1)
+		utils.CookieInstance().Set(ctx, constants.KeyEMAIL, email, -1)
 		utils.CookieInstance().SetSecret(ctx, constants.KeyPWD, pwd, -1)
 
-		return false, errors.New("invalid user account or password")
+		return true, nil
 	}
-	return true, nil
+
+	return false, errors.New("invalid user account or password")
 }
 
 // Logout logout
@@ -63,7 +64,7 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 	}
 
 	utils.CookieInstance().Set(ctx, constants.KeyUID, "", -1)
-	utils.CookieInstance().Set(ctx, constants.KeyUNAME, "", -1)
+	utils.CookieInstance().Set(ctx, constants.KeyEMAIL, "", -1)
 	utils.CookieInstance().SetSecret(ctx, constants.KeyPWD, "", -1)
 
 	return true
@@ -72,9 +73,9 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 // HadLogin check account login state
 func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 
-	ckUname := utils.CookieInstance().Get(ctx, constants.KeyUNAME)
-	beego.Info("ckUname = " + ckUname)
-	if len(ckUname) <= 0 {
+	ckEmail := utils.CookieInstance().Get(ctx, constants.KeyEMAIL)
+	beego.Info("ckEmail = " + ckEmail)
+	if len(ckEmail) <= 0 {
 		return false
 	}
 
@@ -84,9 +85,9 @@ func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 		return false
 	}
 
-	acc, err := am.AccountWithUname(ckUname)
+	acc, err := am.AccountWithEMail(ckEmail)
 	if err != nil {
-		beego.Info("Fails in fetching account: " + ckUname)
+		beego.Info("Fails in fetching account: " + ckEmail)
 		beego.Error(err)
 		return false
 	}
@@ -103,6 +104,11 @@ func (am *AccountManager) AccountWithID(id int64) (*models.AccountModel, error) 
 // AccountWithUname fetch user account with uname
 func (am *AccountManager) AccountWithUname(uname string) (*models.AccountModel, error) {
 	return models.AccountWithUname(uname)
+}
+
+// AccountWithEMail fetch user account with email
+func (am *AccountManager) AccountWithEMail(email string) (*models.AccountModel, error) {
+	return models.AccountWithEmail(email)
 }
 
 // CheckAccount check user account is matched in db

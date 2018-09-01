@@ -18,8 +18,12 @@ func (c *FFBaseController) Get() {
 	c.Data[constants.Title] = "Farfetch Q&A"
 	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 
+	email := utils.CookieInstance().Get(c.Ctx, constants.KeyEMAIL)
 	uname := utils.CookieInstance().Get(c.Ctx, constants.KeyUNAME)
-	if len(uname) > 0 {
+
+	if len(email) > 0 {
+		c.Data[constants.LoggedInAccount] = email
+	} else if len(uname) > 0 {
 		c.Data[constants.LoggedInAccount] = uname
 	}
 }
