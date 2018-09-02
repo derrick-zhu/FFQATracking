@@ -3,22 +3,29 @@ package models
 import (
 	"time"
 
+	"github.com/astaxie/beego"
+
 	"github.com/astaxie/beego/orm"
+)
+
+const (
+	// BugsTable db table name for bugmodel
+	BugsTable string = "bugmodel"
 )
 
 // BugStatus bug status type
 type BugStatus string
 
 const (
-	bsNew        BugStatus = "New"
-	bsFixed      BugStatus = "Fixed"
-	bsReopen     BugStatus = "Reopen"
-	bsConfirm    BugStatus = "Confirm"
-	bsClose      BugStatus = "Close"
-	bsNotABug    BugStatus = "Not a bug"
-	bsWillNotFix BugStatus = "Will not fix"
-	bsDelay      BugStatus = "Delay"
-	bsMustBeFix  BugStatus = "Must be fix"
+	BugNew        BugStatus = "New"
+	BugFixed      BugStatus = "Fixed"
+	BugReopen     BugStatus = "Reopen"
+	BugConfirm    BugStatus = "Confirm"
+	BugClose      BugStatus = "Close"
+	BugNotABug    BugStatus = "Not a bug"
+	BugWillNotFix BugStatus = "Will not fix"
+	BugDelay      BugStatus = "Delay"
+	BugMustBeFix  BugStatus = "Must be fix"
 )
 
 // PriorityStatus bug's priority status
@@ -55,6 +62,41 @@ func init() {
 	orm.RegisterModel(new(BugModel))
 }
 
-func (this *BugModel) TableName() string {
-	return "bugmodel"
+// TableName for beego using
+func (c *BugModel) TableName() string {
+	return BugsTable
+}
+
+// AddBug insert new bug
+func AddBug(title, description string, creatorID IndexType) (*BugModel, error) {
+	pBug := &BugModel{
+		Title:       title,
+		Description: description,
+		Creator:     creatorID,
+		CreateDate:  time.Now(),
+		Status:      BugNew,
+	}
+
+	o, _ := GetQuerySeterWithTable(BugsTable)
+	_, err := o.Insert(pBug)
+	if err != nil {
+		beego.Error(err)
+		return nil, err
+	}
+	return pBug, nil
+}
+
+// BugWithID fetch bug with id
+func BugWithID(id IndexType) (*BugModel, error) {
+	return nil, nil
+}
+
+// UpdateBug update bug model data
+func UpdateBug(id IndexType, params map[string]interface{}) error {
+	return nil
+}
+
+// DeleteBug delete bug with id
+func DeleteBug(id IndexType) error {
+	return nil
 }

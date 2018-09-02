@@ -8,13 +8,15 @@ import (
 
 	"github.com/Unknwon/com"
 	"github.com/astaxie/beego/orm"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
 	_dbFileName   = "data/ffqatracking.db"
 	_dbSqlite3Drv = "sqlite3"
 )
+
+// IndexType all data type of Index
+type IndexType int64
 
 // RegisterDB register and init the DB
 func RegisterDB(force bool) {
@@ -38,8 +40,8 @@ func RegisterDB(force bool) {
 	}
 }
 
-func GetORMWithTable(db_table string) orm.Ormer {
+// GetQuerySeterWithTable generate a new db QuerySeter object with the name of the db table
+func GetQuerySeterWithTable(dbTable string) (orm.Ormer, orm.QuerySeter) {
 	o := orm.NewOrm()
-	o.Using(db_table)
-	return o
+	return o, o.QueryTable(dbTable)
 }

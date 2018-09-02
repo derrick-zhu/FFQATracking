@@ -14,9 +14,6 @@ const (
 	AccountTable string = "accountmodel"
 )
 
-// IndexType all data type of Index
-type IndexType int64
-
 // RuleType about account rule in FFQATracking platform
 type RuleType int64
 
@@ -53,6 +50,7 @@ func init() {
 	orm.RegisterModel(new(AccountModel))
 }
 
+// TableName for beego using
 func (this *AccountModel) TableName() string {
 	return AccountTable
 }
@@ -84,13 +82,14 @@ func InstallAdminAccount() {
 // AddAccount insert new account with name and email
 func AddAccount(name string, email string) (*AccountModel, error) {
 
-	o := orm.NewOrm()
 	account := &AccountModel{Name: name,
 		Email:  email,
 		Create: time.Now(),
 	}
 
-	filterErr := o.QueryTable(AccountTable).Filter("email", email).One(account)
+	o, qs := GetQuerySeterWithTable(AccountTable)
+
+	filterErr := qs.Filter("email", email).One(account)
 	if filterErr == nil { // account has already existed
 		return account, nil
 	}
@@ -105,10 +104,10 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 // AccountWithUname get account with uname
 func AccountWithUname(uname string) (*AccountModel, error) {
 
-	o := orm.NewOrm()
 	acc := &AccountModel{Name: uname}
 
-	filterErr := o.QueryTable(AccountTable).Filter("name", uname).One(acc)
+	_, qs := GetQuerySeterWithTable(AccountTable)
+	filterErr := qs.Filter("name", uname).One(acc)
 	if filterErr != nil {
 		return nil, filterErr
 	}
@@ -119,10 +118,10 @@ func AccountWithUname(uname string) (*AccountModel, error) {
 // AccountWithEmail get account with email
 func AccountWithEmail(email string) (*AccountModel, error) {
 
-	o := orm.NewOrm()
 	acc := &AccountModel{Email: email}
 
-	filterErr := o.QueryTable(AccountTable).Filter("email", email).One(acc)
+	_, qs := GetQuerySeterWithTable(AccountTable)
+	filterErr := qs.Filter("email", email).One(acc)
 	if filterErr != nil {
 		return nil, filterErr
 	}
@@ -133,11 +132,12 @@ func AccountWithEmail(email string) (*AccountModel, error) {
 // AccountWithID get account with id
 func AccountWithID(id IndexType) (*AccountModel, error) {
 
-	o := orm.NewOrm()
 	acc := &AccountModel{ID: id}
 
-	filterErr := o.QueryTable(AccountTable).Filter("id", fmt.Sprintf("%d", id)).One(acc)
+	_, qs := GetQuerySeterWithTable(AccountTable)
+	filterErr := qs.Filter("id", fmt.Sprintf("%d", id)).One(acc)
 	if filterErr != nil {
+
 		return nil, filterErr
 	}
 
@@ -147,8 +147,7 @@ func AccountWithID(id IndexType) (*AccountModel, error) {
 // UpdateAccount [WIP] update account's content
 func UpdateAccount(id IndexType, params map[string]interface{}) error {
 
-	o := orm.NewOrm()
-	qs := o.QueryTable(AccountTable)
+	_, qs := GetQuerySeterWithTable(AccountTable)
 
 	_, err := AccountWithID(id)
 	if err != nil {
@@ -173,7 +172,7 @@ func UpdateAccount(id IndexType, params map[string]interface{}) error {
 // DeleteAccount [DONE] delete account with id
 func DeleteAccount(id IndexType) error {
 
-	o := orm.NewOrm()
+	o, _ := GetQuerySeterWithTable(AccountTable)
 
 	acc := &AccountModel{ID: id}
 	_, err := o.Delete(acc)

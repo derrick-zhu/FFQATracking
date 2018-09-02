@@ -4,6 +4,8 @@ import (
 	"FFQATracking/models"
 	_ "FFQATracking/routers"
 
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
