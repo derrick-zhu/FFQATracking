@@ -32,13 +32,13 @@ const (
 type PriorityStatus int64
 
 const (
-	psUrgent     PriorityStatus = 0
-	psImportant  PriorityStatus = 1
-	psHigh       PriorityStatus = 2
-	psMiddle     PriorityStatus = 3
-	psLow        PriorityStatus = 4
-	psQuestion   PriorityStatus = 5
-	psSuggestion PriorityStatus = 6
+	PriorityUrgent     PriorityStatus = 0
+	PriorityImportant  PriorityStatus = 1
+	PriorityHigh       PriorityStatus = 2
+	PriorityMiddle     PriorityStatus = 3
+	PriorityLow        PriorityStatus = 4
+	PriorityQuestion   PriorityStatus = 5
+	PrioritySuggestion PriorityStatus = 6
 )
 
 // BugModel the model of bug
@@ -88,15 +88,52 @@ func AddBug(title, description string, creatorID IndexType) (*BugModel, error) {
 
 // BugWithID fetch bug with id
 func BugWithID(id IndexType) (*BugModel, error) {
-	return nil, nil
+
+	pbug := &BugModel{ID: id}
+
+	_, qs := GetQuerySeterWithTable(BugsTable)
+	filterErr := qs.Filter("id", id).One(pbug)
+	if filterErr != nil {
+
+		beego.Error(filterErr)
+
+		return nil, filterErr
+	}
+
+	return pbug, nil
 }
 
 // UpdateBug update bug model data
 func UpdateBug(id IndexType, params map[string]interface{}) error {
+
+	_, qs := GetQuerySeterWithTable(BugsTable)
+	_, err := BugWithID(id)
+
+	if err != nil {
+		beego.Error(err)
+
+		return err
+	}
+
+	beego.Info(params)
+
+	_, err = qs.Filter("id", id).Update(params)
+	if err != nil {
+		beego.Error(err)
+
+		return err
+	}
+
 	return nil
 }
 
 // DeleteBug delete bug with id
 func DeleteBug(id IndexType) error {
-	return nil
+
+	o, _ := GetQuerySeterWithTable(BugsTable)
+
+	bug := &BugModel{ID: id}
+	_, err := o.Delete(bug)
+
+	return err
 }
