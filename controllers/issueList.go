@@ -15,5 +15,12 @@ func (c *IssueListController) Get() {
 
 	c.Data[constants.KeyIsIssueList] = 1
 
+	// bugs, err := models.BugsWithRange(0, -1)
+	// if err != nil {
+	// 	beego.Error(err)
+	// }
+
+	// beego.Info(bugs)
+
 	c.TplName = "issueList.html"
 }

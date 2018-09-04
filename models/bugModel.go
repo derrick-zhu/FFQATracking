@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -43,19 +44,20 @@ const (
 
 // BugModel the model of bug
 type BugModel struct {
-	ID          IndexType      `orm:"index"`      // index
-	Title       string         `orm:"size(512)"`  // bug title
-	Description string         `orm:"size(4096)"` // description about bug
-	Version     string         `orm:"index"`      // test version number
-	Source      string         // source feature request
-	Target      string         `orm:"index"` // target milestone
-	DevPeriod   string         `orm:"index"` // sprint
-	SolveDate   time.Time      // date solving
-	CreateDate  time.Time      // date creating
-	Status      BugStatus      `orm:"index"` // bug current status
-	Priority    PriorityStatus `orm:"index"` // bug's priority type
-	Creator     IndexType      `orm:"index"` // bug's founder
-	Assignor    IndexType      `orm:"index"` // who should solve this bug
+	ID              IndexType      `orm:"index"`      // index
+	Title           string         `orm:"size(512)"`  // bug title
+	Description     string         `orm:"size(4096)"` // description about bug
+	Version         string         `orm:"index"`      // test version number
+	Source          string         // source feature request
+	Target          string         `orm:"index"` // target milestone
+	DevPeriod       string         `orm:"index"` // sprint
+	SolveDate       time.Time      // date solving
+	CreateDate      time.Time      // date creating
+	Status          BugStatus      `orm:"index"` // bug current status
+	Priority        PriorityStatus `orm:"index"` // bug's priority type
+	Creator         IndexType      `orm:"index"` // bug's founder
+	Assignor        IndexType      `orm:"index"` // who should solve this bug
+	Reproducibility int            // 重现概率 0~100
 }
 
 func init() {
@@ -101,6 +103,25 @@ func BugWithID(id IndexType) (*BugModel, error) {
 	}
 
 	return pbug, nil
+}
+
+// BugsWithRange fetch bug data with range [lower, upper]
+func BugsWithRange(lower, upper int) ([]*BugModel, error) {
+
+	var result []*BugModel
+	var err error
+	var rawResult orm.RawSeter
+
+	o := GetOrmObject()
+	sqlQuery := fmt.Sprintf("SELECT * from %s LIMIT %d, %d", BugsTable, lower, upper)
+	rawResult = o.Raw(sqlQuery)
+
+	_, err = rawResult.QueryRows(&result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 // UpdateBug update bug model data

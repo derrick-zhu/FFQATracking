@@ -40,8 +40,15 @@ func RegisterDB(force bool) {
 	}
 }
 
+// GetOrmObject get orm object
+func GetOrmObject() orm.Ormer {
+
+	return orm.NewOrm()
+}
+
 // GetQuerySeterWithTable generate a new db QuerySeter object with the name of the db table
 func GetQuerySeterWithTable(dbTable string) (orm.Ormer, orm.QuerySeter) {
-	o := orm.NewOrm()
+
+	o := GetOrmObject()
 	return o, o.QueryTable(dbTable)
 }
