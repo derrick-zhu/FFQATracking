@@ -7,6 +7,8 @@
   <link rel="short cut icon" href="/static/img/ftech.jpg">
   <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 
+  <link href="/static/css/utils.css" type="text/css" rel="stylesheet">
+
   <script async src="/static/js/utils.js"></script>
   <title>{{.Title}}</title>
 </head>

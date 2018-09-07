@@ -14,19 +14,27 @@
     <div class="container">
         <form action="/issue/new" method="post">
             <div class="form-group">
+<<<<<<< HEAD
                 <label>Title:</label>
+=======
+                <label >Title:</label>
+>>>>>>> [wip] new issue page, submit button
                 <input type="text" class="form-control" name="title" id="title" placeholder="Issue Title">
             </div>
 
             <div class="form-group">
                 <label>Description:</label>
+<<<<<<< HEAD
                 <textarea id="description" name="description" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
+=======
+                <textarea class="form-control" name="description" id="description" rows="10" placeholder="Bug describes here."></textarea>
+>>>>>>> [wip] new issue page, submit button
             </div>
 
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="">Status: </label>
+                        <label class="right label-ff-standard">Status: </label>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
@@ -46,7 +54,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="">Priority: </label>
+                        <label class="right label-ff-standard">Priority: </label>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
@@ -66,7 +74,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="">Reproducibility: </label>
+                        <label class="right label-ff-standard">Reproducibility: </label>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
@@ -90,7 +98,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4">
-                        <label>Creator:</label>
+                        <label class="right label-ff-standard">Creator:</label>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
@@ -110,7 +118,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="">Assignor: </label>
+                        <label class="right label-ff-standard">Assignor: </label>
                         <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
@@ -130,6 +138,14 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- 分割线 -->
+            <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+
+            <!-- 提交按钮 -->
+            <div class="form-group">
+                <input class="btn btn-default" type="button" id="submit" name="submit" value="Submit">
             </div>
 
         </form>
