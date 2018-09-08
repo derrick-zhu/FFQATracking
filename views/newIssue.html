@@ -1,8 +1,9 @@
 <!doctype html>
 <html>
-
-{{template "header"}}
-
+    <head>
+        {{template "header"}}
+        <script type="text/javascript" src="/static/js/qatracking/bugUtils.js"></script>
+    </head>
 <body>
 
     <div class="navbar navbar-default">
@@ -15,12 +16,12 @@
         <form action="/issue/new" method="post">
             <div class="form-group">
                 <label>Title:</label>
-                <input type="text" class="form-control" name="title" id="title" placeholder="Issue Title">
+                <input id="issueTitle" name="issueTitle" type="text" class="form-control" placeholder="Issue Title">
             </div>
 
             <div class="form-group">
                 <label>Description:</label>
-                <textarea id="description" name="description" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
+                <textarea id="issueContent" name="issueContent" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
             </div>
 
             <div class="form-group">
@@ -138,7 +139,6 @@
             <!-- 提交按钮 -->
             <div class="form-group">
                 <input class="btn btn-default" type="submit" value="Submit" onclick="return submitNewBug();">
-                <script async src="/static/js/qatracking/bugUtils.js"></script>
             </div>
 
         </form>

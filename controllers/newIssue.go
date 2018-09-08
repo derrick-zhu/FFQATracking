@@ -15,6 +15,7 @@ type NewIssueController struct {
 // Get for handle new issue controller GET request
 func (c *NewIssueController) Get() {
 	c.FFBaseController.Get()
+	c.Data[constants.Title] = "New Issue"
 	c.Data[constants.KeyIsIssueList] = 1
 
 	c.TplName = "newIssue.html"
@@ -24,10 +25,10 @@ func (c *NewIssueController) Get() {
 func (c *NewIssueController) Post() {
 	c.FFBaseController.Post()
 
-	bugTitle := c.Input().Get("title")
-	bugDescription := c.Input().Get("description")
+	bugTitle := c.Input().Get("issueTitle")
+	issueContent := c.Input().Get("issueContent")
 
-	beego.Info(fmt.Sprintf("title: %s, description: %s", bugTitle, bugDescription))
+	beego.Info(fmt.Sprintf("title: %s, description: %s", bugTitle, issueContent))
 
 	c.Redirect("/issuelist", 302)
 }
