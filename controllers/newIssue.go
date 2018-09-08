@@ -2,6 +2,9 @@ package controllers
 
 import (
 	"FFQATracking/constants"
+	"fmt"
+
+	"github.com/astaxie/beego"
 )
 
 // NewIssueController base issue create page
@@ -15,4 +18,16 @@ func (c *NewIssueController) Get() {
 	c.Data[constants.KeyIsIssueList] = 1
 
 	c.TplName = "newIssue.html"
+}
+
+// Post for handle new issue controller POST request
+func (c *NewIssueController) Post() {
+	c.FFBaseController.Post()
+
+	bugTitle := c.Input().Get("title")
+	bugDescription := c.Input().Get("description")
+
+	beego.Info(fmt.Sprintf("title: %s, description: %s", bugTitle, bugDescription))
+
+	c.Redirect("/issuelist", 302)
 }
