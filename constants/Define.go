@@ -12,6 +12,9 @@ const (
 	KeyPWD         = "pwd"
 	KeyPermissions = "PersmissionRules"
 
+	/// new issue
+	KeyIssueInitValue = "issueInitValue"
+
 	// KeyIsHome flag for show HOME page.
 	KeyIsHome      = "IsHome"
 	KeyIsIssueList = "IsIssueList"

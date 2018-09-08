@@ -2,7 +2,14 @@
 <html>
     <head>
         {{template "header"}}
-        <script type="text/javascript" src="/static/js/qatracking/bugUtils.js"></script>
+        <script type="text/javascript" src="/static/js/features/newIssue.js"></script>
+
+        <script type="text/javascript">
+            window.onload = function() {
+                document.getElementById("optionGroup").innerHTML = "{{.test}}"
+            }
+        </script>
+
     </head>
 <body>
 
@@ -24,15 +31,41 @@
                 <textarea id="issueContent" name="issueContent" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
             </div>
 
+            <div id="optionGroup" class="form-group">
+
+            </div>
+
+            <!-- <div class="form-group">
+                <div class="row">
+                    
+                    {{range $key, $value := .issueInitValue}}
+                    <div class="col-md-4">
+                        <label class="right label-ff-standard">{{$key}} </label>    
+                        {{with $value}}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-normal">{{.Collection}}</button>
+                                <p>{{.Title}} {{.DefaultValue}}</p>
+                                {{range $index, $elem := .Collection}}
+                                    <p>{{$index}} -> {{$elem}}</p>
+                                {{end}}
+                                <br>
+                            
+                            </div>
+                        {{end}}
+                        
+                    </div>
+                    {{end}}
+                    
+                </div>
+            </div> -->
+<!--
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4">
                         <label class="right label-ff-standard">Status: </label>
-                        <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
@@ -48,7 +81,6 @@
 
                     <div class="col-md-4">
                         <label class="right label-ff-standard">Priority: </label>
-                        <!-- Split button -->
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
                             <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
@@ -68,7 +100,7 @@
 
                     <div class="col-md-4">
                         <label class="right label-ff-standard">Reproducibility: </label>
-                        <!-- Split button -->
+                        
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
                             <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
@@ -92,7 +124,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="right label-ff-standard">Creator:</label>
-                        <!-- Split button -->
+                        
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
                             <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
@@ -112,7 +144,7 @@
 
                     <div class="col-md-4">
                         <label class="right label-ff-standard">Assignor: </label>
-                        <!-- Split button -->
+                        
                         <div class="btn-group">
                             <button type="button" class="btn btn-normal">Action</button>
                             <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
@@ -130,15 +162,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
+-->
             <!-- 分割线 -->
             <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
 
             <!-- 提交按钮 -->
             <div class="form-group">
-                <input class="btn btn-default" type="submit" value="Submit" onclick="return submitNewBug();">
+                <input class="btn btn-default" type="submit" value="Submit" onclick="return newIssueCheckInputContent();">
             </div>
 
         </form>
