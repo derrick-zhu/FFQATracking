@@ -24,7 +24,7 @@ func MD5(origin string) string {
 func Base64Encode(origin string) string {
 	result := base64.StdEncoding.EncodeToString([]byte(origin))
 
-	beego.Debug("`Base64Encode`: %s -> %s", origin, result)
+	beego.Debug(fmt.Sprintf("`Base64Encode`: %s -> %s", origin, result))
 	return result
 }
 
