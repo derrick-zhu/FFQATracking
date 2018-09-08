@@ -14,3 +14,7 @@
 .right {
     text-align: right
 }
+
+.seperate-line {
+    FILTER: alpha(opacity=100,finishopacity=0,style=3)
+}

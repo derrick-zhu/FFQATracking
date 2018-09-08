@@ -114,12 +114,13 @@ textarea {
   height: 1.5rem; }
 
 hr {
+  FILTER: alpha(opacity=100,finishopacity=0,style=3);
   clear: both;
   border: none;
   height: 1px;
   color: #EBE9EA;
   background-color: #EBE9EA;
-  margin: 2rem 0; }
+  /* margin: 2rem 0; */}
 
 .vh {
   position: absolute;
@@ -354,13 +355,13 @@ table {
   margin-top: 1rem;
   margin-bottom: 2rem;
   color: #5E6B7A;
-  font-size: 0.875rem; }
+  font-size: 1.25rem; }
   @media (max-width: 64em) {
     table {
       margin: 0.5rem 0; } }
   table thead {
     font-family: "Polaris-Bold", Helvetica, sans-serif;
-    font-size: 1rem; }
+    font-size: 1.25rem; }
     @media (max-width: 64em) {
       table thead {
         border: none;
@@ -388,7 +389,7 @@ table {
     color: #222224; }
   table td {
     font-family: "Polaris", Helvetica, sans-serif;
-    font-size: 1rem;
+    font-size: 1.25rem;
     padding: 1rem;
     border-bottom: 1px solid #EBE9EA; }
     @media (max-width: 64em) {
@@ -406,7 +407,7 @@ table {
       content: attr(data-label);
       margin-right: auto;
       margin-bottom: 0.25rem;
-      font-size: 0.875rem;
+      font-size: 1rem;
       font-family: "Polaris-Bold", Helvetica, sans-serif;
       color: #222224; } }
   table tbody tr:last-child td {
