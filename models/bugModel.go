@@ -105,15 +105,15 @@ func BugWithID(id IndexType) (*BugModel, error) {
 	return pbug, nil
 }
 
-// BugsWithRange fetch bug data with range [lower, upper]
-func BugsWithRange(lower, upper int) ([]*BugModel, error) {
+// BugsWithRange fetch bug data with range [lower, lower + count)
+func BugsWithRange(lower, count int) ([]*BugModel, error) {
 
 	var result []*BugModel
 	var err error
 	var rawResult orm.RawSeter
 
 	o := GetOrmObject()
-	sqlQuery := fmt.Sprintf("SELECT * from %s LIMIT %d, %d", BugsTable, lower, upper)
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", BugsTable, count, lower)
 	rawResult = o.Raw(sqlQuery)
 
 	_, err = rawResult.QueryRows(&result)

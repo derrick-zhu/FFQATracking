@@ -144,6 +144,32 @@ func AccountWithID(id IndexType) (*AccountModel, error) {
 	return acc, nil
 }
 
+// AccountsWithRange fetch account data with rage [lower, count)
+func AccountsWithRange(lower, count int) ([]*AccountModel, error) {
+	var result []*AccountModel
+	var err error
+	var rawResult orm.RawSeter
+
+	o := GetOrmObject()
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", AccountTable, count, lower)
+	rawResult = o.Raw(sqlQuery)
+
+	_, err = rawResult.QueryRows(&result)
+	if err != nil {
+
+		beego.Error(err)
+		return nil, err
+	}
+
+	return result, nil
+}
+
+// AllAccounts fetch all account
+func AllAccounts() ([]*AccountModel, error) {
+
+	return AccountsWithRange(0, -1)
+}
+
 // UpdateAccount [WIP] update account's content
 func UpdateAccount(id IndexType, params map[string]interface{}) error {
 
