@@ -94,6 +94,11 @@ func (c *NewIssueController) initPageContent() {
 
 		if needRow {
 
+			if len(htmlContentSurfix) > 0 {
+				htmlContentPrefix += htmlContentSurfix
+				htmlContentSurfix = ""
+			}
+
 			htmlContentPrefix += "<div class=\"form-group\">\n"
 			htmlContentPrefix += "<div class=\"row\">\n"
 		}
