@@ -17,3 +17,8 @@ function checkWithRegex(id, pattern)
     var result = idValue.value.match(pattern);
     return result != null;
 }
+
+function setInnerHtml(id, params) {
+
+    document.getElementById(id).innerHTML = params;
+}

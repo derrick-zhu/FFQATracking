@@ -4,6 +4,7 @@ import (
 	"FFQATracking/constants"
 	"FFQATracking/models"
 	"fmt"
+	"sort"
 
 	"github.com/astaxie/beego"
 )
@@ -122,9 +123,19 @@ func (c *NewIssueController) initPageContent() {
 	var htmlContent string
 	var htmlContentSurfix string
 
-	index := 0
+	// sort the item's order
+	var sortedKeys []string
 
-	for key, value := range c.issueTemplateData {
+	for key := range c.issueTemplateData {
+		sortedKeys = append(sortedKeys, key)
+	}
+	sort.Strings(sortedKeys)
+
+	index := 0
+	for _, eachKey := range sortedKeys {
+
+		key := eachKey
+		value := c.issueTemplateData[eachKey]
 
 		needRow := (index%3 == 0)
 
@@ -144,7 +155,9 @@ func (c *NewIssueController) initPageContent() {
 		htmlContent += "<div class=\"btn-group\">\n"
 
 		defaultValue := value.Collection[value.DefaultValue]
-		htmlContent += "<button type=\"button\" class=\"btn btn-normal\" style=\"width=100%\">" + defaultValue + "</button>\n"
+		pickerIdentifier := fmt.Sprintf("picker-%s", value.Title)
+
+		htmlContent += "<button id=\"" + pickerIdentifier + "\" type=\"button\" class=\"btn btn-normal\" style=\"width=100%\">" + defaultValue + "</button>\n"
 		htmlContent += "\n" +
 			"<button type=\"button\" class=\"btn btn-normal dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
 			"<span class=\"caret\"></span>\n" +
@@ -153,7 +166,7 @@ func (c *NewIssueController) initPageContent() {
 
 		htmlContent += "<ul class=\"dropdown-menu\" style=\"height:15em;overflow-y:scroll;\">\n"
 		for _, eachOption := range value.Collection {
-			htmlContent += "<li><a href=\"#\">" + eachOption + "</a></li>\n"
+			htmlContent += "<li><a onclick=\"return didSelectWith('" + pickerIdentifier + "', '" + eachOption + "');\">" + eachOption + "</a></li>\n"
 		}
 		htmlContent += "</ul>\n" // "<ul class=\"dropdown-menu\">\n"
 

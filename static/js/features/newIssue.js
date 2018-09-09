@@ -1,12 +1,12 @@
 
-function setInnerHtml(id, params) {
-
-    document.getElementById(id).innerHTML = params;
-}
 
 function setupNewIssuePage(params) {
 
     setInnerHtml("optionGroup", params);
+}
+
+function didSelectWith(id, value) {
+    setInnerHtml(id, value);
 }
 
 function newIssueCheckInputContent() 
