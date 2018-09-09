@@ -6,7 +6,7 @@
 
         <script type="text/javascript">
             window.onload = function() {
-                document.getElementById("optionGroup").innerHTML = "{{.test}}"
+                setupNewIssuePage("{{.issueInitValue}}")
             }
         </script>
 
@@ -32,140 +32,50 @@
             </div>
 
             <div id="optionGroup" class="form-group">
-
+                <!-- all choise picker should be generated in Go. -->
             </div>
 
-            <!-- <div class="form-group">
-                <div class="row">
-                    
-                    {{range $key, $value := .issueInitValue}}
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">{{$key}} </label>    
-                        {{with $value}}
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-normal">{{.Collection}}</button>
-                                <p>{{.Title}} {{.DefaultValue}}</p>
-                                {{range $index, $elem := .Collection}}
-                                    <p>{{$index}} -> {{$elem}}</p>
-                                {{end}}
-                                <br>
-                            
-                            </div>
-                        {{end}}
-                        
-                    </div>
-                    {{end}}
-                    
-                </div>
-            </div> -->
-<!--
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">Status: </label>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">Priority: </label>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">Reproducibility: </label>
-                        
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">Creator:</label>
-                        
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="right label-ff-standard">Assignor: </label>
-                        
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-normal">Action</button>
-                            <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
--->
             <!-- 分割线 -->
             <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+
+            <div class="dropup">
+                <script type="text/javascript">
+                    function didSelectWith(id, value) {
+                        document.getElementById(id).innerHTML = value + '<span class="caret"></span>';
+                    }
+                </script>
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Dropup
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="height:15em;overflow-y:scroll;">
+                  <li><a onclick="return didSelectWith('dropdownMenu2', 'Action');">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
 
             <!-- 提交按钮 -->
             <div class="form-group">

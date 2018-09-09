@@ -124,6 +124,12 @@ func BugsWithRange(lower, count int) ([]*BugModel, error) {
 	return result, nil
 }
 
+// AllBugs fetch all bugs
+func AllBugs() ([]*BugModel, error) {
+
+	return BugsWithRange(0, -1)
+}
+
 // UpdateBug update bug model data
 func UpdateBug(id IndexType, params map[string]interface{}) error {
 

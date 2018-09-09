@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"FFQATracking/constants"
+	"FFQATracking/models"
 	"fmt"
 
 	"github.com/astaxie/beego"
@@ -17,28 +18,32 @@ const (
 	IssueAssignorKey     = "Assignor:"
 )
 
-// PickerTemplateModel class template
-type PickerTemplateModel struct {
+// IssuePickerTemplateModel class template
+type IssuePickerTemplateModel struct {
 	Title        string
 	DefaultValue int
 	Collection   []string
 }
 
-type TIssueNewCollectionType map[string]PickerTemplateModel
+// TIssueNewCollectionType for issue template
+type TIssueNewCollectionType map[string]IssuePickerTemplateModel
 
-var IssueStatusData PickerTemplateModel = PickerTemplateModel{
+// IssueStatusData status data (temperary)
+var IssueStatusData = IssuePickerTemplateModel{
 	Title:        IssueStatusKey,
 	DefaultValue: 0,
 	Collection:   []string{"New", "Fixed", "Reopen", "Confirm", "Close", "Not a bug", "Will not fix", "Delay", "Must be fix"},
 }
 
-var IssuePriorityData PickerTemplateModel = PickerTemplateModel{
+// IssuePriorityData priority data (temperary)
+var IssuePriorityData = IssuePickerTemplateModel{
 	Title:        IssuePriorityKey,
 	DefaultValue: 0,
 	Collection:   []string{"Urgent", "Important", "High", "Middle", "Low", "Question", "Suggestion"},
 }
 
-var IssueReproductionData PickerTemplateModel = PickerTemplateModel{
+// IssueReproductionData reproduction data (temperary)
+var IssueReproductionData = IssuePickerTemplateModel{
 	Title:        IssueReproductionKey,
 	DefaultValue: 0,
 	Collection:   []string{"100%", "80%", "60%", "40%", "20%"},
@@ -47,6 +52,8 @@ var IssueReproductionData PickerTemplateModel = PickerTemplateModel{
 // NewIssueController base issue create page
 type NewIssueController struct {
 	FFBaseController
+
+	issueTemplateData TIssueNewCollectionType
 }
 
 // Get for handle new issue controller GET request
@@ -56,6 +63,7 @@ func (c *NewIssueController) Get() {
 	c.Data[constants.Title] = "New Issue"
 	c.Data[constants.KeyIsIssueList] = 1
 
+	c.initPageVariables()
 	c.initPageContent()
 
 	c.TplName = "newIssue.html"
@@ -73,61 +81,89 @@ func (c *NewIssueController) Post() {
 	c.Redirect("/issuelist", 302)
 }
 
-// initPageContent initial settings in current page
-func (c *NewIssueController) initPageContent() {
+func (c *NewIssueController) initPageVariables() {
+	// fetch all user data
+	allUsers, err := models.AllAccounts()
+	if err != nil {
+		beego.Error(err)
+	}
 
-	var pickerData = TIssueNewCollectionType{
+	c.issueTemplateData = TIssueNewCollectionType{
 
 		IssueStatusKey:       IssueStatusData,
 		IssuePriorityKey:     IssuePriorityData,
 		IssueReproductionKey: IssueReproductionData,
 	}
 
-	var htmlContentPrefix string
+	// append all creators data into `pickData`
+	allCreators := IssuePickerTemplateModel{}
+	allCreators.Title = "Creators:"
+	allCreators.DefaultValue = 0
+
+	for _, eachUser := range allUsers {
+		allCreators.Collection = append(allCreators.Collection, eachUser.Name)
+	}
+	c.issueTemplateData[IssueCreatorKey] = allCreators
+
+	// append all assignor data into `pickData`
+	allAssignors := IssuePickerTemplateModel{}
+	allAssignors.Title = "Assignors:"
+	allAssignors.DefaultValue = 0
+	for _, eachAssignor := range allUsers {
+		allAssignors.Collection = append(allAssignors.Collection, eachAssignor.Name)
+	}
+	c.issueTemplateData[IssueAssignorKey] = allAssignors
+}
+
+// initPageContent initial settings in current page
+func (c *NewIssueController) initPageContent() {
+
+	// generate page
+	var htmlContent string
 	var htmlContentSurfix string
 
 	index := 0
 
-	for key, value := range pickerData {
+	for key, value := range c.issueTemplateData {
 
 		needRow := (index%3 == 0)
 
 		if needRow {
 
 			if len(htmlContentSurfix) > 0 {
-				htmlContentPrefix += htmlContentSurfix
+				htmlContent += htmlContentSurfix
 				htmlContentSurfix = ""
 			}
 
-			htmlContentPrefix += "<div class=\"form-group\">\n"
-			htmlContentPrefix += "<div class=\"row\">\n"
+			htmlContent += "<div class=\"form-group\">\n"
+			htmlContent += "<div class=\"row\">\n"
 		}
 
-		htmlContentPrefix += "<div class=\"col-md-4\">\n"
-		htmlContentPrefix += "<label class=\"right label-ff-standard\">" + key + "</label>\n"
-		htmlContentPrefix += "<div class=\"btn-group\">\n"
+		htmlContent += "<div class=\"col-md-4\">\n"
+		htmlContent += "<label class=\"right label-ff-standard\" style=\"width=100%\">" + key + "</label>\n"
+		htmlContent += "<div class=\"btn-group\">\n"
 
 		defaultValue := value.Collection[value.DefaultValue]
-		htmlContentPrefix += "<button type=\"button\" class=\"btn btn-normal\">" + defaultValue + "</button>\n"
-		htmlContentPrefix += "\n" +
+		htmlContent += "<button type=\"button\" class=\"btn btn-normal\" style=\"width=100%\">" + defaultValue + "</button>\n"
+		htmlContent += "\n" +
 			"<button type=\"button\" class=\"btn btn-normal dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
 			"<span class=\"caret\"></span>\n" +
 			"<span class=\"sr-only\">Toggle Dropdown</span>\n" +
 			"</button>\n"
 
-		htmlContentPrefix += "<ul class=\"dropdown-menu\">\n"
+		htmlContent += "<ul class=\"dropdown-menu\" style=\"height:15em;overflow-y:scroll;\">\n"
 		for _, eachOption := range value.Collection {
-			htmlContentPrefix += "<li><a href=\"#\">" + eachOption + "</a></li>\n"
+			htmlContent += "<li><a href=\"#\">" + eachOption + "</a></li>\n"
 		}
-		htmlContentPrefix += "</ul>\n" // "<ul class=\"dropdown-menu\">\n"
+		htmlContent += "</ul>\n" // "<ul class=\"dropdown-menu\">\n"
 
-		htmlContentPrefix += "</div>\n" // "<div class=\"btn-group\">"
-		htmlContentPrefix += "</div>\n" // "<div class=\"col-md-4\">"
+		htmlContent += "</div>\n" // "<div class=\"btn-group\">"
+		htmlContent += "</div>\n" // "<div class=\"col-md-4\">"
 
 		if needRow {
 
 			if len(htmlContentSurfix) > 0 {
-				htmlContentPrefix += htmlContentSurfix
+				htmlContent += htmlContentSurfix
 				htmlContentSurfix = ""
 			}
 
@@ -139,10 +175,9 @@ func (c *NewIssueController) initPageContent() {
 	}
 
 	if len(htmlContentSurfix) > 0 {
-		htmlContentPrefix += htmlContentSurfix
+		htmlContent += htmlContentSurfix
 		htmlContentSurfix = ""
 	}
 
-	c.Data[constants.KeyIssueInitValue] = pickerData
-	c.Data["test"] = htmlContentPrefix
+	c.Data[constants.KeyIssueInitValue] = htmlContent
 }

@@ -1,4 +1,14 @@
 
+function setInnerHtml(id, params) {
+
+    document.getElementById(id).innerHTML = params;
+}
+
+function setupNewIssuePage(params) {
+
+    setInnerHtml("optionGroup", params);
+}
+
 function newIssueCheckInputContent() 
 {    
     if (checkInputLength("issueTitle", 1, 1024) == false) {
