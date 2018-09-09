@@ -1,11 +1,11 @@
 
-
-function setupNewIssuePage(params) {
-
+function setupNewIssuePage(params) 
+{
     setInnerHtml("optionGroup", params);
 }
 
-function didSelectWith(id, value) {
+function didSelectWith(id, value) 
+{
     setInnerHtml(id, value);
 }
 

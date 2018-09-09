@@ -16,5 +16,7 @@ func init() {
 	beego.Router("/register", &controllers.RegisterController{})
 
 	beego.Router("/issuelist", &controllers.IssueListController{})
-	beego.Router("/issue/new", &controllers.NewIssueController{})
+
+	beego.Router("/issue", &controllers.IssueController{})
+	beego.AutoRouter(&controllers.IssueController{})
 }

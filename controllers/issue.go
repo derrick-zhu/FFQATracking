@@ -50,15 +50,15 @@ var IssueReproductionData = IssuePickerTemplateModel{
 	Collection:   []string{"100%", "80%", "60%", "40%", "20%"},
 }
 
-// NewIssueController base issue create page
-type NewIssueController struct {
+// IssueController base issue create page
+type IssueController struct {
 	FFBaseController
 
 	issueTemplateData TIssueNewCollectionType
 }
 
 // Get for handle new issue controller GET request
-func (c *NewIssueController) Get() {
+func (c *IssueController) Get() {
 	c.FFBaseController.Get()
 
 	c.Data[constants.Title] = "New Issue"
@@ -71,7 +71,7 @@ func (c *NewIssueController) Get() {
 }
 
 // Post for handle new issue controller POST request
-func (c *NewIssueController) Post() {
+func (c *IssueController) Post() {
 	c.FFBaseController.Post()
 
 	bugTitle := c.Input().Get("issueTitle")
@@ -82,7 +82,14 @@ func (c *NewIssueController) Post() {
 	c.Redirect("/issuelist", 302)
 }
 
-func (c *NewIssueController) initPageVariables() {
+func (c *IssueController) Createissue() {
+	beego.Info(c.Input())
+	c.Redirect("/", 302)
+}
+
+// MARK - private helpers
+
+func (c *IssueController) initPageVariables() {
 	// fetch all user data
 	allUsers, err := models.AllAccounts()
 	if err != nil {
@@ -117,7 +124,7 @@ func (c *NewIssueController) initPageVariables() {
 }
 
 // initPageContent initial settings in current page
-func (c *NewIssueController) initPageContent() {
+func (c *IssueController) initPageContent() {
 
 	// generate page
 	var htmlContent string
