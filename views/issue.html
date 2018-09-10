@@ -2,13 +2,7 @@
 <html>
     <head>
         {{template "header"}}
-        <script type="text/javascript" src="/static/js/features/newIssue.js"></script>
-
-        <script type="text/javascript">
-            window.onload = function() {
-                setupNewIssuePage("{{.issueInitValue}}")
-            }
-        </script>
+        <script type="text/javascript" src="/static/js/features/issue.js"></script>
 
     </head>
 <body>
@@ -20,7 +14,7 @@
     </div>
 
     <div class="container">
-        <form method="post" action="/issue/createissue">
+        <form role="form" method="post" action="/issue/create">
             <div class="form-group">
                 <label>Title:</label>
                 <input id="issueTitle" name="issueTitle" type="text" class="form-control" placeholder="Issue Title">
@@ -31,21 +25,22 @@
                 <textarea id="issueContent" name="issueContent" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
             </div>
 
-            <div id="optionGroup" class="form-group">
-                <!-- all choise picker should be generated in Go. -->
-            </div>
+            {{range .issueHTMLValue}}
+                {{template "issueFormCreate" .}}
+            {{end}}
 
             <!-- 分割线 -->
-            <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+            <div class="form-group col-xs-12">
+                <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+            </div>
 
             <!-- 提交按钮 -->
-            <div class="form-group">
+            <div class="form-group col-xs-12">
                 <input class="btn btn-default" type="submit" value="Submit" onclick="return newIssueCheckInputContent();">
             </div>
 
         </form>
     </div>
-
 
 </body>
 

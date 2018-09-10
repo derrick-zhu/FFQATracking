@@ -1,12 +1,11 @@
 
-function setupNewIssuePage(params) 
-{
-    setInnerHtml("optionGroup", params);
-}
-
 function didSelectWith(id, value) 
 {
-    setInnerHtml(id, value);
+    console.log(didSelectWith.caller);
+    console.log('id: ' + id + ', param:' + value);
+
+    setInnerHtmlWithID(id + '-btn', value);
+    setHtmlValueWithID(id, value);
 }
 
 function newIssueCheckInputContent() 

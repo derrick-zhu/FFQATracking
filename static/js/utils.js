@@ -18,7 +18,18 @@ function checkWithRegex(id, pattern)
     return result != null;
 }
 
-function setInnerHtml(id, params) {
+function setInnerHtmlWithID(id, params) {
 
-    document.getElementById(id).innerHTML = params;
+    console.log('setInnerHtmlWithID('+ id + ', ' + params + ')');
+    
+    var x = document.getElementById(id);
+    x.innerHTML = params;
+}
+
+function setHtmlValueWithID(id, params) {
+
+    console.log('setValueWithID('+ id + ', ' + params + ')');
+
+    var x = document.getElementById(id);
+    x.value = params;
 }

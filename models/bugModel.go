@@ -14,50 +14,114 @@ const (
 	BugsTable string = "bugmodel"
 )
 
-// BugStatus bug status type
-type BugStatus string
+// BugStatusType bug status type
+type BugStatusType int64
 
-const (
-	BugNew        BugStatus = "New"
-	BugFixed      BugStatus = "Fixed"
-	BugReopen     BugStatus = "Reopen"
-	BugConfirm    BugStatus = "Confirm"
-	BugClose      BugStatus = "Close"
-	BugNotABug    BugStatus = "Not a bug"
-	BugWillNotFix BugStatus = "Will not fix"
-	BugDelay      BugStatus = "Delay"
-	BugMustBeFix  BugStatus = "Must be fix"
+type BugStatusModel struct {
+	Type BugStatusType
+	Desc string
+}
+
+var (
+	// BugNew NEW
+	BugNew BugStatusModel = BugStatusModel{Type: 0, Desc: "New"}
+	// BugFixed NEW
+	BugFixed BugStatusModel = BugStatusModel{Type: 1, Desc: "Fixed"}
+	// BugReopen NEW
+	BugReopen BugStatusModel = BugStatusModel{Type: 2, Desc: "Reopen"}
+	// BugConfirm NEW
+	BugConfirm BugStatusModel = BugStatusModel{Type: 3, Desc: "Confirm"}
+	// BugClose NEW
+	BugClose BugStatusModel = BugStatusModel{Type: 4, Desc: "Close"}
+	// BugNotABug NEW
+	BugNotABug BugStatusModel = BugStatusModel{Type: 5, Desc: "Not a bug"}
+	// BugWillNotFix NEW
+	BugWillNotFix BugStatusModel = BugStatusModel{Type: 6, Desc: "Will not fix"}
+	// BugDelay NEW
+	BugDelay BugStatusModel = BugStatusModel{Type: 7, Desc: "Delay"}
+	// BugMustBeFix NEW
+	BugMustBeFix BugStatusModel = BugStatusModel{Type: 8, Desc: "Must be fix"}
 )
 
-// PriorityStatus bug's priority status
-type PriorityStatus int64
+var AllBugStatus []BugStatusModel = []BugStatusModel{
+	BugNew,
+	BugFixed,
+	BugReopen,
+	BugConfirm,
+	BugClose,
+	BugNotABug,
+	BugWillNotFix,
+	BugDelay,
+	BugMustBeFix,
+}
 
-const (
-	PriorityUrgent     PriorityStatus = 0
-	PriorityImportant  PriorityStatus = 1
-	PriorityHigh       PriorityStatus = 2
-	PriorityMiddle     PriorityStatus = 3
-	PriorityLow        PriorityStatus = 4
-	PriorityQuestion   PriorityStatus = 5
-	PrioritySuggestion PriorityStatus = 6
+// PriorityStatusType bug's priority status
+type PriorityStatusType int64
+
+// PriorityStatusModel priority model
+type PriorityStatusModel struct {
+	Type PriorityStatusType
+	Desc string
+}
+
+var (
+	PriorityUrgent     PriorityStatusModel = PriorityStatusModel{Type: 0, Desc: "Urgent"}
+	PriorityImportant  PriorityStatusModel = PriorityStatusModel{Type: 1, Desc: "Important"}
+	PriorityHigh       PriorityStatusModel = PriorityStatusModel{Type: 2, Desc: "High"}
+	PriorityMiddle     PriorityStatusModel = PriorityStatusModel{Type: 3, Desc: "Middle"}
+	PriorityLow        PriorityStatusModel = PriorityStatusModel{Type: 4, Desc: "Low"}
+	PriorityQuestion   PriorityStatusModel = PriorityStatusModel{Type: 5, Desc: "Question"}
+	PrioritySuggestion PriorityStatusModel = PriorityStatusModel{Type: 6, Desc: "Suggestion"}
 )
+
+var AllPriorities []PriorityStatusModel = []PriorityStatusModel{
+	PriorityUrgent,
+	PriorityImportant,
+	PriorityHigh,
+	PriorityMiddle,
+	PriorityLow,
+	PriorityQuestion,
+	PrioritySuggestion,
+}
+
+type ReproductabilityType int64
+type ReproductabilityModel struct {
+	Type ReproductabilityType
+	Desc string
+}
+
+var (
+	Reproductability100 ReproductabilityModel = ReproductabilityModel{Type: 0, Desc: "100%"}
+	Reproductability80  ReproductabilityModel = ReproductabilityModel{Type: 1, Desc: "80%"}
+	Reproductability60  ReproductabilityModel = ReproductabilityModel{Type: 2, Desc: "60%"}
+	Reproductability40  ReproductabilityModel = ReproductabilityModel{Type: 3, Desc: "40%"}
+	Reproductability20  ReproductabilityModel = ReproductabilityModel{Type: 4, Desc: "20%"}
+)
+
+var AllReproductabilities []ReproductabilityModel = []ReproductabilityModel{
+	Reproductability100,
+	Reproductability80,
+	Reproductability60,
+	Reproductability40,
+	Reproductability20,
+}
 
 // BugModel the model of bug
 type BugModel struct {
-	ID              IndexType      `orm:"index"`      // index
-	Title           string         `orm:"size(512)"`  // bug title
-	Description     string         `orm:"size(4096)"` // description about bug
-	Version         string         `orm:"index"`      // test version number
-	Source          string         // source feature request
-	Target          string         `orm:"index"` // target milestone
-	DevPeriod       string         `orm:"index"` // sprint
-	SolveDate       time.Time      // date solving
-	CreateDate      time.Time      // date creating
-	Status          BugStatus      `orm:"index"` // bug current status
-	Priority        PriorityStatus `orm:"index"` // bug's priority type
-	Creator         IndexType      `orm:"index"` // bug's founder
-	Assignor        IndexType      `orm:"index"` // who should solve this bug
-	Reproducibility int            // 重现概率 0~100
+	ID              IndexType            `orm:"index"`      // index
+	Title           string               `orm:"size(512)"`  // bug title
+	Description     string               `orm:"size(4096)"` // description about bug
+	Version         string               `orm:"index"`      // test version number
+	Source          string               // source feature request
+	Target          string               `orm:"index"` // target milestone
+	DevPeriod       string               `orm:"index"` // sprint
+	SolveDate       time.Time            // date solving
+	CreateDate      time.Time            // date creating
+	Status          BugStatusType        `orm:"index"` // bug current status
+	Priority        PriorityStatusType   `orm:"index"` // bug's priority type
+	Creator         IndexType            `orm:"index"` // bug's founder
+	Assignor        IndexType            `orm:"index"` // who should solve this bug
+	Reproducibility ReproductabilityType // 重现概率 0~100
 }
 
 func init() {
@@ -69,6 +133,70 @@ func (c *BugModel) TableName() string {
 	return BugsTable
 }
 
+// EnumAllBugsStatus all bugs status collection in string
+func EnumAllBugsStatus() []string {
+
+	var result []string
+
+	for _, eachBugModel := range AllBugStatus {
+		result = append(result, eachBugModel.Desc)
+	}
+
+	return result
+}
+
+func BugStatusWithString(str string) BugStatusType {
+
+	for _, eachStatus := range AllBugStatus {
+		if eachStatus.Desc == str {
+			return eachStatus.Type
+		}
+	}
+	return 0
+}
+
+// EnumAllBugsPriority all priority collection in string
+func EnumAllBugsPriority() []string {
+
+	var result []string
+
+	for _, eachPriority := range AllPriorities {
+		result = append(result, eachPriority.Desc)
+	}
+
+	return result
+}
+
+func BugPriorityWithString(str string) PriorityStatusType {
+
+	for _, eachPriority := range AllPriorities {
+		if eachPriority.Desc == str {
+			return eachPriority.Type
+		}
+	}
+	return 0
+}
+
+func EnumAllReproductabilities() []string {
+
+	var result []string
+
+	for _, eachRepro := range AllReproductabilities {
+		result = append(result, eachRepro.Desc)
+	}
+
+	return result
+}
+
+func BugReproductabilityWithString(str string) ReproductabilityType {
+	for _, eachRepro := range AllReproductabilities {
+		if eachRepro.Desc == str {
+			return eachRepro.Type
+		}
+	}
+	return 0
+}
+
 // AddBug insert new bug
 func AddBug(title, description string, creatorID IndexType) (*BugModel, error) {
 	pBug := &BugModel{
@@ -76,7 +204,7 @@ func AddBug(title, description string, creatorID IndexType) (*BugModel, error) {
 		Description: description,
 		Creator:     creatorID,
 		CreateDate:  time.Now(),
-		Status:      BugNew,
+		Status:      BugNew.Type,
 	}
 
 	o, _ := GetQuerySeterWithTable(BugsTable)
@@ -124,8 +252,8 @@ func BugsWithRange(lower, count int) ([]*BugModel, error) {
 	return result, nil
 }
 
-// AllBugs fetch all bugs
-func AllBugs() ([]*BugModel, error) {
+// AllBugsData fetch all bugs
+func AllBugsData() ([]*BugModel, error) {
 
 	return BugsWithRange(0, -1)
 }

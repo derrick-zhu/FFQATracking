@@ -4,49 +4,66 @@ import (
 	"FFQATracking/constants"
 	"FFQATracking/models"
 	"fmt"
-	"sort"
 
 	"github.com/astaxie/beego"
 )
 
 const (
-	IssueTitleKey        = "Title:"
-	IssueDescriptionKey  = "Description:"
-	IssueStatusKey       = "Status:"
-	IssuePriorityKey     = "Priority:"
-	IssueReproductionKey = "Reproduction:"
-	IssueCreatorKey      = "Creator:"
-	IssueAssignorKey     = "Assignor:"
+	issueIDPrefix = "picker-"
+
+	IssueTitleKey        = "Title"
+	IssueDescriptionKey  = "Description"
+	IssueStatusKey       = "Status"
+	IssuePriorityKey     = "Priority"
+	IssueReproductionKey = "Reproduction"
+	IssueCreatorKey      = "Creator"
+	IssueAssignorKey     = "Assignor"
 )
+
+func PickerKey(key string) string {
+	if len(key) > 0 {
+		return issueIDPrefix + key
+	}
+	return key
+}
 
 // IssuePickerTemplateModel class template
 type IssuePickerTemplateModel struct {
-	Title        string
-	DefaultValue int
-	Collection   []string
+	Title         string
+	Identifier    string
+	DefaultValue  int64
+	Value         int64
+	Collection    []string
+	ExtCollection []int64
 }
 
 // TIssueNewCollectionType for issue template
-type TIssueNewCollectionType map[string]IssuePickerTemplateModel
+type TIssueNewCollectionType []IssuePickerTemplateModel
 
 // IssueStatusData status data (temperary)
 var IssueStatusData = IssuePickerTemplateModel{
 	Title:        IssueStatusKey,
+	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
 	DefaultValue: 0,
-	Collection:   []string{"New", "Fixed", "Reopen", "Confirm", "Close", "Not a bug", "Will not fix", "Delay", "Must be fix"},
+	Value:        0,
+	Collection:   models.EnumAllBugsStatus(),
 }
 
 // IssuePriorityData priority data (temperary)
 var IssuePriorityData = IssuePickerTemplateModel{
 	Title:        IssuePriorityKey,
+	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
 	DefaultValue: 0,
-	Collection:   []string{"Urgent", "Important", "High", "Middle", "Low", "Question", "Suggestion"},
+	Value:        0,
+	Collection:   models.EnumAllBugsPriority(),
 }
 
 // IssueReproductionData reproduction data (temperary)
 var IssueReproductionData = IssuePickerTemplateModel{
 	Title:        IssueReproductionKey,
+	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
 	DefaultValue: 0,
+	Value:        0,
 	Collection:   []string{"100%", "80%", "60%", "40%", "20%"},
 }
 
@@ -55,6 +72,8 @@ type IssueController struct {
 	FFBaseController
 
 	issueTemplateData TIssueNewCollectionType
+	allCreators       IssuePickerTemplateModel
+	allAssignors      IssuePickerTemplateModel
 }
 
 // Get for handle new issue controller GET request
@@ -67,7 +86,7 @@ func (c *IssueController) Get() {
 	c.initPageVariables()
 	c.initPageContent()
 
-	c.TplName = "newIssue.html"
+	c.TplName = "issue.html"
 }
 
 // Post for handle new issue controller POST request
@@ -82,9 +101,24 @@ func (c *IssueController) Post() {
 	c.Redirect("/issuelist", 302)
 }
 
-func (c *IssueController) Createissue() {
-	beego.Info(c.Input())
-	c.Redirect("/", 302)
+// Create the method for creating issue
+func (c *IssueController) Create() {
+	// beego.Info(c.Input())
+
+	strStatus := c.Input().Get(PickerKey(IssueStatusKey))
+	status := models.BugStatusWithString(strStatus)
+
+	strPriority := c.Input().Get(PickerKey(IssuePriorityKey))
+	priority := models.BugPriorityWithString(strPriority)
+
+	strReproduct := c.Input().Get(PickerKey(IssueReproductionKey))
+	reproduct := models.BugReproductabilityWithString(strReproduct)
+
+	beego.Info(fmt.Sprintf("status: %s -> %d", strStatus, status))
+	beego.Info(fmt.Sprintf("priority: %s -> %d", strPriority, priority))
+	beego.Info(fmt.Sprintf("reproduct: %s -> %d", strReproduct, reproduct))
+
+	c.Redirect("#", 302)
 }
 
 // MARK - private helpers
@@ -98,106 +132,35 @@ func (c *IssueController) initPageVariables() {
 
 	c.issueTemplateData = TIssueNewCollectionType{
 
-		IssueStatusKey:       IssueStatusData,
-		IssuePriorityKey:     IssuePriorityData,
-		IssueReproductionKey: IssueReproductionData,
+		IssueStatusData, IssuePriorityData, IssueReproductionData,
 	}
 
 	// append all creators data into `pickData`
-	allCreators := IssuePickerTemplateModel{}
-	allCreators.Title = "Creators:"
-	allCreators.DefaultValue = 0
+	c.allCreators = IssuePickerTemplateModel{}
+	c.allCreators.Title = IssueCreatorKey
+	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
+	c.allCreators.DefaultValue = 0
 
 	for _, eachUser := range allUsers {
-		allCreators.Collection = append(allCreators.Collection, eachUser.Name)
+		c.allCreators.Collection = append(c.allCreators.Collection, eachUser.Name)
+		c.allCreators.ExtCollection = append(c.allCreators.ExtCollection, int64(eachUser.ID))
 	}
-	c.issueTemplateData[IssueCreatorKey] = allCreators
+	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
 	// append all assignor data into `pickData`
-	allAssignors := IssuePickerTemplateModel{}
-	allAssignors.Title = "Assignors:"
-	allAssignors.DefaultValue = 0
+	c.allAssignors = IssuePickerTemplateModel{}
+	c.allAssignors.Title = IssueAssignorKey
+	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
+	c.allAssignors.DefaultValue = 0
 	for _, eachAssignor := range allUsers {
-		allAssignors.Collection = append(allAssignors.Collection, eachAssignor.Name)
+		c.allAssignors.Collection = append(c.allAssignors.Collection, eachAssignor.Name)
+		c.allAssignors.ExtCollection = append(c.allAssignors.ExtCollection, int64(eachAssignor.ID))
 	}
-	c.issueTemplateData[IssueAssignorKey] = allAssignors
+	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
 }
 
 // initPageContent initial settings in current page
 func (c *IssueController) initPageContent() {
 
-	// generate page
-	var htmlContent string
-	var htmlContentSurfix string
-
-	// sort the item's order
-	var sortedKeys []string
-
-	for key := range c.issueTemplateData {
-		sortedKeys = append(sortedKeys, key)
-	}
-	sort.Strings(sortedKeys)
-
-	index := 0
-	for _, eachKey := range sortedKeys {
-
-		key := eachKey
-		value := c.issueTemplateData[eachKey]
-
-		needRow := (index%3 == 0)
-
-		if needRow {
-
-			if len(htmlContentSurfix) > 0 {
-				htmlContent += htmlContentSurfix
-				htmlContentSurfix = ""
-			}
-
-			htmlContent += "<div class=\"form-group\">\n"
-			htmlContent += "<div class=\"row\">\n"
-		}
-
-		htmlContent += "<div class=\"col-md-4\">\n"
-		htmlContent += "<label class=\"right label-ff-standard\" style=\"width=100%\">" + key + "</label>\n"
-		htmlContent += "<div class=\"btn-group\">\n"
-
-		defaultValue := value.Collection[value.DefaultValue]
-		pickerIdentifier := fmt.Sprintf("picker-%s", value.Title)
-
-		htmlContent += "<button id=\"" + pickerIdentifier + "\" type=\"button\" class=\"btn btn-normal\" style=\"width=100%\">" + defaultValue + "</button>\n"
-		htmlContent += "\n" +
-			"<button type=\"button\" class=\"btn btn-normal dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-			"<span class=\"caret\"></span>\n" +
-			"<span class=\"sr-only\">Toggle Dropdown</span>\n" +
-			"</button>\n"
-
-		htmlContent += "<ul class=\"dropdown-menu\" style=\"height:15em;overflow-y:scroll;\">\n"
-		for _, eachOption := range value.Collection {
-			htmlContent += "<li><a onclick=\"return didSelectWith('" + pickerIdentifier + "', '" + eachOption + "');\">" + eachOption + "</a></li>\n"
-		}
-		htmlContent += "</ul>\n" // "<ul class=\"dropdown-menu\">\n"
-
-		htmlContent += "</div>\n" // "<div class=\"btn-group\">"
-		htmlContent += "</div>\n" // "<div class=\"col-md-4\">"
-
-		if needRow {
-
-			if len(htmlContentSurfix) > 0 {
-				htmlContent += htmlContentSurfix
-				htmlContentSurfix = ""
-			}
-
-			htmlContentSurfix += "</div>\n"
-			htmlContentSurfix += "</div>\n"
-		}
-
-		index++
-	}
-
-	if len(htmlContentSurfix) > 0 {
-		htmlContent += htmlContentSurfix
-		htmlContentSurfix = ""
-	}
-
-	c.Data[constants.KeyIssueInitValue] = htmlContent
+	c.Data[constants.KeyIssueHTMLValue] = c.issueTemplateData
 }

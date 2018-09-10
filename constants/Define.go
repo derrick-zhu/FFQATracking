@@ -6,6 +6,7 @@ const (
 	LoggedInAccount = "LoggedInAccount"
 
 	/// login & signup
+
 	KeyUID         = "uid"
 	KeyUNAME       = "uname"
 	KeyEMAIL       = "email"
@@ -13,7 +14,8 @@ const (
 	KeyPermissions = "PersmissionRules"
 
 	/// new issue
-	KeyIssueInitValue = "issueInitValue"
+
+	KeyIssueHTMLValue = "issueHTMLValue"
 
 	// KeyIsHome flag for show HOME page.
 	KeyIsHome      = "IsHome"
