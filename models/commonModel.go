@@ -10,6 +10,20 @@ type VarModel struct {
 	Desc string
 }
 
+// BugStatusModel for bug status
+type BugStatusModel struct {
+	VarModel
+}
+
+// BugPriorityModel priority model
+type BugPriorityModel struct {
+	VarModel
+}
+
+type BugReproductableModel struct {
+	VarModel
+}
+
 // VarModelGetType get Type data from value which should be VarModel
 func VarModelGetType(value interface{}) int64 {
 

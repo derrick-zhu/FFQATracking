@@ -14,11 +14,6 @@ const (
 	BugsTable string = "bugmodel"
 )
 
-// BugStatusModel for bug status
-type BugStatusModel struct {
-	VarModel
-}
-
 var (
 	// BugNew NEW
 	BugNew BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 0, Desc: "New"}}
@@ -53,11 +48,6 @@ var AllBugStatus = []BugStatusModel{
 	BugMustBeFix,
 }
 
-// BugPriorityModel priority model
-type BugPriorityModel struct {
-	VarModel
-}
-
 var (
 	PriorityUrgent     BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 0, Desc: "Urgent"}}
 	PriorityImportant  BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 1, Desc: "Important"}}
@@ -77,10 +67,6 @@ var AllPriorities = []BugPriorityModel{
 	PriorityLow,
 	PriorityQuestion,
 	PrioritySuggestion,
-}
-
-type BugReproductableModel struct {
-	VarModel
 }
 
 var (
@@ -119,6 +105,9 @@ type BugModel struct {
 
 func init() {
 	orm.RegisterModel(new(BugModel))
+
+	beego.AddFuncMap("VarModelGetType", VarModelGetType)
+	beego.AddFuncMap("VarModelGetDesc", VarModelGetDesc)
 }
 
 // TableName for beego using
