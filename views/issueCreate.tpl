@@ -1,4 +1,4 @@
-{{define "issueFormCreate"}}    
+{{define "issueCreate"}}    
 <!-- 
     param:
         title           string

@@ -16,23 +16,23 @@ const (
 
 var (
 	// BugNew NEW
-	BugNew BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 0, Desc: "New"}}
+	BugNew = BugStatusModel{VarModel: VarModel{Type: 0, Desc: "New"}}
 	// BugFixed NEW
-	BugFixed BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 1, Desc: "Fixed"}}
+	BugFixed = BugStatusModel{VarModel: VarModel{Type: 1, Desc: "Fixed"}}
 	// BugReopen NEW
-	BugReopen BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 2, Desc: "Reopen"}}
+	BugReopen = BugStatusModel{VarModel: VarModel{Type: 2, Desc: "Reopen"}}
 	// BugConfirm NEW
-	BugConfirm BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 3, Desc: "Confirm"}}
+	BugConfirm = BugStatusModel{VarModel: VarModel{Type: 3, Desc: "Confirm"}}
 	// BugClose NEW
-	BugClose BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 4, Desc: "Close"}}
+	BugClose = BugStatusModel{VarModel: VarModel{Type: 4, Desc: "Close"}}
 	// BugNotABug NEW
-	BugNotABug BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 5, Desc: "Not a bug"}}
+	BugNotABug = BugStatusModel{VarModel: VarModel{Type: 5, Desc: "Not a bug"}}
 	// BugWillNotFix NEW
-	BugWillNotFix BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 6, Desc: "Will not fix"}}
+	BugWillNotFix = BugStatusModel{VarModel: VarModel{Type: 6, Desc: "Will not fix"}}
 	// BugDelay NEW
-	BugDelay BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 7, Desc: "Delay"}}
+	BugDelay = BugStatusModel{VarModel: VarModel{Type: 7, Desc: "Delay"}}
 	// BugMustBeFix NEW
-	BugMustBeFix BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 8, Desc: "Must be fix"}}
+	BugMustBeFix = BugStatusModel{VarModel: VarModel{Type: 8, Desc: "Must be fix"}}
 )
 
 // AllBugStatus collections of all bug status
@@ -49,13 +49,13 @@ var AllBugStatus = []BugStatusModel{
 }
 
 var (
-	PriorityUrgent     BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 0, Desc: "Urgent"}}
-	PriorityImportant  BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 1, Desc: "Important"}}
-	PriorityHigh       BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 2, Desc: "High"}}
-	PriorityMiddle     BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 3, Desc: "Middle"}}
-	PriorityLow        BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 4, Desc: "Low"}}
-	PriorityQuestion   BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 5, Desc: "Question"}}
-	PrioritySuggestion BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 6, Desc: "Suggestion"}}
+	PriorityUrgent     = BugPriorityModel{VarModel: VarModel{Type: 0, Desc: "Urgent"}}
+	PriorityImportant  = BugPriorityModel{VarModel: VarModel{Type: 1, Desc: "Important"}}
+	PriorityHigh       = BugPriorityModel{VarModel: VarModel{Type: 2, Desc: "High"}}
+	PriorityMiddle     = BugPriorityModel{VarModel: VarModel{Type: 3, Desc: "Middle"}}
+	PriorityLow        = BugPriorityModel{VarModel: VarModel{Type: 4, Desc: "Low"}}
+	PriorityQuestion   = BugPriorityModel{VarModel: VarModel{Type: 5, Desc: "Question"}}
+	PrioritySuggestion = BugPriorityModel{VarModel: VarModel{Type: 6, Desc: "Suggestion"}}
 )
 
 // AllPriorities collections of all bug priority
@@ -70,11 +70,11 @@ var AllPriorities = []BugPriorityModel{
 }
 
 var (
-	Reproductability100 BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 0, Desc: "100%"}}
-	Reproductability80  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 1, Desc: "80%"}}
-	Reproductability60  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 2, Desc: "60%"}}
-	Reproductability40  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 3, Desc: "40%"}}
-	Reproductability20  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 4, Desc: "20%"}}
+	Reproductability100 = BugReproductableModel{VarModel: VarModel{Type: 0, Desc: "100%"}}
+	Reproductability80  = BugReproductableModel{VarModel: VarModel{Type: 1, Desc: "80%"}}
+	Reproductability60  = BugReproductableModel{VarModel: VarModel{Type: 2, Desc: "60%"}}
+	Reproductability40  = BugReproductableModel{VarModel: VarModel{Type: 3, Desc: "40%"}}
+	Reproductability20  = BugReproductableModel{VarModel: VarModel{Type: 4, Desc: "20%"}}
 )
 
 var AllReproductabilities = []BugReproductableModel{
@@ -216,9 +216,9 @@ func BugWithID(id IndexType) (*BugModel, error) {
 }
 
 // BugsWithRange fetch bug data with range [lower, lower + count)
-func BugsWithRange(lower, count int) ([]*BugModel, error) {
+func BugsWithRange(lower, count int) ([]BugModel, error) {
 
-	var result []*BugModel
+	var result []BugModel
 	var err error
 	var rawResult orm.RawSeter
 
@@ -235,7 +235,7 @@ func BugsWithRange(lower, count int) ([]*BugModel, error) {
 }
 
 // AllBugsData fetch all bugs
-func AllBugsData() ([]*BugModel, error) {
+func AllBugsData() ([]BugModel, error) {
 
 	return BugsWithRange(0, -1)
 }
