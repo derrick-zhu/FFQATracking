@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"FFQATracking/biz"
 	"FFQATracking/constants"
 	"FFQATracking/models"
 	"fmt"
+	"strconv"
 
 	"github.com/astaxie/beego"
 )
@@ -91,33 +93,49 @@ func (c *IssueController) Get() {
 // Post for handle new issue controller POST request
 func (c *IssueController) Post() {
 	c.FFBaseController.Post()
-
-	bugTitle := c.Input().Get("issueTitle")
-	issueContent := c.Input().Get("issueContent")
-
-	beego.Info(fmt.Sprintf("title: %s, description: %s", bugTitle, issueContent))
-
-	c.Redirect("/issuelist", 302)
 }
 
 // Create the method for creating issue
 func (c *IssueController) Create() {
-	// beego.Info(c.Input())
 
-	strStatus := c.Input().Get(issuePickerKey(IssueStatusKey))
-	status := models.BugStatusWithString(strStatus)
+	var err error
+	var nStatus int64
+	var nPriority int64
+	var nReproduct int64
+	var nCreatorID int64
+	var nAssignorID int64
 
-	strPriority := c.Input().Get(issuePickerKey(IssuePriorityKey))
-	priority := models.BugPriorityWithString(strPriority)
+	title := c.Input().Get(issuePickerKey(IssueTitleKey))
+	description := c.Input().Get(issuePickerKey(IssueDescriptionKey))
+	status := c.Input().Get(issuePickerKey(IssueStatusKey))
+	priority := c.Input().Get(issuePickerKey(IssuePriorityKey))
+	reproduct := c.Input().Get(issuePickerKey(IssueReproductionKey))
+	creatorID := c.Input().Get(issuePickerKey(IssueCreatorKey))
+	assignorID := c.Input().Get(issuePickerKey(IssueAssignorKey))
 
-	strReproduct := c.Input().Get(issuePickerKey(IssueReproductionKey))
-	reproduct := models.BugReproductabilityWithString(strReproduct)
+	beego.Debug(fmt.Sprintf("title: %s", title))
+	beego.Debug(fmt.Sprintf("description: %s", description))
+	beego.Debug(fmt.Sprintf("status: %s -> %s", IssueStatusKey, status))
+	beego.Debug(fmt.Sprintf("priority: %s -> %s", IssuePriorityKey, priority))
+	beego.Debug(fmt.Sprintf("reproduct: %s -> %s", IssueReproductionKey, reproduct))
+	beego.Debug(fmt.Sprintf("creator: %s -> %s", IssueCreatorKey, creatorID))
+	beego.Debug(fmt.Sprintf("assignor: %s -> %s", IssueAssignorKey, assignorID))
 
-	beego.Info(fmt.Sprintf("status: %s -> %d", strStatus, status))
-	beego.Info(fmt.Sprintf("priority: %s -> %d", strPriority, priority))
-	beego.Info(fmt.Sprintf("reproduct: %s -> %d", strReproduct, reproduct))
+	nStatus, err = strconv.ParseInt(status, 10, 64)
+	nPriority, err = strconv.ParseInt(priority, 10, 64)
+	nReproduct, err = strconv.ParseInt(reproduct, 10, 64)
+	nCreatorID, err = strconv.ParseInt(creatorID, 10, 64)
+	nAssignorID, err = strconv.ParseInt(assignorID, 10, 64)
 
-	c.Redirect("#", 302)
+	_, err = models.AddBug(title, description, nStatus, nPriority, nCreatorID, nAssignorID, nReproduct)
+	if err != nil {
+		beego.Error(err)
+		c.Redirect("#", 302)
+
+		return
+	}
+
+	c.Redirect("/issuelist", 302)
 }
 
 // MARK - private helpers
@@ -134,15 +152,25 @@ func (c *IssueController) initPageVariables() {
 		IssueStatusData, IssuePriorityData, IssueReproductionData,
 	}
 
+	acc, err := biz.CurrentAccount(c.Ctx)
+	createorDefaultIndex := 0 // the index of current logged in user in allUser array
+
+	// cause of making current logged in user as a default creator accout, find and save the index of current accout in the allUser array
+	if acc != nil {
+		for index, eachAcc := range allUsers {
+			if eachAcc.ID == acc.ID {
+				createorDefaultIndex = index
+			}
+		}
+	}
+
 	// append all creators data into `pickData`
 	c.allCreators = IssuePickerTemplateModel{}
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
-	c.allCreators.DefaultValue = 0
+	c.allCreators.DefaultValue = int64(createorDefaultIndex)
 	c.allCreators.Collection = allUsers
-	// for _, eachUser := range allUsers {
-	// 	c.allCreators.Collection = append(c.allCreators.Collection, eachUser)
-	// }
+
 	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
 	// append all assignor data into `pickData`
@@ -151,9 +179,7 @@ func (c *IssueController) initPageVariables() {
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
 	c.allAssignors.DefaultValue = 0
 	c.allAssignors.Collection = allUsers
-	// for _, eachAssignor := range allUsers {
-	// 	c.allAssignors.Collection = append(c.allAssignors.Collection, eachAssignor)
-	// }
+
 	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
 }
 

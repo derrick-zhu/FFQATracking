@@ -3,7 +3,6 @@ package models
 import (
 	"FFQATracking/utils"
 	"fmt"
-	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -36,11 +35,11 @@ const (
 
 // AccountModel user account model
 type AccountModel struct {
-	ID     IndexType `orm:"pk;auto"` // readonly
-	Name   string    `orm:"index;size(128)"`
-	Avatar string    `orm:"null;size(1024)"`
-	Email  string    `orm:"index;size(1024)"` // readonly
-	Create time.Time `orm:"index"`            // readonly
+	ID     IndexType    `orm:"pk;auto"` // readonly
+	Name   string       `orm:"index;size(128)"`
+	Avatar string       `orm:"null;size(1024)"`
+	Email  string       `orm:"index;size(1024)"` // readonly
+	Create TimeInterval `orm:"index"`            // readonly
 	Rule   RuleType
 	Job    JobType
 	Pwd    string
@@ -84,7 +83,7 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 
 	account := &AccountModel{Name: name,
 		Email:  email,
-		Create: time.Now(),
+		Create: TimeInterval(utils.TimeIntervalSince1970()),
 	}
 
 	o, qs := GetQuerySeterWithTable(AccountTable)

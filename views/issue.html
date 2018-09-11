@@ -14,15 +14,19 @@
     </div>
 
     <div class="container">
+        <h1>New Issue:</h1>
+    </div>
+
+    <div class="container">
         <form role="form" method="post" action="/issue/create">
             <div class="form-group">
-                <label>Title:</label>
-                <input id="issueTitle" name="issueTitle" type="text" class="form-control" placeholder="Issue Title">
+                <label>Title: *</label>
+                <input id="picker-Title" name="picker-Title" type="text" class="form-control" placeholder="Issue Title">
             </div>
 
             <div class="form-group">
-                <label>Description:</label>
-                <textarea id="issueContent" name="issueContent" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
+                <label>Description: *</label>
+                <textarea id="picker-Description" name="picker-Description" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
             </div>
 
             {{range .issueHTMLValue}}

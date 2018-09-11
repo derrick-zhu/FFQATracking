@@ -90,3 +90,9 @@ func HadLogin(ctx *context.Context) bool {
 	beego.Info("biz.HadLogin()")
 	return AccountManagerInstance().HadLogin(ctx)
 }
+
+// CurrentAccount fetch current account
+func CurrentAccount(ctx *context.Context) (*models.AccountModel, error) {
+	beego.Info("fetch current account had been signed in")
+	return AccountManagerInstance().CurrentAccount(ctx)
+}

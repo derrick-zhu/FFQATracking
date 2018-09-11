@@ -20,8 +20,15 @@ type BugPriorityModel struct {
 	VarModel
 }
 
+// BugReproductableModel reproductability model
 type BugReproductableModel struct {
 	VarModel
+}
+
+func init() {
+
+	beego.AddFuncMap("VarModelGetType", VarModelGetType)
+	beego.AddFuncMap("VarModelGetDesc", VarModelGetDesc)
 }
 
 // VarModelGetType get Type data from value which should be VarModel

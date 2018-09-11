@@ -15,7 +15,7 @@ func MD5(origin string) string {
 	io.WriteString(digist, origin)
 	result := fmt.Sprintf("%s", digist.Sum(nil))
 
-	beego.Debug("MD5: %s -> %s", origin, result)
+	beego.Debug(fmt.Sprintf("`MD5`: %s -> %s", origin, result))
 
 	return result
 }

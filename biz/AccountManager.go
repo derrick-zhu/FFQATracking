@@ -96,6 +96,25 @@ func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 	return (acc.Pwd == utils.Base64Encode(utils.MD5(ckPwd)))
 }
 
+// CurrentAccount get current signed up account
+func (am *AccountManager) CurrentAccount(ctx *context.Context) (*models.AccountModel, error) {
+
+	if am.HadLogin(ctx) == false {
+		return nil, errors.New("Not login")
+	}
+
+	ckEmail := utils.CookieInstance().Get(ctx, constants.KeyEMAIL)
+	acc, err := am.AccountWithEMail(ckEmail)
+	if err != nil {
+		beego.Info("Fails in fetching account: " + ckEmail)
+		beego.Error(err)
+
+		return nil, err
+	}
+
+	return acc, nil
+}
+
 // AccountWithID fetch user account with uid
 func (am *AccountManager) AccountWithID(id int64) (*models.AccountModel, error) {
 	return models.AccountWithID(models.IndexType(id))

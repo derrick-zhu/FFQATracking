@@ -1,8 +1,8 @@
 package models
 
 import (
+	"FFQATracking/utils"
 	"fmt"
-	"time"
 
 	"github.com/astaxie/beego"
 
@@ -87,27 +87,24 @@ var AllReproductabilities = []BugReproductableModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID              IndexType `orm:"index"`      // index
-	Title           string    `orm:"size(512)"`  // bug title
-	Description     string    `orm:"size(4096)"` // description about bug
-	Version         string    `orm:"index"`      // test version number
-	Source          string    // source feature request
-	Target          string    `orm:"index"` // target milestone
-	DevPeriod       string    `orm:"index"` // sprint
-	SolveDate       time.Time // date solving
-	CreateDate      time.Time // date creating
-	Status          int64     `orm:"index"` // bug current status
-	Priority        int64     `orm:"index"` // bug's priority type
-	Creator         IndexType `orm:"index"` // bug's founder
-	Assignor        IndexType `orm:"index"` // who should solve this bug
-	Reproducibility int64     // 重现概率 0~100
+	ID              IndexType    `orm:"index"`      // index
+	Title           string       `orm:"size(512)"`  // bug title
+	Description     string       `orm:"size(4096)"` // description about bug
+	Version         string       `orm:"index"`      // test version number
+	Source          string       // source feature request
+	Target          string       `orm:"index"` // target milestone
+	DevPeriod       string       `orm:"index"` // sprint
+	SolveDate       TimeInterval // date solving
+	CreateDate      TimeInterval // date creating
+	Status          int64        `orm:"index"` // bug current status
+	Priority        int64        `orm:"index"` // bug's priority type
+	Creator         IndexType    `orm:"index"` // bug's founder
+	Assignor        IndexType    `orm:"index"` // who should solve this bug
+	Reproducibility int64        // 重现概率 0~100
 }
 
 func init() {
 	orm.RegisterModel(new(BugModel))
-
-	beego.AddFuncMap("VarModelGetType", VarModelGetType)
-	beego.AddFuncMap("VarModelGetDesc", VarModelGetDesc)
 }
 
 // TableName for beego using
@@ -180,13 +177,16 @@ func BugReproductabilityWithString(str string) int64 {
 }
 
 // AddBug insert new bug
-func AddBug(title, description string, creatorID IndexType) (*BugModel, error) {
+func AddBug(title, description string, status, priority, creatorID, assignorID, reproductRatio int64) (*BugModel, error) {
 	pBug := &BugModel{
-		Title:       title,
-		Description: description,
-		Creator:     creatorID,
-		CreateDate:  time.Now(),
-		Status:      BugNew.Type,
+		Title:           title,
+		Description:     description,
+		Status:          status,
+		Priority:        priority,
+		Creator:         IndexType(creatorID),
+		CreateDate:      TimeInterval(utils.TimeIntervalSince1970()),
+		Assignor:        IndexType(assignorID),
+		Reproducibility: reproductRatio,
 	}
 
 	o, _ := GetQuerySeterWithTable(BugsTable)

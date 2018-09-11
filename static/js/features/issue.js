@@ -1,11 +1,11 @@
 
-function didSelectWith(id, value) 
+function didSelectWith(id, type, desc) 
 {
     console.log(didSelectWith.caller);
-    console.log('id: ' + id + ', param:' + value);
+    console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
-    setInnerHtmlWithID(id + '-btn', value);
-    setHtmlValueWithID(id, value);
+    setInnerHtmlWithID(id + '-btn', desc);
+    setHtmlValueWithID(id, type);
 }
 
 function newIssueCheckInputContent() 
