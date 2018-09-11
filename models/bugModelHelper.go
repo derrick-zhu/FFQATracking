@@ -13,6 +13,7 @@ func init() {
 	beego.AddFuncMap("PropertyInIssue", PropertyInIssue)
 }
 
+// PropertyInIssue fetch issue's property value
 func PropertyInIssue(pname string, value interface{}) string {
 
 	switch value.(type) {

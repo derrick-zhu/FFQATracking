@@ -50,7 +50,7 @@ func init() {
 }
 
 // TableName for beego using
-func (this *AccountModel) TableName() string {
+func (c *AccountModel) TableName() string {
 	return AccountTable
 }
 
