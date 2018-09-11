@@ -14,36 +14,34 @@ const (
 	BugsTable string = "bugmodel"
 )
 
-// BugStatusType bug status type
-type BugStatusType int64
-
+// BugStatusModel for bug status
 type BugStatusModel struct {
-	Type BugStatusType
-	Desc string
+	VarModel
 }
 
 var (
 	// BugNew NEW
-	BugNew BugStatusModel = BugStatusModel{Type: 0, Desc: "New"}
+	BugNew BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 0, Desc: "New"}}
 	// BugFixed NEW
-	BugFixed BugStatusModel = BugStatusModel{Type: 1, Desc: "Fixed"}
+	BugFixed BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 1, Desc: "Fixed"}}
 	// BugReopen NEW
-	BugReopen BugStatusModel = BugStatusModel{Type: 2, Desc: "Reopen"}
+	BugReopen BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 2, Desc: "Reopen"}}
 	// BugConfirm NEW
-	BugConfirm BugStatusModel = BugStatusModel{Type: 3, Desc: "Confirm"}
+	BugConfirm BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 3, Desc: "Confirm"}}
 	// BugClose NEW
-	BugClose BugStatusModel = BugStatusModel{Type: 4, Desc: "Close"}
+	BugClose BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 4, Desc: "Close"}}
 	// BugNotABug NEW
-	BugNotABug BugStatusModel = BugStatusModel{Type: 5, Desc: "Not a bug"}
+	BugNotABug BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 5, Desc: "Not a bug"}}
 	// BugWillNotFix NEW
-	BugWillNotFix BugStatusModel = BugStatusModel{Type: 6, Desc: "Will not fix"}
+	BugWillNotFix BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 6, Desc: "Will not fix"}}
 	// BugDelay NEW
-	BugDelay BugStatusModel = BugStatusModel{Type: 7, Desc: "Delay"}
+	BugDelay BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 7, Desc: "Delay"}}
 	// BugMustBeFix NEW
-	BugMustBeFix BugStatusModel = BugStatusModel{Type: 8, Desc: "Must be fix"}
+	BugMustBeFix BugStatusModel = BugStatusModel{VarModel: VarModel{Type: 8, Desc: "Must be fix"}}
 )
 
-var AllBugStatus []BugStatusModel = []BugStatusModel{
+// AllBugStatus collections of all bug status
+var AllBugStatus = []BugStatusModel{
 	BugNew,
 	BugFixed,
 	BugReopen,
@@ -55,26 +53,23 @@ var AllBugStatus []BugStatusModel = []BugStatusModel{
 	BugMustBeFix,
 }
 
-// PriorityStatusType bug's priority status
-type PriorityStatusType int64
-
-// PriorityStatusModel priority model
-type PriorityStatusModel struct {
-	Type PriorityStatusType
-	Desc string
+// BugPriorityModel priority model
+type BugPriorityModel struct {
+	VarModel
 }
 
 var (
-	PriorityUrgent     PriorityStatusModel = PriorityStatusModel{Type: 0, Desc: "Urgent"}
-	PriorityImportant  PriorityStatusModel = PriorityStatusModel{Type: 1, Desc: "Important"}
-	PriorityHigh       PriorityStatusModel = PriorityStatusModel{Type: 2, Desc: "High"}
-	PriorityMiddle     PriorityStatusModel = PriorityStatusModel{Type: 3, Desc: "Middle"}
-	PriorityLow        PriorityStatusModel = PriorityStatusModel{Type: 4, Desc: "Low"}
-	PriorityQuestion   PriorityStatusModel = PriorityStatusModel{Type: 5, Desc: "Question"}
-	PrioritySuggestion PriorityStatusModel = PriorityStatusModel{Type: 6, Desc: "Suggestion"}
+	PriorityUrgent     BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 0, Desc: "Urgent"}}
+	PriorityImportant  BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 1, Desc: "Important"}}
+	PriorityHigh       BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 2, Desc: "High"}}
+	PriorityMiddle     BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 3, Desc: "Middle"}}
+	PriorityLow        BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 4, Desc: "Low"}}
+	PriorityQuestion   BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 5, Desc: "Question"}}
+	PrioritySuggestion BugPriorityModel = BugPriorityModel{VarModel: VarModel{Type: 6, Desc: "Suggestion"}}
 )
 
-var AllPriorities []PriorityStatusModel = []PriorityStatusModel{
+// AllPriorities collections of all bug priority
+var AllPriorities = []BugPriorityModel{
 	PriorityUrgent,
 	PriorityImportant,
 	PriorityHigh,
@@ -84,21 +79,19 @@ var AllPriorities []PriorityStatusModel = []PriorityStatusModel{
 	PrioritySuggestion,
 }
 
-type ReproductabilityType int64
-type ReproductabilityModel struct {
-	Type ReproductabilityType
-	Desc string
+type BugReproductableModel struct {
+	VarModel
 }
 
 var (
-	Reproductability100 ReproductabilityModel = ReproductabilityModel{Type: 0, Desc: "100%"}
-	Reproductability80  ReproductabilityModel = ReproductabilityModel{Type: 1, Desc: "80%"}
-	Reproductability60  ReproductabilityModel = ReproductabilityModel{Type: 2, Desc: "60%"}
-	Reproductability40  ReproductabilityModel = ReproductabilityModel{Type: 3, Desc: "40%"}
-	Reproductability20  ReproductabilityModel = ReproductabilityModel{Type: 4, Desc: "20%"}
+	Reproductability100 BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 0, Desc: "100%"}}
+	Reproductability80  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 1, Desc: "80%"}}
+	Reproductability60  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 2, Desc: "60%"}}
+	Reproductability40  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 3, Desc: "40%"}}
+	Reproductability20  BugReproductableModel = BugReproductableModel{VarModel: VarModel{Type: 4, Desc: "20%"}}
 )
 
-var AllReproductabilities []ReproductabilityModel = []ReproductabilityModel{
+var AllReproductabilities = []BugReproductableModel{
 	Reproductability100,
 	Reproductability80,
 	Reproductability60,
@@ -108,20 +101,20 @@ var AllReproductabilities []ReproductabilityModel = []ReproductabilityModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID              IndexType            `orm:"index"`      // index
-	Title           string               `orm:"size(512)"`  // bug title
-	Description     string               `orm:"size(4096)"` // description about bug
-	Version         string               `orm:"index"`      // test version number
-	Source          string               // source feature request
-	Target          string               `orm:"index"` // target milestone
-	DevPeriod       string               `orm:"index"` // sprint
-	SolveDate       time.Time            // date solving
-	CreateDate      time.Time            // date creating
-	Status          BugStatusType        `orm:"index"` // bug current status
-	Priority        PriorityStatusType   `orm:"index"` // bug's priority type
-	Creator         IndexType            `orm:"index"` // bug's founder
-	Assignor        IndexType            `orm:"index"` // who should solve this bug
-	Reproducibility ReproductabilityType // 重现概率 0~100
+	ID              IndexType `orm:"index"`      // index
+	Title           string    `orm:"size(512)"`  // bug title
+	Description     string    `orm:"size(4096)"` // description about bug
+	Version         string    `orm:"index"`      // test version number
+	Source          string    // source feature request
+	Target          string    `orm:"index"` // target milestone
+	DevPeriod       string    `orm:"index"` // sprint
+	SolveDate       time.Time // date solving
+	CreateDate      time.Time // date creating
+	Status          int64     `orm:"index"` // bug current status
+	Priority        int64     `orm:"index"` // bug's priority type
+	Creator         IndexType `orm:"index"` // bug's founder
+	Assignor        IndexType `orm:"index"` // who should solve this bug
+	Reproducibility int64     // 重现概率 0~100
 }
 
 func init() {
@@ -145,7 +138,7 @@ func EnumAllBugsStatus() []string {
 	return result
 }
 
-func BugStatusWithString(str string) BugStatusType {
+func BugStatusWithString(str string) int64 {
 
 	for _, eachStatus := range AllBugStatus {
 		if eachStatus.Desc == str {
@@ -167,7 +160,7 @@ func EnumAllBugsPriority() []string {
 	return result
 }
 
-func BugPriorityWithString(str string) PriorityStatusType {
+func BugPriorityWithString(str string) int64 {
 
 	for _, eachPriority := range AllPriorities {
 		if eachPriority.Desc == str {
@@ -188,7 +181,7 @@ func EnumAllReproductabilities() []string {
 	return result
 }
 
-func BugReproductabilityWithString(str string) ReproductabilityType {
+func BugReproductabilityWithString(str string) int64 {
 	for _, eachRepro := range AllReproductabilities {
 		if eachRepro.Desc == str {
 			return eachRepro.Type

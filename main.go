@@ -14,6 +14,8 @@ func init() {
 	orm.Debug = true
 	models.RegisterDB(false)
 
+	beego.AddFuncMap("VarModelGetType", models.VarModelGetType)
+	beego.AddFuncMap("VarModelGetDesc", models.VarModelGetDesc)
 }
 
 func main() {

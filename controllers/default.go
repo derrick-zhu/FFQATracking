@@ -11,6 +11,7 @@ type MainController struct {
 func (c *MainController) Get() {
 	c.FFBaseController.Get()
 
+	c.Data[constants.Title] = "Farfetch Q&A Tracking"
 	c.Data[constants.KeyIsHome] = 1
 
 	c.TplName = "index.html"

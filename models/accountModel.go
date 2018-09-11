@@ -145,8 +145,8 @@ func AccountWithID(id IndexType) (*AccountModel, error) {
 }
 
 // AccountsWithRange fetch account data with rage [lower, count)
-func AccountsWithRange(lower, count int) ([]*AccountModel, error) {
-	var result []*AccountModel
+func AccountsWithRange(lower, count int) ([]AccountModel, error) {
+	var result []AccountModel
 	var err error
 	var rawResult orm.RawSeter
 
@@ -165,7 +165,7 @@ func AccountsWithRange(lower, count int) ([]*AccountModel, error) {
 }
 
 // AllAccounts fetch all account
-func AllAccounts() ([]*AccountModel, error) {
+func AllAccounts() ([]AccountModel, error) {
 
 	return AccountsWithRange(0, -1)
 }

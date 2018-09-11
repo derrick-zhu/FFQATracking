@@ -20,7 +20,7 @@ const (
 	IssueAssignorKey     = "Assignor"
 )
 
-func PickerKey(key string) string {
+func issuePickerKey(key string) string {
 	if len(key) > 0 {
 		return issueIDPrefix + key
 	}
@@ -29,12 +29,11 @@ func PickerKey(key string) string {
 
 // IssuePickerTemplateModel class template
 type IssuePickerTemplateModel struct {
-	Title         string
-	Identifier    string
-	DefaultValue  int64
-	Value         int64
-	Collection    []string
-	ExtCollection []int64
+	Title        string
+	Identifier   string
+	DefaultValue int64
+	Value        int64
+	Collection   interface{}
 }
 
 // TIssueNewCollectionType for issue template
@@ -46,7 +45,7 @@ var IssueStatusData = IssuePickerTemplateModel{
 	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
 	DefaultValue: 0,
 	Value:        0,
-	Collection:   models.EnumAllBugsStatus(),
+	Collection:   models.AllBugStatus,
 }
 
 // IssuePriorityData priority data (temperary)
@@ -55,7 +54,7 @@ var IssuePriorityData = IssuePickerTemplateModel{
 	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
 	DefaultValue: 0,
 	Value:        0,
-	Collection:   models.EnumAllBugsPriority(),
+	Collection:   models.AllPriorities,
 }
 
 // IssueReproductionData reproduction data (temperary)
@@ -64,7 +63,7 @@ var IssueReproductionData = IssuePickerTemplateModel{
 	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
 	DefaultValue: 0,
 	Value:        0,
-	Collection:   []string{"100%", "80%", "60%", "40%", "20%"},
+	Collection:   models.AllReproductabilities,
 }
 
 // IssueController base issue create page
@@ -105,13 +104,13 @@ func (c *IssueController) Post() {
 func (c *IssueController) Create() {
 	// beego.Info(c.Input())
 
-	strStatus := c.Input().Get(PickerKey(IssueStatusKey))
+	strStatus := c.Input().Get(issuePickerKey(IssueStatusKey))
 	status := models.BugStatusWithString(strStatus)
 
-	strPriority := c.Input().Get(PickerKey(IssuePriorityKey))
+	strPriority := c.Input().Get(issuePickerKey(IssuePriorityKey))
 	priority := models.BugPriorityWithString(strPriority)
 
-	strReproduct := c.Input().Get(PickerKey(IssueReproductionKey))
+	strReproduct := c.Input().Get(issuePickerKey(IssueReproductionKey))
 	reproduct := models.BugReproductabilityWithString(strReproduct)
 
 	beego.Info(fmt.Sprintf("status: %s -> %d", strStatus, status))
@@ -140,11 +139,10 @@ func (c *IssueController) initPageVariables() {
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
 	c.allCreators.DefaultValue = 0
-
-	for _, eachUser := range allUsers {
-		c.allCreators.Collection = append(c.allCreators.Collection, eachUser.Name)
-		c.allCreators.ExtCollection = append(c.allCreators.ExtCollection, int64(eachUser.ID))
-	}
+	c.allCreators.Collection = allUsers
+	// for _, eachUser := range allUsers {
+	// 	c.allCreators.Collection = append(c.allCreators.Collection, eachUser)
+	// }
 	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
 	// append all assignor data into `pickData`
@@ -152,10 +150,10 @@ func (c *IssueController) initPageVariables() {
 	c.allAssignors.Title = IssueAssignorKey
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
 	c.allAssignors.DefaultValue = 0
-	for _, eachAssignor := range allUsers {
-		c.allAssignors.Collection = append(c.allAssignors.Collection, eachAssignor.Name)
-		c.allAssignors.ExtCollection = append(c.allAssignors.ExtCollection, int64(eachAssignor.ID))
-	}
+	c.allAssignors.Collection = allUsers
+	// for _, eachAssignor := range allUsers {
+	// 	c.allAssignors.Collection = append(c.allAssignors.Collection, eachAssignor)
+	// }
 	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
 }
 
