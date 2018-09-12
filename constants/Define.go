@@ -15,7 +15,8 @@ const (
 
 	/// new issue
 
-	KeyIssueHTMLValue = "issueHTMLValue"
+	KeyIssueHTMLValue      = "issueHTMLValue"
+	KeyIssueCommentHistory = "issueCommentHistory"
 
 	/// issue detail
 

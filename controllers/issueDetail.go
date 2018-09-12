@@ -9,14 +9,17 @@ import (
 	"github.com/astaxie/beego"
 )
 
+// IssueDetailController controller for display/edit issue in detail
 type IssueDetailController struct {
 	FFBaseController
 
 	issueDetailData TIssueNewCollectionType
 	issueID         int64
 	currentIssue    *models.BugModel
+	commentHistory  []models.CommentModel
 }
 
+// Get handle HTTP Get request
 func (c *IssueDetailController) Get() {
 	c.FFBaseController.Get()
 
@@ -32,11 +35,13 @@ func (c *IssueDetailController) Get() {
 	beego.Info(fmt.Sprintf("issue Id: %d", c.issueID))
 
 	c.initVariables()
+	c.initCommentHistory()
 	c.initPageContent()
 
 	c.TplName = "issueDetail.html"
 }
 
+// initVariables issue's properties
 func (c *IssueDetailController) initVariables() {
 
 	var err error
@@ -92,10 +97,23 @@ func (c *IssueDetailController) initVariables() {
 	}
 }
 
+func (c *IssueDetailController) initCommentHistory() {
+
+	var err error
+	c.commentHistory, err = models.AllCommentsForIssue(c.issueID)
+	if err != nil {
+		beego.Error(err)
+		return
+	}
+
+	models.SortCommentByTime(&c.commentHistory)
+}
+
 // initPageContent initial settings in current page
 func (c *IssueDetailController) initPageContent() {
 
 	c.Data[constants.KeyIssueHTMLValue] = c.issueDetailData
+	c.Data[constants.KeyIssueCommentHistory] = c.commentHistory
 	c.Data[constants.KeyIssueData] = c.currentIssue
 }
 
