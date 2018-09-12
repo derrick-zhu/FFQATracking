@@ -17,6 +17,10 @@ const (
 
 	KeyIssueHTMLValue = "issueHTMLValue"
 
+	/// issue detail
+
+	KeyIssueData = "issueData"
+
 	// KeyIsHome flag for show HOME page.
 	KeyIsHome      = "IsHome"
 	KeyIsIssueList = "IsIssueList"

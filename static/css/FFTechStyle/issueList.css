@@ -1,6 +1,4 @@
-a {
-    color: lightgray;
-}
+
 a:hover {
     color: blue;
 }
@@ -35,8 +33,13 @@ tr {
 }
 
 .tr-title {
-    font-weight: lighter;
+    font-weight: bold;
     font-size: 1.50rem;
+}
+
+.tr-content {
+    font-weight: bold;
+    font-size: 1.30rem;
 }
 
 .issue-level-0 {
@@ -67,8 +70,8 @@ tr {
 }
 
 .issue-level-6 {
-    color: white;
-    background-color: green;
+    color: grey;
+    background-color: lightgreen;
 }
 
 .issue-level-0:hover,

@@ -1,9 +1,9 @@
-{{define "issueCreate"}}    
+{{define "dataPickerTemplate"}}    
 <!-- 
     param:
         title           string
         Identifier      string <out>
-        DefaultValue    string
+        DefaultValue    int64       // this is a index,
         collection      []interface{}
  -->
  

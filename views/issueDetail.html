@@ -14,46 +14,29 @@
         </div>
     </div>
 
-    <div class="container wrapper">
-        <div class="one">
-            <label class="right" style="width:100%">Title:</label>
-        </div>
-        <div class="two">
-            <input type="text" readonly="readonly" value="hello world">
-        </div>
-        <div class="three">
-            <label class="right" style="width:100%">Description:</label>
-        </div>
-        <div class="four">
-            <textarea cols="30" rows="10" readonly="readonly">hello world</textarea>
-        </div>
-    </div>
+    {{$issue := .issueData}}
 
     <div class="container">
+        <form role="form" method="POST" action="#">
+            <div class="form-group">
+                <h1>Issue: <small>{{$issue.Title}}</small></h1>
+            </div>
+            <div class="form-group" >
+                <label class="left" style="width:100%">Description:</label>
+                <textarea cols="30" rows="10" readonly="readonly">{{$issue.Description}}</textarea>
+            </div>
 
-        <div>
-            <label class="right section-title">hello:</label>
-            <button class="btn btn-normal">world
-                <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-        </div>
+            {{range .issueHTMLValue}}
+            {{template "dataPickerTemplate" .}}
+            {{end}}
 
-        <div>
-            <label class="right section-title">hello:</label>
-            <button class="btn btn-normal">world
-                <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-        </div>
+            <!-- 分割线 -->
+            <div class="col-xs-12">
+                <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+            </div>
 
-        <div>
-            <label class="right section-title">hello:</label>
-            <button class="btn btn-normal">world
-                <span class="glyphicon glyphicon-pencil"></span>
-            </button>
-        </div>
+        </form>
     </div>
-    <div class="container">Six</div>
-
 
 </body>
 

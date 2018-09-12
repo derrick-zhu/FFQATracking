@@ -296,9 +296,9 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 }
 
 // BugWithID fetch bug with id
-func BugWithID(id IndexType) (*BugModel, error) {
+func BugWithID(id int64) (*BugModel, error) {
 
-	pbug := &BugModel{ID: id}
+	pbug := &BugModel{ID: IndexType(id)}
 
 	_, qs := GetQuerySeterWithTable(BugsTable)
 	filterErr := qs.Filter("id", id).One(pbug)
@@ -338,7 +338,7 @@ func AllBugsData() ([]BugModel, error) {
 }
 
 // UpdateBug update bug model data
-func UpdateBug(id IndexType, params map[string]interface{}) error {
+func UpdateBug(id int64, params map[string]interface{}) error {
 
 	_, qs := GetQuerySeterWithTable(BugsTable)
 	_, err := BugWithID(id)
