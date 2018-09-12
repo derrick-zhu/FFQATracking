@@ -15,7 +15,7 @@ type FFBaseController struct {
 
 // Get is the GET method for handler default Get request
 func (c *FFBaseController) Get() {
-	c.Data[constants.Title] = "Farfetch Q&A"
+	c.Data[constants.Title] = "Farfetch Q&A Tracking"
 	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 
 	email := utils.CookieInstance().Get(c.Ctx, constants.KeyEMAIL)

@@ -16,15 +16,12 @@ type IssueListController struct {
 func (c *IssueListController) Get() {
 	c.FFBaseController.Get()
 
-	c.Data[constants.Title] = "Farfetch Q&A Tracking"
 	c.Data[constants.KeyIsIssueList] = 1
 
 	bugs, err := models.BugsWithRange(0, -1)
 	if err != nil {
 		beego.Error(err)
 	}
-
-	beego.Info(bugs)
 
 	c.Data["allIssue"] = bugs
 

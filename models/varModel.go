@@ -27,12 +27,12 @@ type BugReproductableModel struct {
 
 func init() {
 
-	beego.AddFuncMap("VarModelGetType", VarModelGetType)
-	beego.AddFuncMap("VarModelGetDesc", VarModelGetDesc)
+	beego.AddFuncMap("GetTypeFromModel", GetTypeFromModel)
+	beego.AddFuncMap("GetBriefTitleFromModel", GetBriefTitleFromModel)
 }
 
-// VarModelGetType get Type data from value which should be VarModel
-func VarModelGetType(value interface{}) int64 {
+// GetTypeFromModel get Type data from value which should be VarModel
+func GetTypeFromModel(value interface{}) int64 {
 
 	switch value.(type) {
 	case VarModel:
@@ -81,8 +81,8 @@ func VarModelGetType(value interface{}) int64 {
 	return 0
 }
 
-// VarModelGetDesc get Desc data from value which should be VarModel
-func VarModelGetDesc(value interface{}) string {
+// GetBriefTitleFromModel get Desc data from value which should be VarModel
+func GetBriefTitleFromModel(value interface{}) string {
 
 	switch value.(type) {
 	case VarModel:

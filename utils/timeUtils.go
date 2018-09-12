@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	TimeLayout string = "2006-01-02 15:04:05"
+	// TimeLayout standard time format
+	TimeLayout = "2006-01-02 15:04"
 )
 
 // TimeIntervalSince1970 fetch time interval since 1970.1.1
@@ -25,5 +26,5 @@ func FormatedTimeFromTick(tick int64, format string) string {
 
 // StandardFormatedTimeFromTick format time with standard format
 func StandardFormatedTimeFromTick(tick int64) string {
-	return FormatedTimeFromTick(tick, "2006 Jan 2 Mon 15:04:05")
+	return FormatedTimeFromTick(tick, TimeLayout)
 }

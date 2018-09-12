@@ -1,3 +1,10 @@
+a {
+    color: lightgray;
+}
+a:hover {
+    color: blue;
+}
+
 table {
     width: 100%;
     border-spacing: 0;
@@ -8,6 +15,10 @@ table {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.th-big {
+    width: 45%;
+}
+
 tr {
     font-weight: normal;
     font-size: 1.25rem;
@@ -15,6 +26,12 @@ tr {
 
 .table tr:hover td {
     filter: invert(70%);
+    filter: grayscale(30%)
+}
+
+.table tr td {
+    filter: invert(0%);
+    filter: grayscale(70%)
 }
 
 .tr-title {
@@ -52,4 +69,16 @@ tr {
 .issue-level-6 {
     color: white;
     background-color: green;
+}
+
+.issue-level-0:hover,
+.issue-level-1:hover,
+.issue-level-2:hover,
+.issue-level-3:hover,
+.issue-level-4:hover,
+.issue-level-5:hover,
+.issue-level-6:hover 
+{
+    color: black;
+    background-color: white;
 }

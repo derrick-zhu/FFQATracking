@@ -3,9 +3,9 @@ package models
 import (
 	"FFQATracking/utils"
 	"fmt"
+	"strconv"
 
 	"github.com/astaxie/beego"
-
 	"github.com/astaxie/beego/orm"
 )
 
@@ -97,20 +97,20 @@ var AllReproductabilities = []BugReproductableModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID              IndexType    `orm:"index"`      // index
-	Title           string       `orm:"size(512)"`  // bug title
-	Description     string       `orm:"size(4096)"` // description about bug
-	Version         string       `orm:"index"`      // test version number
-	Source          string       // source feature request
-	Target          string       `orm:"index"` // target milestone
-	DevPeriod       string       `orm:"index"` // sprint
-	SolveDate       TimeInterval // date solving
-	CreateDate      TimeInterval // date creating
-	Status          int64        `orm:"index"` // bug current status
-	Priority        int64        `orm:"index"` // bug's priority type
-	Creator         IndexType    `orm:"index"` // bug's founder
-	Assignor        IndexType    `orm:"index"` // who should solve this bug
-	Reproducibility int64        // 重现概率 0~100
+	ID               IndexType    `orm:"index"`      // index
+	Title            string       `orm:"size(512)"`  // bug title
+	Description      string       `orm:"size(4096)"` // description about bug
+	Version          string       `orm:"index"`      // test version number
+	Source           string       // source feature request
+	Target           string       `orm:"index"` // target milestone
+	DevPeriod        string       `orm:"index"` // sprint
+	SolveDate        TimeInterval // date solving
+	CreateDate       TimeInterval // date creating
+	Status           int64        `orm:"index"` // bug current status
+	Priority         int64        `orm:"index"` // bug's priority type
+	Creator          IndexType    `orm:"index"` // bug's founder
+	Assignor         IndexType    `orm:"index"` // who should solve this bug
+	Reproductability int64        // 重现概率 0~100
 }
 
 func init() {
@@ -144,6 +144,15 @@ func BugStatusWithString(str string) int64 {
 	return 0
 }
 
+func BugStatusWithType(status int64) string {
+	for _, eachStatus := range AllBugStatus {
+		if eachStatus.Type == status {
+			return eachStatus.Desc
+		}
+	}
+	return "-"
+}
+
 // EnumAllBugsPriority all priority collection in string
 func EnumAllBugsPriority() []string {
 
@@ -166,6 +175,15 @@ func BugPriorityWithString(str string) int64 {
 	return 0
 }
 
+func BugPriorityWithType(priority int64) string {
+	for _, eachPriority := range AllPriorities {
+		if eachPriority.Type == priority {
+			return eachPriority.Desc
+		}
+	}
+	return "-"
+}
+
 func EnumAllReproductabilities() []string {
 
 	var result []string
@@ -186,17 +204,86 @@ func BugReproductabilityWithString(str string) int64 {
 	return 0
 }
 
+func BugReproductabilityWithType(reproduct int64) string {
+	for _, eachRepro := range AllReproductabilities {
+		if eachRepro.Type == reproduct {
+			return eachRepro.Desc
+		}
+	}
+	return "-"
+}
+
+func GetReadableProperty(pname string, issue BugModel) string {
+
+	switch pname {
+	case "ID":
+		return strconv.FormatInt(int64(issue.ID), 10)
+
+	case "Title":
+		return issue.Title
+
+	case "Description":
+		return issue.Description
+
+	case "Version":
+		return issue.Version
+
+	case "Source":
+		return issue.Source
+
+	case "Target":
+		return issue.Target
+
+	case "DevPeriod":
+		return issue.DevPeriod
+
+	case "SolveDate":
+		return utils.StandardFormatedTimeFromTick(int64(issue.SolveDate))
+
+	case "CreateDate":
+		return utils.StandardFormatedTimeFromTick(int64(issue.CreateDate))
+
+	case "Status":
+		return BugStatusWithType(issue.Status)
+
+	case "Priority":
+		return BugPriorityWithType(issue.Priority)
+
+	case "Reproductability":
+		return BugReproductabilityWithType(issue.Reproductability)
+
+	case "Creator":
+		acc, err := AccountWithID(issue.Creator)
+		if err != nil {
+			beego.Error(err)
+			return "-"
+		}
+		return acc.Name
+
+	case "Assignor":
+		acc, err := AccountWithID(issue.Assignor)
+		if err != nil {
+			beego.Error(err)
+			return "-"
+		}
+		return acc.Name
+
+	default:
+		return "-"
+	}
+}
+
 // AddBug insert new bug
 func AddBug(title, description string, status, priority, creatorID, assignorID, reproductRatio int64) (*BugModel, error) {
 	pBug := &BugModel{
-		Title:           title,
-		Description:     description,
-		Status:          status,
-		Priority:        priority,
-		Creator:         IndexType(creatorID),
-		CreateDate:      TimeInterval(utils.TimeIntervalSince1970()),
-		Assignor:        IndexType(assignorID),
-		Reproducibility: reproductRatio,
+		Title:            title,
+		Description:      description,
+		Status:           status,
+		Priority:         priority,
+		Creator:          IndexType(creatorID),
+		CreateDate:       TimeInterval(utils.TimeIntervalSince1970()),
+		Assignor:         IndexType(assignorID),
+		Reproductability: reproductRatio,
 	}
 
 	o, _ := GetQuerySeterWithTable(BugsTable)

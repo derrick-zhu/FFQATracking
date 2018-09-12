@@ -1,20 +1,24 @@
 
 .label-ff-standard {
-    min-width: 95px
+    min-width: 95px;
 }
 
 .center {
-    text-align: center
+    text-align: center;
 }
 
 .middle {
-    text-align: middle
+    text-align: middle;
 }
 
 .right {
-    text-align: right
+    text-align: right;
 }
 
 .seperate-line {
-    FILTER: alpha(opacity=100,finishopacity=0,style=3)
+    FILTER: alpha(opacity=100,finishopacity=0,style=3);
+}
+
+div {
+    margin:0.5px;
 }

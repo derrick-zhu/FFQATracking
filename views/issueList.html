@@ -29,7 +29,7 @@
                 <tr>
                     <th></th>
                     <th>#</th>
-                    <th style="width: 30%">Title</th>
+                    <th class="th-big">Title</th>
                     <th>Status</th>
                     <th>Priority</th>
                     <th>Version</th>
@@ -40,7 +40,11 @@
             </thead>
             <script type="text/javascript">
                 function didIssueClicked(params) {
-                    window.location.href = "/issue_detail?id=" + params
+                    if (params.length > 0) {
+                        var url = "/issuedetail/" + params;
+                        console.log(url);
+                        window.location.href = url;
+                    }
                 }
             </script>
             <tbody>
