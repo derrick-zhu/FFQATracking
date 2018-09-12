@@ -48,14 +48,24 @@ var AllBugStatus = []BugStatusModel{
 	BugMustBeFix,
 }
 
+const (
+	IssueUrget      int64 = 0
+	IssueImportant  int64 = 1
+	IssueHigh       int64 = 2
+	IssueMiddle     int64 = 3
+	IssueLow        int64 = 4
+	IssueQuestion   int64 = 5
+	IssueSuggestion int64 = 6
+)
+
 var (
-	PriorityUrgent     = BugPriorityModel{VarModel: VarModel{Type: 0, Desc: "Urgent"}}
-	PriorityImportant  = BugPriorityModel{VarModel: VarModel{Type: 1, Desc: "Important"}}
-	PriorityHigh       = BugPriorityModel{VarModel: VarModel{Type: 2, Desc: "High"}}
-	PriorityMiddle     = BugPriorityModel{VarModel: VarModel{Type: 3, Desc: "Middle"}}
-	PriorityLow        = BugPriorityModel{VarModel: VarModel{Type: 4, Desc: "Low"}}
-	PriorityQuestion   = BugPriorityModel{VarModel: VarModel{Type: 5, Desc: "Question"}}
-	PrioritySuggestion = BugPriorityModel{VarModel: VarModel{Type: 6, Desc: "Suggestion"}}
+	PriorityUrgent     = BugPriorityModel{VarModel: VarModel{Type: IssueUrget, Desc: "Urgent"}}
+	PriorityImportant  = BugPriorityModel{VarModel: VarModel{Type: IssueImportant, Desc: "Important"}}
+	PriorityHigh       = BugPriorityModel{VarModel: VarModel{Type: IssueHigh, Desc: "High"}}
+	PriorityMiddle     = BugPriorityModel{VarModel: VarModel{Type: IssueMiddle, Desc: "Middle"}}
+	PriorityLow        = BugPriorityModel{VarModel: VarModel{Type: IssueLow, Desc: "Low"}}
+	PriorityQuestion   = BugPriorityModel{VarModel: VarModel{Type: IssueQuestion, Desc: "Question"}}
+	PrioritySuggestion = BugPriorityModel{VarModel: VarModel{Type: IssueSuggestion, Desc: "Suggestion"}}
 )
 
 // AllPriorities collections of all bug priority

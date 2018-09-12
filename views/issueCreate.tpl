@@ -3,8 +3,8 @@
     param:
         title           string
         Identifier      string <out>
-        defaultValue    string
-        collection      []string
+        DefaultValue    string
+        collection      []interface{}
  -->
  <div class="form-group">
     <div class="col-xs-3" style="margin:0.5px;"> 

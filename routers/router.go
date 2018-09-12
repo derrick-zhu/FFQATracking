@@ -19,4 +19,6 @@ func init() {
 
 	beego.Router("/issue", &controllers.IssueController{})
 	beego.AutoRouter(&controllers.IssueController{})
+
+	beego.Router("/weatherDemo", &controllers.WeatherDemoController{})
 }

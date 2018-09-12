@@ -2,6 +2,7 @@
 <html>
     <head>
         {{template "header"}}
+        <link rel="stylesheet" href="/static/css/FFTechStyle/issueTable.css" type="text/css">
     </head>
 <body>
 
@@ -37,6 +38,11 @@
                     <th>Create Date</th>
                 </tr>
             </thead>
+            <script type="text/javascript">
+                function didIssueClicked(params) {
+                    window.location.href = "/issue_detail?id=" + params
+                }
+            </script>
             <tbody>
                 {{template "issueListTableRow" .}}
             </tbody>
