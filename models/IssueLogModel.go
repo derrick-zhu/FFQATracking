@@ -4,7 +4,6 @@ import (
 	"FFQATracking/utils"
 	"fmt"
 	"sort"
-	"strconv"
 
 	"github.com/astaxie/beego"
 
@@ -12,41 +11,41 @@ import (
 )
 
 const (
-	kIssueLogTablePrefix string = "issuelog_"
+	issueLogTableName string = "issuelog"
 )
 
 // IssueLogModel comments for issue
 type IssueLogModel struct {
-	ID        int64 `orm:"index;pk"`
-	IssueID   int64
+	ID        int64  `orm:"pk;index;auto"`
+	IssueID   int64  `orm:"index"`
 	Content   string `orm:"size(4096)"`
 	CreatorID int64
 	Time      TimeInterval
+	PrvStatus int64 // 老的issue状态
+	NewStatus int64 // 新的issue状态
 }
 
 func init() {
 	beego.Info("init()")
-	orm.RegisterModelWithPrefix(kIssueLogTablePrefix, new(IssueLogModel))
+	orm.RegisterModel(new(IssueLogModel))
 }
 
 // TableName db table for storage
 func (c *IssueLogModel) TableName() string {
-	beego.Info("TableName()")
-	return tableNameByIssueID(c.IssueID)
-}
-
-func tableNameByIssueID(issueID int64) string {
-	return strconv.FormatInt(issueID, 10)
+	return issueLogTableName
 }
 
 // AddComment new comment for issue
-func AddComment(issueID, creatorID int64, content string) (*IssueLogModel, error) {
+func AddComment(issueID, creatorID, prvStatus, newStatus int64, content string) (*IssueLogModel, error) {
 
 	newComment := &IssueLogModel{
 		IssueID:   issueID,
 		CreatorID: creatorID,
 		Content:   content,
 		Time:      TimeInterval(utils.TimeIntervalSince1970()),
+
+		PrvStatus: prvStatus,
+		NewStatus: newStatus,
 	}
 
 	o := GetOrmObject()
@@ -62,7 +61,7 @@ func AddComment(issueID, creatorID int64, content string) (*IssueLogModel, error
 // RemoveComment delete comment with comment id in issue
 func RemoveComment(issueID, commentID int64) error {
 
-	o, _ := GetQuerySeterWithTable(fmt.Sprintf("%s%s", kIssueLogTablePrefix, tableNameByIssueID(issueID)))
+	o, _ := GetQuerySeterWithTable(issueLogTableName)
 
 	comm := &IssueLogModel{ID: commentID}
 	_, err := o.Delete(comm)
@@ -76,7 +75,12 @@ func CommentWithRange(issueID int64, low, count int) ([]IssueLogModel, error) {
 	comms := []IssueLogModel{}
 
 	o := GetOrmObject()
-	sqlQuery := fmt.Sprintf("SELECT * FROM %s%s LIMIT %d OFFSET %d", kIssueLogTablePrefix, tableNameByIssueID(issueID), count, low)
+	sqlQuery :=
+		fmt.Sprintf("SELECT * FROM %s WHERE issue_i_d == %d LIMIT %d OFFSET %d",
+			issueLogTableName,
+			issueID,
+			count,
+			low)
 	rawResult := o.Raw(sqlQuery)
 
 	_, err := rawResult.QueryRows(&comms)
@@ -94,9 +98,9 @@ func AllCommentsForIssue(issueID int64) ([]IssueLogModel, error) {
 }
 
 // SortCommentByTime sort the comment by time
-func SortCommentByTime(comms *[]IssueLogModel) {
+func SortCommentByTime(comms []IssueLogModel) {
 
 	sort.Slice(comms, func(commA, commB int) bool {
-		return (*comms)[commA].Time > (*comms)[commB].Time
+		return comms[commA].Time > comms[commB].Time
 	})
 }

@@ -97,7 +97,7 @@ var AllReproductabilities = []BugReproductableModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID               IndexType    `orm:"index;pk"`       // index
+	ID               IndexType    `orm:"index;pk;auto"`  // index
 	Title            string       `orm:"size(512)"`      // bug title
 	Description      string       `orm:"size(4096)"`     // description about bug
 	Version          string       `orm:"null"`           // test version number
@@ -298,15 +298,15 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 // BugWithID fetch bug with id
 func BugWithID(id int64) (*BugModel, error) {
 
+	beego.Info("BugWithID: ", id)
 	pbug := &BugModel{ID: IndexType(id)}
 
-	_, qs := GetQuerySeterWithTable(BugsTable)
-	filterErr := qs.Filter("id", id).One(pbug)
-	if filterErr != nil {
+	o := GetOrmObject()
+	err := o.Read(pbug)
 
-		beego.Error(filterErr)
-
-		return nil, filterErr
+	if err != nil {
+		beego.Error(err)
+		return nil, err
 	}
 
 	return pbug, nil
@@ -338,23 +338,13 @@ func AllBugsData() ([]BugModel, error) {
 }
 
 // UpdateBug update bug model data
-func UpdateBug(id int64, params map[string]interface{}) error {
+func UpdateBug(pBug BugModel) error {
 
-	_, qs := GetQuerySeterWithTable(BugsTable)
-	_, err := BugWithID(id)
+	o := GetOrmObject()
+	_, err := o.Update(&pBug)
 
 	if err != nil {
 		beego.Error(err)
-
-		return err
-	}
-
-	beego.Info(params)
-
-	_, err = qs.Filter("id", id).Update(params)
-	if err != nil {
-		beego.Error(err)
-
 		return err
 	}
 

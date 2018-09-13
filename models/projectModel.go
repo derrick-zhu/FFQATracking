@@ -14,7 +14,7 @@ type ProjectType int64
 
 // ProjectModel class for bug list project
 type ProjectModel struct {
-	ID      IndexType `orm:"index;pk"`
+	ID      IndexType `orm:"index;pk;auto"`
 	Title   string    `orm:"index;size(128)"`
 	Creator IndexType
 	Owner   IndexType

@@ -20,8 +20,8 @@ func init() {
 	beego.Router("/issue", &controllers.IssueController{})
 	beego.AutoRouter(&controllers.IssueController{})
 
-	beego.Router("/issuedetail/:issue", &controllers.IssueDetailController{})
-	beego.AutoRouter(&controllers.IssueDetailController{})
+	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})
+	beego.Router("/issuedetail/:issue(\\d+)/newlog", &controllers.IssueDetailController{}, "post:SubmitNewLog")
 
 	beego.Router("/weatherDemo", &controllers.WeatherDemoController{})
 }

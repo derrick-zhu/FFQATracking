@@ -15,7 +15,7 @@ func MD5(origin string) string {
 	io.WriteString(digist, origin)
 	result := fmt.Sprintf("%s", digist.Sum(nil))
 
-	beego.Debug(fmt.Sprintf("`MD5`: %s -> %s", origin, result))
+	//	beego.Debug(fmt.Sprintf("`MD5`: %s -> %s", origin, result))
 
 	return result
 }
@@ -24,7 +24,7 @@ func MD5(origin string) string {
 func Base64Encode(origin string) string {
 	result := base64.StdEncoding.EncodeToString([]byte(origin))
 
-	beego.Debug(fmt.Sprintf("`Base64Encode`: %s -> %s", origin, result))
+	// beego.Debug(fmt.Sprintf("`Base64Encode`: %s -> %s", origin, result))
 	return result
 }
 
@@ -35,6 +35,6 @@ func Base64Decode(encoded string) string {
 		beego.Error(fmt.Sprintf("decode error: %s", err))
 		return ""
 	}
-	beego.Debug("`Base64Decode`: %s -> %s", encoded, result)
+	// beego.Debug("`Base64Decode`: %s -> %s", encoded, result)
 	return string(result)
 }

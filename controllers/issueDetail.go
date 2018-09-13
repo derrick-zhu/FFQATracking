@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"FFQATracking/biz"
 	"FFQATracking/constants"
 	"FFQATracking/models"
 	"fmt"
@@ -23,8 +24,6 @@ type IssueDetailController struct {
 func (c *IssueDetailController) Get() {
 	c.FFBaseController.Get()
 
-	beego.Info(c.Ctx.Input)
-
 	var err error
 	c.issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
 	if err != nil {
@@ -34,11 +33,68 @@ func (c *IssueDetailController) Get() {
 	}
 	beego.Info(fmt.Sprintf("issue Id: %d", c.issueID))
 
+	if c.currentIssue, err = models.BugWithID(c.issueID); err != nil {
+		beego.Error(err)
+		c.Redirect("/issuelist", 302)
+		return
+	}
+
 	c.initVariables()
 	c.initLogHistory()
 	c.initPageContent()
 
 	c.TplName = "issueDetail.html"
+}
+
+// SubmitNewLog handle POST rquest to append new issue log.
+func (c *IssueDetailController) SubmitNewLog() {
+	c.FFBaseController.Post()
+
+	beego.Debug(c.Ctx.Input)
+	beego.Debug(c.Input())
+	beego.Debug(">>>> new comment for issue: " + c.Ctx.Input.Param(":issue"))
+	beego.Debug(">>>> new comment: " + c.Input().Get("issue_comment"))
+
+	if biz.HadLogin(c.Ctx) == false {
+		c.Redirect("/login", 302)
+		return
+	}
+
+	var currAcc *models.AccountModel
+	var err error
+
+	c.issueID, _ = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+	logContent := c.Input().Get("issue_comment")
+	newStatus, _ := strconv.ParseInt(c.Input().Get("picker-Status"), 10, 64)
+
+	if c.currentIssue, err = models.BugWithID(c.issueID); err != nil {
+		beego.Error(err)
+		c.Redirect("/issuelist", 302)
+		return
+	}
+	prvStatus := c.currentIssue.Status
+	c.currentIssue.Status = newStatus
+
+	if currAcc, err = biz.CurrentAccount(c.Ctx); err != nil {
+		beego.Error(err)
+		c.Redirect("#", 302)
+		return
+	}
+
+	_, err = models.AddComment(c.issueID, int64(currAcc.ID), prvStatus, newStatus, logContent)
+	if err != nil {
+		beego.Error(err)
+		c.Redirect("#", 302)
+		return
+	}
+
+	if err = models.UpdateBug(*c.currentIssue); err != nil {
+		beego.Error(err)
+		c.Redirect("#", 302)
+		return
+	}
+
+	c.Redirect("#", 302)
 }
 
 // initVariables issue's properties
@@ -106,7 +162,9 @@ func (c *IssueDetailController) initLogHistory() {
 		return
 	}
 
-	models.SortCommentByTime(&c.logHistory)
+	models.SortCommentByTime(c.logHistory)
+
+	beego.Info(c.logHistory)
 }
 
 // initPageContent initial settings in current page

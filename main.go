@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	orm.Debug = false
+	orm.Debug = true
 	models.RegisterDB(false)
 }
 

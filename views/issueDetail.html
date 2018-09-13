@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueDetail.css">
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueList.css">
     <script type="text/javascript" src="/static/js/features/issue.js"></script>
+    <script type="text/javascript" src="/static/js/features/issueDetail.js"></script>
 </head>
 
 <body>
@@ -19,7 +20,7 @@
     {{$issue := .issueData}}
 
     <div class="container">
-        <form role="form" method="POST" action="#">
+        <form role="form" method="POST" action="/issuedetail/{{$issue.ID}}/newlog">
             <div>
                 <h1>Issue: <small><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></small></h1>
             </div>
@@ -45,12 +46,19 @@
             <div class="form-group">
                 <label>New Comment:</label>
                 <textarea name="issue_comment" id="issue_comment" cols="30" rows="10" placeholder="Write new comment here."></textarea>
-                <input style="margin-top:1em;" type="button" class="btn btn-default" value="Submit">
+                <input style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" onclick="return issueDetailSubmitNewLog();">
             </div>
 
             {{template "seperate-line"}}
 
             <!-- 历史记录区 -->
+            <div>
+                <label>Comment history:</label>
+
+                {{range $index, $log := .issueLogHistory}}
+                <p>{{$index}} - {{$log}}</p>
+                {{end}}
+            </div>
 
         </form>
     </div>
