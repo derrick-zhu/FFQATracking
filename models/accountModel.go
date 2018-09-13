@@ -39,7 +39,7 @@ type AccountModel struct {
 	Name   string       `orm:"index;size(128)"`
 	Avatar string       `orm:"null;size(1024)"`
 	Email  string       `orm:"index;size(1024)"` // readonly
-	Create TimeInterval `orm:"index"`            // readonly
+	Create TimeInterval // readonly
 	Rule   RuleType
 	Job    JobType
 	Pwd    string

@@ -16,7 +16,7 @@ type IssueDetailController struct {
 	issueDetailData TIssueNewCollectionType
 	issueID         int64
 	currentIssue    *models.BugModel
-	commentHistory  []models.CommentModel
+	logHistory      []models.IssueLogModel
 }
 
 // Get handle HTTP Get request
@@ -35,7 +35,7 @@ func (c *IssueDetailController) Get() {
 	beego.Info(fmt.Sprintf("issue Id: %d", c.issueID))
 
 	c.initVariables()
-	c.initCommentHistory()
+	c.initLogHistory()
 	c.initPageContent()
 
 	c.TplName = "issueDetail.html"
@@ -97,23 +97,23 @@ func (c *IssueDetailController) initVariables() {
 	}
 }
 
-func (c *IssueDetailController) initCommentHistory() {
+func (c *IssueDetailController) initLogHistory() {
 
 	var err error
-	c.commentHistory, err = models.AllCommentsForIssue(c.issueID)
+	c.logHistory, err = models.AllCommentsForIssue(c.issueID)
 	if err != nil {
 		beego.Error(err)
 		return
 	}
 
-	models.SortCommentByTime(&c.commentHistory)
+	models.SortCommentByTime(&c.logHistory)
 }
 
 // initPageContent initial settings in current page
 func (c *IssueDetailController) initPageContent() {
 
 	c.Data[constants.KeyIssueHTMLValue] = c.issueDetailData
-	c.Data[constants.KeyIssueCommentHistory] = c.commentHistory
+	c.Data[constants.KeyIssueLogHistory] = c.logHistory
 	c.Data[constants.KeyIssueData] = c.currentIssue
 }
 

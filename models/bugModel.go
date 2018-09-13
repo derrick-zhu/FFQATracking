@@ -97,19 +97,19 @@ var AllReproductabilities = []BugReproductableModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID               IndexType    `orm:"index"`      // index
-	Title            string       `orm:"size(512)"`  // bug title
-	Description      string       `orm:"size(4096)"` // description about bug
-	Version          string       `orm:"index"`      // test version number
-	Source           string       // source feature request
-	Target           string       `orm:"index"` // target milestone
-	DevPeriod        string       `orm:"index"` // sprint
+	ID               IndexType    `orm:"index;pk"`       // index
+	Title            string       `orm:"size(512)"`      // bug title
+	Description      string       `orm:"size(4096)"`     // description about bug
+	Version          string       `orm:"null"`           // test version number
+	Source           string       `orm:"null;size(128)"` // source feature request
+	Target           string       `orm:"null;size(128)"` // target milestone
+	DevPeriod        string       `orm:"null;size(128)"` // sprint
 	SolveDate        TimeInterval // date solving
 	CreateDate       TimeInterval // date creating
-	Status           int64        `orm:"index"` // bug current status
-	Priority         int64        `orm:"index"` // bug's priority type
-	Creator          IndexType    `orm:"index"` // bug's founder
-	Assignor         IndexType    `orm:"index"` // who should solve this bug
+	Status           int64        // bug current status
+	Priority         int64        // bug's priority type
+	Creator          IndexType    // bug's founder
+	Assignor         IndexType    // who should solve this bug
 	Reproductability int64        // 重现概率 0~100
 }
 

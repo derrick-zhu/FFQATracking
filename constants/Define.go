@@ -15,12 +15,12 @@ const (
 
 	/// new issue
 
-	KeyIssueHTMLValue      = "issueHTMLValue"
-	KeyIssueCommentHistory = "issueCommentHistory"
+	KeyIssueHTMLValue = "issueHTMLValue"
 
 	/// issue detail
 
-	KeyIssueData = "issueData"
+	KeyIssueData       = "issueData"
+	KeyIssueLogHistory = "issueLogHistory"
 
 	// KeyIsHome flag for show HOME page.
 	KeyIsHome      = "IsHome"
