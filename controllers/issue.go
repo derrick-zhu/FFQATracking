@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	issueIDPrefix = "picker-"
+	issueIDPrefix = ""
 
 	IssueTitleKey        = "Title"
 	IssueDescriptionKey  = "Description"
