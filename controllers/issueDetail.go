@@ -65,7 +65,7 @@ func (c *IssueDetailController) SubmitNewLog() {
 
 	c.issueID, _ = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
 	logContent := c.Input().Get("issue_comment")
-	newStatus, _ := strconv.ParseInt(c.Input().Get("picker-Status"), 10, 64)
+	newStatus, _ := strconv.ParseInt(c.Input().Get("Status"), 10, 64)
 
 	if c.currentIssue, err = models.BugWithID(c.issueID); err != nil {
 		beego.Error(err)
@@ -95,6 +95,11 @@ func (c *IssueDetailController) SubmitNewLog() {
 	}
 
 	c.Redirect("#", 302)
+}
+
+// UpdateIssue issue's properties changed.
+func (c *IssueDetailController) UpdateIssue() {
+
 }
 
 // initVariables issue's properties
