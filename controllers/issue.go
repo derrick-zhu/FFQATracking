@@ -17,7 +17,7 @@ const (
 	IssueDescriptionKey  = "Description"
 	IssueStatusKey       = "Status"
 	IssuePriorityKey     = "Priority"
-	IssueReproductionKey = "Reproduction"
+	IssueReproductionKey = "Reproductability"
 	IssueCreatorKey      = "Creator"
 	IssueAssignorKey     = "Assignor"
 )
@@ -31,6 +31,7 @@ func issuePickerKey(key string) string {
 
 // IssuePickerTemplateModel class template
 type IssuePickerTemplateModel struct {
+	ID           int64 // just ID for any index num
 	Title        string
 	Identifier   string
 	DefaultValue int64

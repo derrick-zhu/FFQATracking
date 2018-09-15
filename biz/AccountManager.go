@@ -117,7 +117,7 @@ func (am *AccountManager) CurrentAccount(ctx *context.Context) (*models.AccountM
 
 // AccountWithID fetch user account with uid
 func (am *AccountManager) AccountWithID(id int64) (*models.AccountModel, error) {
-	return models.AccountWithID(models.IndexType(id))
+	return models.AccountWithID(id)
 }
 
 // AccountWithUname fetch user account with uname

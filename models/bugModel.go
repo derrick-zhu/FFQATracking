@@ -97,20 +97,20 @@ var AllReproductabilities = []BugReproductableModel{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID               IndexType    `orm:"index;pk;auto"`  // index
-	Title            string       `orm:"size(512)"`      // bug title
-	Description      string       `orm:"size(4096)"`     // description about bug
-	Version          string       `orm:"null"`           // test version number
-	Source           string       `orm:"null;size(128)"` // source feature request
-	Target           string       `orm:"null;size(128)"` // target milestone
-	DevPeriod        string       `orm:"null;size(128)"` // sprint
-	SolveDate        TimeInterval // date solving
-	CreateDate       TimeInterval // date creating
-	Status           int64        // bug current status
-	Priority         int64        // bug's priority type
-	Creator          IndexType    // bug's founder
-	Assignor         IndexType    // who should solve this bug
-	Reproductability int64        // 重现概率 0~100
+	ID               int64  `orm:"index;pk;auto"`  // index
+	Title            string `orm:"size(512)"`      // bug title
+	Description      string `orm:"size(4096)"`     // description about bug
+	Version          string `orm:"null"`           // test version number
+	Source           string `orm:"null;size(128)"` // source feature request
+	Target           string `orm:"null;size(128)"` // target milestone
+	DevPeriod        string `orm:"null;size(128)"` // sprint
+	SolveDate        int64  // date solving
+	CreateDate       int64  // date creating
+	Status           int64  // bug current status
+	Priority         int64  // bug's priority type
+	Creator          int64  // bug's founder
+	Assignor         int64  // who should solve this bug
+	Reproductability int64  // 重现概率 0~100
 }
 
 func init() {
@@ -280,9 +280,9 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 		Description:      description,
 		Status:           status,
 		Priority:         priority,
-		Creator:          IndexType(creatorID),
-		CreateDate:       TimeInterval(utils.TimeIntervalSince1970()),
-		Assignor:         IndexType(assignorID),
+		Creator:          creatorID,
+		CreateDate:       utils.TimeIntervalSince1970(),
+		Assignor:         assignorID,
 		Reproductability: reproductRatio,
 	}
 
@@ -299,7 +299,7 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 func BugWithID(id int64) (*BugModel, error) {
 
 	beego.Info("BugWithID: ", id)
-	pbug := &BugModel{ID: IndexType(id)}
+	pbug := &BugModel{ID: id}
 
 	o := GetOrmObject()
 	err := o.Read(pbug)
@@ -352,7 +352,7 @@ func UpdateBug(pBug BugModel) error {
 }
 
 // DeleteBug delete bug with id
-func DeleteBug(id IndexType) error {
+func DeleteBug(id int64) error {
 
 	o, _ := GetQuerySeterWithTable(BugsTable)
 

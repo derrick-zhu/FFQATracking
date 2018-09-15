@@ -4,6 +4,7 @@ import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
 	"FFQATracking/models"
+	"FFQATracking/utils"
 
 	"github.com/astaxie/beego"
 )
@@ -32,42 +33,45 @@ func (c *RegisterController) Post() {
 
 	beego.Info("Get ready for register account email: " + email + ", pwd: " + pwd)
 
-	if biz.HasAccountIfNot(email) == true {
+	for true {
+		if biz.HasAccountIfNot(email) == true {
 
+			result, err = biz.Login(c.Ctx, email, pwd)
+			if err != nil || result == false {
+
+				beego.Error(err)
+				utils.MakeRedirectURL(&c.Data, 302, "#", "")
+				break
+			}
+
+			utils.MakeRedirectURL(&c.Data, 302, "/", "")
+			break
+		}
+
+		beego.Info("Do registering ...")
+		result, _, err = biz.Register(email, pwd, models.RuleUser)
+		if err != nil || result == false {
+
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
+		}
+
+		beego.Info("Do login ...")
 		result, err = biz.Login(c.Ctx, email, pwd)
 		if err != nil || result == false {
 
 			beego.Error(err)
-			c.Redirect("#", 302)
-			return
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
 		}
 
-		c.Redirect("/", 302)
-		return
+		beego.Info("Finish register progress ...")
+		utils.MakeRedirectURL(&c.Data, 302, "/", "")
+
+		break
 	}
 
-	beego.Info("Do registering ...")
-	result, _, err = biz.Register(email, pwd, models.RuleUser)
-	if err != nil || result == false {
-
-		beego.Error(err)
-		c.Redirect("#", 302)
-
-		return
-	}
-
-	beego.Info("Do login ...")
-	result, err = biz.Login(c.Ctx, email, pwd)
-	if err != nil || result == false {
-
-		beego.Error(err)
-		c.Redirect("#", 302)
-
-		return
-	}
-
-	beego.Info("Finish register progress ...")
-	c.Redirect("/", 302)
-
+	c.ServeJSON()
 	return
 }

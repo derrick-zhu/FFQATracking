@@ -1,24 +1,13 @@
-
-function didSelectWith(id, type, desc, extID) {
-
-}
-
-
-function issueDetailUpdate(issueId) {
-    
-}
-
-function issueDetailSubmitNewLog(issueId) {
-    
+function regiseter() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "/issuedetail/" + issueId + "/newlog",
-        data: $('#frmIssueDetail').serialize(),
+        url: "/register",
+        data: $('#frmRegister').serialize(),
         success: function (result) {
             console.log(result);
             if (result && (result.Code == 200 || result.Code == 302)) {
-                
+                window.location.href = result.URL;
             }
         },
         error: function (result) {

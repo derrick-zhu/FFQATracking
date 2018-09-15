@@ -1,5 +1,5 @@
 
-function didSelectWith(id, type, desc) 
+function didSelectWith(id, type, desc, extID) 
 {
     console.log(didSelectWith.caller);
     console.log('id: ' + id + ', type:' + type + ', param:' + desc);

@@ -16,10 +16,10 @@ const (
 )
 
 // IndexType all data type of Index
-type IndexType int64
+// type IndexType int64
 
 // TimeInterval time ticks count
-type TimeInterval int64
+// type TimeInterval int64
 
 // RegisterDB register and init the DB
 func RegisterDB(force bool) {

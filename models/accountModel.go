@@ -35,11 +35,11 @@ const (
 
 // AccountModel user account model
 type AccountModel struct {
-	ID     IndexType    `orm:"pk;auto"` // readonly
-	Name   string       `orm:"index;size(128)"`
-	Avatar string       `orm:"null;size(1024)"`
-	Email  string       `orm:"index;size(1024)"` // readonly
-	Create TimeInterval // readonly
+	ID     int64  `orm:"pk;auto"` // readonly
+	Name   string `orm:"index;size(128)"`
+	Avatar string `orm:"null;size(1024)"`
+	Email  string `orm:"index;size(1024)"` // readonly
+	Create int64  // readonly
 	Rule   RuleType
 	Job    JobType
 	Pwd    string
@@ -83,7 +83,7 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 
 	account := &AccountModel{Name: name,
 		Email:  email,
-		Create: TimeInterval(utils.TimeIntervalSince1970()),
+		Create: utils.TimeIntervalSince1970(),
 	}
 
 	o, qs := GetQuerySeterWithTable(AccountTable)
@@ -129,7 +129,7 @@ func AccountWithEmail(email string) (*AccountModel, error) {
 }
 
 // AccountWithID get account with id
-func AccountWithID(id IndexType) (*AccountModel, error) {
+func AccountWithID(id int64) (*AccountModel, error) {
 
 	acc := &AccountModel{ID: id}
 
@@ -170,7 +170,7 @@ func AllAccounts() ([]AccountModel, error) {
 }
 
 // UpdateAccount [WIP] update account's content
-func UpdateAccount(id IndexType, params map[string]interface{}) error {
+func UpdateAccount(id int64, params map[string]interface{}) error {
 
 	_, qs := GetQuerySeterWithTable(AccountTable)
 
@@ -195,7 +195,7 @@ func UpdateAccount(id IndexType, params map[string]interface{}) error {
 }
 
 // DeleteAccount [DONE] delete account with id
-func DeleteAccount(id IndexType) error {
+func DeleteAccount(id int64) error {
 
 	o, _ := GetQuerySeterWithTable(AccountTable)
 

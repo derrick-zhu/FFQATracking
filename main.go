@@ -4,6 +4,8 @@ import (
 	"FFQATracking/models"
 	_ "FFQATracking/routers"
 
+	"github.com/astaxie/beego/logs"
+
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/astaxie/beego"
@@ -11,6 +13,8 @@ import (
 )
 
 func init() {
+	logs.EnableFuncCallDepth(true)
+	logs.SetLogFuncCallDepth(10)
 	orm.Debug = true
 	models.RegisterDB(false)
 }

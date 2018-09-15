@@ -4,6 +4,9 @@ import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
 	"FFQATracking/utils"
+	"fmt"
+
+	"github.com/astaxie/beego"
 )
 
 // LoginController is the page for login
@@ -24,17 +27,25 @@ func (c *LoginController) Signin() {
 	email := c.Input().Get(constants.KeyEMAIL)
 	pwd := c.Input().Get(constants.KeyPWD)
 
-	result, acc := biz.CheckAccount(email, pwd)
-	if result == true {
+	beego.Debug(fmt.Sprintf("email: %s, pwd: %s", email, pwd))
 
-		utils.CookieInstance().Set(c.Ctx, constants.KeyUID, utils.I64toa(int64(acc.ID)), -1)
-		utils.CookieInstance().Set(c.Ctx, constants.KeyEMAIL, email, -1)
-		utils.CookieInstance().SetSecret(c.Ctx, constants.KeyPWD, pwd, -1)
+	for true {
+		result, acc := biz.CheckAccount(email, pwd)
+		if result == true {
 
-		c.Redirect("/", 302)
-		return
+			utils.CookieInstance().Set(c.Ctx, constants.KeyUID, utils.I64toa(int64(acc.ID)), -1)
+			utils.CookieInstance().Set(c.Ctx, constants.KeyEMAIL, email, -1)
+			utils.CookieInstance().SetSecret(c.Ctx, constants.KeyPWD, pwd, -1)
+
+			utils.MakeRedirectURL(&c.Data, 302, "/", "")
+			break
+		}
+
+		utils.MakeRedirectURL(&c.Data, 302, "/login/error", "")
+		break
 	}
-	c.Redirect("/login/error", 302)
+
+	c.ServeJSON()
 }
 
 // Signup for handling signup GET request

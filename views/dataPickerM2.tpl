@@ -1,14 +1,12 @@
-{{define "dataPickerTemplate"}}    
+{{define "dataPickerMark2"}}    
 <!-- 
     param:
-        ID              int64       // external index for anything
         title           string
         Identifier      string <out>
         DefaultValue    int64       // this is a index,
         collection      []interface{}
  -->
  
- {{$extID := .ID}}
  {{$title := .Title}}
  {{$defaultContent := (index .Collection .DefaultValue | GetBriefTitleFromModel)}}
  {{$defaultValue := (index .Collection .DefaultValue | GetTypeFromModel)}}
@@ -26,11 +24,11 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
 
-            <ul class="dropdown-menu" style="max-height: 20em; overflow-y: scroll">
+            <ul id="item-selector" class="dropdown-menu" style="max-height: 20em; overflow-y: scroll">
                 {{range $index, $item := $data}}
                     {{$itemValue := ($item | GetTypeFromModel)}}
                     {{$itemContent := ($item | GetBriefTitleFromModel)}}
-                    <li><a onclick="return didSelectWith('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$.extID}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
+                    <li><a value="{{$itemValue}}">{{$itemContent}}</a></li>
                 {{end}}
             </ul>
         </div>

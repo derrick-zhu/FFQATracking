@@ -20,7 +20,7 @@ type IssueLogModel struct {
 	IssueID   int64  `orm:"index"`
 	Content   string `orm:"size(4096)"`
 	CreatorID int64
-	Time      TimeInterval
+	Time      int64
 	PrvStatus int64 // 老的issue状态
 	NewStatus int64 // 新的issue状态
 }
@@ -42,7 +42,7 @@ func AddComment(issueID, creatorID, prvStatus, newStatus int64, content string) 
 		IssueID:   issueID,
 		CreatorID: creatorID,
 		Content:   content,
-		Time:      TimeInterval(utils.TimeIntervalSince1970()),
+		Time:      utils.TimeIntervalSince1970(),
 
 		PrvStatus: prvStatus,
 		NewStatus: newStatus,
@@ -70,9 +70,9 @@ func RemoveComment(issueID, commentID int64) error {
 }
 
 // CommentWithRange fetch comments for issue with its id, in range [low, low+count)
-func CommentWithRange(issueID int64, low, count int) ([]IssueLogModel, error) {
+func CommentWithRange(issueID int64, low, count int) (*[]IssueLogModel, error) {
 
-	comms := []IssueLogModel{}
+	comms := &[]IssueLogModel{}
 
 	o := GetOrmObject()
 	sqlQuery :=
@@ -83,24 +83,26 @@ func CommentWithRange(issueID int64, low, count int) ([]IssueLogModel, error) {
 			low)
 	rawResult := o.Raw(sqlQuery)
 
-	_, err := rawResult.QueryRows(&comms)
+	_, err := rawResult.QueryRows(comms)
 	if err != nil {
 		beego.Error(err)
 		return nil, err
 	}
 
+	beego.Debug(comms)
+
 	return comms, nil
 }
 
 // AllCommentsForIssue fetch all comments for issue with its id
-func AllCommentsForIssue(issueID int64) ([]IssueLogModel, error) {
+func AllCommentsForIssue(issueID int64) (*[]IssueLogModel, error) {
 	return CommentWithRange(issueID, 0, -1)
 }
 
 // SortCommentByTime sort the comment by time
-func SortCommentByTime(comms []IssueLogModel) {
+func SortCommentByTime(comms *[]IssueLogModel) {
 
-	sort.Slice(comms, func(commA, commB int) bool {
-		return comms[commA].Time > comms[commB].Time
+	sort.Slice((*comms), func(commA, commB int) bool {
+		return (*comms)[commA].Time > (*comms)[commB].Time
 	})
 }
