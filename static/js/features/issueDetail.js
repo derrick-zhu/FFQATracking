@@ -1,4 +1,5 @@
-function didSelectWith (id, type, desc, extID) {
+function didSelectWith(id, type, desc, extID) {
+
   console.log(didSelectWith.caller);
   console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
@@ -8,9 +9,10 @@ function didSelectWith (id, type, desc, extID) {
   issueDetailUpdate(extID, id, type);
 }
 
-function issueDetailUpdate (issueId, key, value) {
-    var param = Object.create(null);
-    param[key] = value;
+function issueDetailUpdate(issueId, key, value) {
+
+  var param = Object.create(null);
+  param[key] = value;
 
   $.ajax({
     dataType: 'json',
@@ -29,7 +31,8 @@ function issueDetailUpdate (issueId, key, value) {
   });
 }
 
-function issueDetailSubmitNewLog (issueId) {
+function issueDetailSubmitNewLog(issueId) {
+
   $.ajax({
     type: 'POST',
     dataType: 'json',
@@ -38,6 +41,7 @@ function issueDetailSubmitNewLog (issueId) {
     success: function (result) {
       console.log(result);
       if (result && (result.Code == 200 || result.Code == 302)) {
+        
       }
     },
     error: function (result) {

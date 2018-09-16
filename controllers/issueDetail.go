@@ -14,11 +14,6 @@ import (
 // IssueDetailController controller for display/edit issue in detail
 type IssueDetailController struct {
 	FFBaseController
-
-	// issueDetailData TIssueNewCollectionType
-	// issueID         int64
-	// currentIssue    *models.BugModel
-	// logHistory      []models.IssueLogModel
 }
 
 // Get handle HTTP Get request
