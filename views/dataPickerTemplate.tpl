@@ -30,7 +30,7 @@
                 {{range $index, $item := $data}}
                     {{$itemValue := ($item | GetTypeFromModel)}}
                     {{$itemContent := ($item | GetBriefTitleFromModel)}}
-                    <li><a onclick="return didSelectWith('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$.extID}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
+                    <li><a onclick="return didSelectWith('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$extID}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
                 {{end}}
             </ul>
         </div>

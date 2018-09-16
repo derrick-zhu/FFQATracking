@@ -148,8 +148,25 @@ func (c *IssueDetailController) SubmitNewLog() {
 func (c *IssueDetailController) UpdateIssue() {
 	c.FFBaseController.Post()
 
-	beego.Debug(c.Ctx.Input)
+	beego.Debug(">>>>> UpdateIssue ->")
+	beego.Info(c.Ctx.Input)
 	beego.Debug(c.Input())
+
+	var inputMap = make(map[string]interface{})
+	for k, a := range c.Input() {
+		inputMap[k] = a[0]
+	}
+
+	var pIssue = &models.BugModel{}
+	utils.MapToStruct(inputMap, pIssue)
+
+	beego.Error(inputMap)
+	beego.Error(pIssue)
+
+	for true {
+		// nIssueID := c.Ctx.Input.Param(":issue")
+		break
+	}
 
 	utils.MakeRedirectURL(&c.Data, 302, "#", "")
 	c.ServeJSON()
@@ -208,9 +225,9 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	allAssignors.ID = nIssueID
 
 	*dataSource = &TIssueNewCollectionType{
-		IssueStatusData,
-		IssuePriorityData,
-		IssueReproductionData,
+		statusData,
+		priorityData,
+		reproductData,
 		allCreators,
 		allAssignors,
 	}
