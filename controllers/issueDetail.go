@@ -152,12 +152,15 @@ func (c *IssueDetailController) UpdateIssue() {
 	beego.Info(c.Ctx.Input)
 	beego.Debug(c.Input())
 
+	nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+
 	var inputMap = make(map[string]interface{})
 	for k, a := range c.Input() {
 		inputMap[k] = a[0]
 	}
 
 	var pIssue = &models.BugModel{}
+	pIssue.ID = nIssueID
 	utils.MapToStruct(inputMap, pIssue)
 
 	beego.Error(inputMap)
