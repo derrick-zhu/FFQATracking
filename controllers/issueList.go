@@ -14,16 +14,24 @@ type IssueListController struct {
 
 // Get for handling issue list page HTTP GET request
 func (c *IssueListController) Get() {
-	c.FFBaseController.Get()
 
+	c.FFBaseController.Get()
 	c.Data[constants.KeyIsIssueList] = 1
 
-	bugs, err := models.BugsWithRange(0, -1)
-	if err != nil {
+	var allBugs *[]models.BugModel
+	var allUsers *[]models.AccountModel
+	var err error
+
+	if allBugs, err = models.AllBugsData(); err != nil {
 		beego.Error(err)
 	}
 
-	c.Data["allIssue"] = bugs
+	if allUsers, err = models.AllAccounts(); err != nil {
+		beego.Error(err)
+	}
+
+	c.Data["allIssue"] = allBugs
+	c.Data["allAccount"] = allUsers
 
 	c.TplName = "issueList.html"
 }

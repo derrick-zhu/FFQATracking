@@ -42,7 +42,7 @@ func AddComment(issueID, creatorID, prvStatus, newStatus int64, content string) 
 		IssueID:   issueID,
 		CreatorID: creatorID,
 		Content:   content,
-		Time:      utils.TimeIntervalSince1970(),
+		Time:      utils.TimeTickSince1970(),
 
 		PrvStatus: prvStatus,
 		NewStatus: newStatus,

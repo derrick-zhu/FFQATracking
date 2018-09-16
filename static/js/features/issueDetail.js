@@ -1,11 +1,11 @@
 function didSelectWith (id, type, desc, extID) {
-  console.log(didSelectWith.caller)
-  console.log('id: ' + id + ', type:' + type + ', param:' + desc)
+  console.log(didSelectWith.caller);
+  console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
-  setInnerHtmlWithID(id + '-btn', desc)
-  setHtmlValueWithID(id, type)
+  setInnerHtmlWithID(id + '-btn', desc);
+  setHtmlValueWithID(id, type);
 
-  issueDetailUpdate(extID, id, type)
+  issueDetailUpdate(extID, id, type);
 }
 
 function issueDetailUpdate (issueId, key, value) {
@@ -18,15 +18,15 @@ function issueDetailUpdate (issueId, key, value) {
     url: '/issuedetail/' + issueId + '/update',
     data: $.param(param),
     success: function (result) {
-      console.log(result)
+      console.log(result);
       if (result && (result.Code == 200 || result.Code == 302)) {
-        window.location.href = result.URL
+        window.location.href = result.URL;
       }
     },
     error: function (result) {
-      console.log(result)
+      console.log(result);
     }
-  })
+  });
 }
 
 function issueDetailSubmitNewLog (issueId) {
@@ -36,12 +36,12 @@ function issueDetailSubmitNewLog (issueId) {
     url: '/issuedetail/' + issueId + '/newlog',
     data: $('#frmIssueDetail').serialize(),
     success: function (result) {
-      console.log(result)
+      console.log(result);
       if (result && (result.Code == 200 || result.Code == 302)) {
       }
     },
     error: function (result) {
-      console.log('Fails in register account with ' + result)
+      console.log('Fails in register account with ' + result);
     }
-  })
+  });
 }

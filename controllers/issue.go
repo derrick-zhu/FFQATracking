@@ -158,7 +158,7 @@ func (c *IssueController) initPageVariables() {
 
 	// cause of making current logged in user as a default creator accout, find and save the index of current accout in the allUser array
 	if acc != nil {
-		for index, eachAcc := range allUsers {
+		for index, eachAcc := range *allUsers {
 			if eachAcc.ID == acc.ID {
 				createorDefaultIndex = index
 			}
@@ -170,7 +170,7 @@ func (c *IssueController) initPageVariables() {
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
 	c.allCreators.DefaultValue = int64(createorDefaultIndex)
-	c.allCreators.Collection = allUsers
+	c.allCreators.Collection = *allUsers
 
 	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
@@ -179,7 +179,7 @@ func (c *IssueController) initPageVariables() {
 	c.allAssignors.Title = IssueAssignorKey
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
 	c.allAssignors.DefaultValue = 0
-	c.allAssignors.Collection = allUsers
+	c.allAssignors.Collection = *allUsers
 
 	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
 }

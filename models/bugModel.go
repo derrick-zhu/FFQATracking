@@ -104,8 +104,9 @@ type BugModel struct {
 	Source           string `orm:"null;size(128)"` // source feature request
 	Target           string `orm:"null;size(128)"` // target milestone
 	DevPeriod        string `orm:"null;size(128)"` // sprint
-	SolveDate        int64  // date solving
 	CreateDate       int64  // date creating
+	SolveDate        int64  // date solving
+	LastUpdateDate   int64  // date about latest update
 	Status           int64  // bug current status
 	Priority         int64  // bug's priority type
 	Creator          int64  // bug's founder
@@ -281,7 +282,7 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 		Status:           status,
 		Priority:         priority,
 		Creator:          creatorID,
-		CreateDate:       utils.TimeIntervalSince1970(),
+		CreateDate:       utils.TimeTickSince1970(),
 		Assignor:         assignorID,
 		Reproductability: reproductRatio,
 	}
@@ -313,9 +314,9 @@ func BugWithID(id int64) (*BugModel, error) {
 }
 
 // BugsWithRange fetch bug data with range [lower, lower + count)
-func BugsWithRange(lower, count int) ([]BugModel, error) {
+func BugsWithRange(lower, count int) (*[]BugModel, error) {
 
-	var result []BugModel
+	var result = &[]BugModel{}
 	var err error
 	var rawResult orm.RawSeter
 
@@ -323,7 +324,7 @@ func BugsWithRange(lower, count int) ([]BugModel, error) {
 	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", BugsTable, count, lower)
 	rawResult = o.Raw(sqlQuery)
 
-	_, err = rawResult.QueryRows(&result)
+	_, err = rawResult.QueryRows(result)
 	if err != nil {
 		return nil, err
 	}
@@ -332,16 +333,16 @@ func BugsWithRange(lower, count int) ([]BugModel, error) {
 }
 
 // AllBugsData fetch all bugs
-func AllBugsData() ([]BugModel, error) {
+func AllBugsData() (*[]BugModel, error) {
 
 	return BugsWithRange(0, -1)
 }
 
 // UpdateBug update bug model data
-func UpdateBug(pBug BugModel) error {
+func UpdateBug(pBug *BugModel) error {
 
 	o := GetOrmObject()
-	_, err := o.Update(&pBug)
+	_, err := o.Update(pBug)
 
 	if err != nil {
 		beego.Error(err)

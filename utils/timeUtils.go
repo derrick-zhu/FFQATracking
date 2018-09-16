@@ -9,8 +9,8 @@ const (
 	TimeLayout = "2006-01-02 15:04"
 )
 
-// TimeIntervalSince1970 fetch time interval since 1970.1.1
-func TimeIntervalSince1970() int64 {
+// TimeTickSince1970 fetch time interval since 1970.1.1
+func TimeTickSince1970() int64 {
 	return time.Now().Unix()
 }
 

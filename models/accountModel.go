@@ -83,7 +83,7 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 
 	account := &AccountModel{Name: name,
 		Email:  email,
-		Create: utils.TimeIntervalSince1970(),
+		Create: utils.TimeTickSince1970(),
 	}
 
 	o, qs := GetQuerySeterWithTable(AccountTable)
@@ -144,8 +144,8 @@ func AccountWithID(id int64) (*AccountModel, error) {
 }
 
 // AccountsWithRange fetch account data with rage [lower, count)
-func AccountsWithRange(lower, count int) ([]AccountModel, error) {
-	var result []AccountModel
+func AccountsWithRange(lower, count int) (*[]AccountModel, error) {
+	var result = &[]AccountModel{}
 	var err error
 	var rawResult orm.RawSeter
 
@@ -153,7 +153,7 @@ func AccountsWithRange(lower, count int) ([]AccountModel, error) {
 	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", AccountTable, count, lower)
 	rawResult = o.Raw(sqlQuery)
 
-	_, err = rawResult.QueryRows(&result)
+	_, err = rawResult.QueryRows(result)
 	if err != nil {
 
 		beego.Error(err)
@@ -164,7 +164,7 @@ func AccountsWithRange(lower, count int) ([]AccountModel, error) {
 }
 
 // AllAccounts fetch all account
-func AllAccounts() ([]AccountModel, error) {
+func AllAccounts() (*[]AccountModel, error) {
 
 	return AccountsWithRange(0, -1)
 }

@@ -148,30 +148,50 @@ func (c *IssueDetailController) SubmitNewLog() {
 func (c *IssueDetailController) UpdateIssue() {
 	c.FFBaseController.Post()
 
-	beego.Debug(">>>>> UpdateIssue ->")
-	beego.Info(c.Ctx.Input)
-	beego.Debug(c.Input())
-
-	nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
-
-	var inputMap = make(map[string]interface{})
-	for k, a := range c.Input() {
-		inputMap[k] = a[0]
-	}
-
-	var pIssue = &models.BugModel{}
-	pIssue.ID = nIssueID
-	utils.MapToStruct(inputMap, pIssue)
-
-	beego.Error(inputMap)
-	beego.Error(pIssue)
-
 	for true {
-		// nIssueID := c.Ctx.Input.Param(":issue")
+		var pIssue *models.BugModel
+		var err error
+		nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+
+		// fetch bug data
+		if pIssue, err = models.BugWithID(nIssueID); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
+		}
+
+		beego.Info(pIssue)
+
+		// get query params
+		var inputMap = make(map[string]interface{})
+		for k, a := range c.Input() {
+			inputMap[k] = a[0]
+		}
+
+		beego.Info(inputMap)
+
+		// update bug data property
+		if err = utils.MapToStruct(inputMap, pIssue); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
+		}
+
+		// update the latest edit date
+		pIssue.LastUpdateDate = utils.TimeTickSince1970()
+
+		beego.Info(pIssue)
+
+		if err = models.UpdateBug(pIssue); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
+		}
+
+		utils.MakeRedirectURL(&c.Data, 302, "#", "")
 		break
 	}
 
-	utils.MakeRedirectURL(&c.Data, 302, "#", "")
 	c.ServeJSON()
 }
 
@@ -179,7 +199,7 @@ func (c *IssueDetailController) UpdateIssue() {
 func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64) {
 
 	var err error
-	var allUsers []models.AccountModel
+	var allUsers *[]models.AccountModel
 
 	aIssue, err = models.BugWithID(nIssueID)
 	if err != nil {
@@ -209,8 +229,8 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	allCreators := IssuePickerTemplateModel{}
 	allCreators.Title = IssueCreatorKey
 	allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allCreators.Title)
-	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), allUsers)
-	allCreators.Collection = allUsers
+	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), *allUsers)
+	allCreators.Collection = *allUsers
 	allCreators.ID = nIssueID
 
 	//
@@ -223,8 +243,8 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	allAssignors := IssuePickerTemplateModel{}
 	allAssignors.Title = IssueAssignorKey
 	allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allAssignors.Title)
-	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), allUsers)
-	allAssignors.Collection = allUsers
+	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), *allUsers)
+	allAssignors.Collection = *allUsers
 	allAssignors.ID = nIssueID
 
 	*dataSource = &TIssueNewCollectionType{

@@ -23,14 +23,32 @@ func Struct2Map(obj interface{}) map[string]interface{} {
 // MapToStruct set strubt object with map by using reflect
 func MapToStruct(value map[string]interface{}, obj interface{}) error {
 	for key, value := range value {
-		if err := setField(obj, key, value); err != nil {
+		if err := SetField(obj, key, value); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func setField(obj interface{}, name string, value interface{}) error {
+// FieldInObject get property value in object
+func FieldInObject(property string, obj interface{}) interface{} {
+
+	v := reflect.ValueOf(obj).Elem()
+	k := v.Type()
+
+	for i := 0; i < v.NumField(); i++ {
+		key := k.Field(i)
+		val := v.Field(i)
+		if key.Name == property {
+			return fmt.Sprintf("%v", val.Interface())
+		}
+	}
+
+	return ""
+}
+
+// SetField set property value for obj
+func SetField(obj interface{}, name string, value interface{}) error {
 	structValue := reflect.ValueOf(obj).Elem()
 	structFieldValue := structValue.FieldByName(name)
 
@@ -57,7 +75,7 @@ func setField(obj interface{}, name string, value interface{}) error {
 	return nil
 }
 
-//类型转换
+// TypeConversion 类型转换
 func TypeConversion(value string, ntype string) (reflect.Value, error) {
 	if ntype == "string" {
 		return reflect.ValueOf(value), nil
