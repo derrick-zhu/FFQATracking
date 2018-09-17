@@ -4,6 +4,7 @@ import (
 	"FFQATracking/utils"
 	"fmt"
 	"sort"
+	"time"
 
 	"github.com/astaxie/beego"
 
@@ -19,14 +20,15 @@ const (
 
 // IssueLogModel comments for issue
 type IssueLogModel struct {
-	ID        int64  `orm:"pk;index;auto"`
-	IssueID   int64  `orm:"index"`
-	Type      int64  // Type为LogTypeComment时， content是comment内容; LogTypeStatus时，content无效
-	Content   string `orm:"size(4096)"`
-	CreatorID int64
-	Time      int64
-	PrvStatus int64 // 老的issue状态
-	NewStatus int64 // 新的issue状态
+	ID          int64  `orm:"pk;index;auto"`
+	IssueID     int64  `orm:"index"`
+	Type        int64  // Type为LogTypeComment时， content是comment内容; LogTypeStatus时，content无效
+	Content     string `orm:"size(4096)"`
+	CreatorID   int64
+	Time        int64
+	TimeDisplay time.Time `orm:"-"`
+	PrvStatus   int64     // 老的issue状态
+	NewStatus   int64     // 新的issue状态
 }
 
 func init() {
@@ -111,6 +113,10 @@ func CommentWithRange(issueID int64, low, count int) (*[]IssueLogModel, error) {
 	if err != nil {
 		beego.Error(err)
 		return nil, err
+	}
+
+	for _, eachComm := range *comms {
+		eachComm.TimeDisplay = utils.TimeFromTick(eachComm.Time)
 	}
 
 	beego.Debug(comms)

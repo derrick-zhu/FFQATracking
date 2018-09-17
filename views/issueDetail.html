@@ -46,9 +46,9 @@
         <form id="frmIssueDetail" method="POST" action="#" onsubmit="return false">
 
             <!-- 提交区 -->
-            <div class="form-group">
+            <div id="issue_log_new" class="form-group">
                 <label>New Comment:</label>
-                <textarea name="Description" id="Description" cols="30" rows="10" placeholder="Write new comment here."></textarea>
+                <textarea name="issue_comment" id="issue_comment" cols="30" rows="10" placeholder="Write new comment here."></textarea>
                 <input style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" onclick="issueDetailSubmitNewLog('{{$issue.ID}}')">
             </div>
 
@@ -57,11 +57,15 @@
         {{template "seperate-line"}}
 
         <!-- 历史记录区 -->
-        <div>
+        <div id="issue_log_history">
             <label>Comment history:</label>
 
             {{range $index, $log := .issueLogHistory}}
             <p>{{$index}} - {{$log}}</p>
+                <div>
+                    <p><a href="/account/{{$log.CreatorID}}">{{$log.CreatorID}}</a> update at {{$log.TimeDisplay}}</p>
+                    <p>{{$log.Content}}</p>
+                </div>
             {{end}}
         </div>
     </div>

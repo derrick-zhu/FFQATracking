@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"FFQATracking/biz"
 	"FFQATracking/constants"
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"fmt"
-	"reflect"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -51,89 +51,37 @@ func (c *IssueDetailController) Get() {
 // SubmitNewLog handle POST rquest to append new issue log.
 func (c *IssueDetailController) SubmitNewLog() {
 	c.FFBaseController.Post()
-	beego.Debug(c)
-
-	beego.Debug(c.Ctx.Input)
-	beego.Debug(c.Input())
-	beego.Debug(">>>> new comment for issue: " + c.Ctx.Input.Param(":issue"))
-	beego.Debug(">>>> new comment: " + c.Input().Get("issue_comment"))
 
 	for true {
-		nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
-		param := utils.CovertRequestInputToMap(c.Input())
-		beego.Error(param)
 
 		var err error
 		var currentIssue *models.BugModel
+		var currentAccount *models.AccountModel
+		var retIssueLog *models.IssueLogModel
+
+		nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+		strNewComment := c.Input().Get("issue_comment")
 
 		if currentIssue, err = models.BugWithID(nIssueID); err != nil {
 			beego.Error(err)
-			return
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
 		}
 
-		beego.Error(currentIssue)
-
-		newIssue := models.BugModel{}
-
-		err = utils.MapToStruct(param, &newIssue)
-		if err != nil {
+		if currentAccount, err = biz.CurrentAccount(c.Ctx); err != nil {
 			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
 		}
 
-		beego.Error(newIssue)
-
-		bSame := reflect.DeepEqual(currentIssue, newIssue)
-		if bSame == false {
+		if retIssueLog, err = models.AddLogComment(currentIssue.ID, currentAccount.ID, strNewComment); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 302, "#", "")
+			break
 		}
 
-		// var nIssueID int64
-		// var currentIssue *models.BugModel
-
-		// for true {
-		// 	if biz.HadLogin(c.Ctx) == false {
-		// 		utils.MakeRedirectURL(&c.Data, 302, "/login", "")
-		// 		break
-		// 	}
-
-		// 	var currAcc *models.AccountModel
-		// 	var err error
-
-		// 	nIssueID, _ = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
-		// 	logContent := c.Input().Get("issue_comment")
-		// 	newStatus, _ := strconv.ParseInt(c.Input().Get("Status"), 10, 64)
-
-		// 	if currentIssue, err = models.BugWithID(nIssueID); err != nil {
-		// 		beego.Error(err)
-		// 		utils.MakeRedirectURL(&c.Data, 302, "/issuelist", "")
-		// 		break
-		// 	}
-		// 	prvStatus := currentIssue.Status
-		// 	currentIssue.Status = newStatus
-
-		// 	if currAcc, err = biz.CurrentAccount(c.Ctx); err != nil {
-		// 		beego.Error(err)
-		// 		utils.MakeRedirectURL(&c.Data, 302, "#", "")
-		// 		break
-		// 	}
-
-		// 	_, err = models.AddComment(nIssueID, int64(currAcc.ID), prvStatus, newStatus, logContent)
-		// 	if err != nil {
-		// 		beego.Error(err)
-		// 		utils.MakeRedirectURL(&c.Data, 302, "#", "")
-		// 		break
-		// 	}
-
-		// 	if err = models.UpdateBug(*currentIssue); err != nil {
-		// 		beego.Error(err)
-		// 		utils.MakeRedirectURL(&c.Data, 302, "#", "")
-		// 		break
-		// 	}
-
-		// 	utils.MakeRedirectURL(&c.Data, 302, "#", "")
-		// 	break
-		// }
-
-		utils.MakeRedirectURL(&c.Data, 302, "#", "")
+		beego.Info(retIssueLog)
+		utils.MakeRedirectURL(&c.Data, 200, "#", "")
 		break
 	}
 	c.ServeJSON()
@@ -144,9 +92,19 @@ func (c *IssueDetailController) UpdateIssue() {
 	c.FFBaseController.Post()
 
 	for true {
-		var pIssue *models.BugModel
 		var err error
-		nIssueID, _ := strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+		var nIssueID int64
+		var pIssue *models.BugModel
+		// var pAccount *models.AccountModel
+
+		if biz.HadLogin(c.Ctx) == false {
+			beego.Error("login is needed.")
+			utils.MakeRedirectURL(&c.Data, 302, "/login", "")
+			break
+		}
+
+		nIssueID, _ = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
+		// pAccount, _ = biz.CurrentAccount(c.Ctx)
 
 		// fetch bug data
 		if pIssue, err = models.BugWithID(nIssueID); err != nil {
@@ -183,7 +141,7 @@ func (c *IssueDetailController) UpdateIssue() {
 			break
 		}
 
-		utils.MakeRedirectURL(&c.Data, 302, "#", "")
+		utils.MakeRedirectURL(&c.Data, 200, "#", "")
 		break
 	}
 
@@ -255,8 +213,8 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]mo
 
 	var err error
 	var logs *[]models.IssueLogModel
-	logs, err = models.AllCommentsForIssue(nIssueID)
-	if err != nil {
+
+	if logs, err = models.AllCommentsForIssue(nIssueID); err != nil {
 		beego.Error(err)
 		return
 	}
