@@ -24,7 +24,7 @@
             <h1>Issue: <small><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></small></h1>
         </div>
 
-        <div class="issue-level-{{$issue.Priority}}" style="width:100%;height:0.5em;margin-top:1em;margin-bottom:0.5em;"></div>
+        <div id="issue-level-band" class="issue-level-{{$issue.Priority}}" style="width:100%;height:0.5em;margin-top:1em;margin-bottom:0.5em;"></div>
 
         <form id="frmIssueUpdate" method="POST" action="#" onsubmit="return false">
             <!-- <div class="form-group"> -->

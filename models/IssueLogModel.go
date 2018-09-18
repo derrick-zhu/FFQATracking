@@ -25,15 +25,9 @@ type IssueLogModel struct {
 	Content     string `orm:"size(4096)"`
 	CreatorID   int64
 	Time        int64
-	TimeDisplay string `orm:"-"`
-	PrvStatus   int64  // 老的issue状态
-	NewStatus   int64  // 新的issue状态
-}
-
-// InitDisplayTime get formatted time
-func (c *IssueLogModel) InitDisplayTime() string {
-	c.TimeDisplay = utils.StandardFormatedTimeFromTick(c.Time)
-	return c.TimeDisplay
+	StatusTitle string
+	PrvStatus   int64 // 老的issue状态
+	NewStatus   int64 // 新的issue状态
 }
 
 func init() {
@@ -59,8 +53,7 @@ func AddLogComment(issueID, creatorID int64, content string) (*IssueLogModel, er
 	}
 
 	o := GetOrmObject()
-	_, err := o.Insert(newComment)
-	if err != nil {
+	if _, err := o.Insert(newComment); err != nil {
 		beego.Error(err)
 		return nil, err
 	}
@@ -69,15 +62,16 @@ func AddLogComment(issueID, creatorID int64, content string) (*IssueLogModel, er
 }
 
 // AddLogStatus new status log for issue
-func AddLogStatus(issueID, creatorID, prvStatus, newStatus int64) (*IssueLogModel, error) {
+func AddLogStatus(issueID, creatorID int64, statusTitle string, prvStatus, newStatus int64) (*IssueLogModel, error) {
 
 	newComment := &IssueLogModel{
-		IssueID:   issueID,
-		CreatorID: creatorID,
-		Type:      LogTypeStatus,
-		Time:      utils.TimeTickSince1970(),
-		PrvStatus: prvStatus,
-		NewStatus: newStatus,
+		IssueID:     issueID,
+		CreatorID:   creatorID,
+		Type:        LogTypeStatus,
+		Time:        utils.TimeTickSince1970(),
+		StatusTitle: statusTitle,
+		PrvStatus:   prvStatus,
+		NewStatus:   newStatus,
 	}
 
 	o := GetOrmObject()
@@ -103,7 +97,7 @@ func RemoveComment(issueID, commentID int64) error {
 // CommentWithRange fetch comments for issue with its id, in range [low, low+count)
 func CommentWithRange(issueID int64, low, count int) (*[]IssueLogModel, error) {
 
-	comms := &[]IssueLogModel{}
+	comms := []IssueLogModel{}
 
 	o := GetOrmObject()
 	sqlQuery :=
@@ -114,19 +108,13 @@ func CommentWithRange(issueID int64, low, count int) (*[]IssueLogModel, error) {
 			low)
 	rawResult := o.Raw(sqlQuery)
 
-	_, err := rawResult.QueryRows(comms)
+	_, err := rawResult.QueryRows(&comms)
 	if err != nil {
 		beego.Error(err)
 		return nil, err
 	}
 
-	for _, comm := range *comms {
-		comm.InitDisplayTime()
-	}
-
-	beego.Debug((*comms)[1])
-
-	return comms, nil
+	return &comms, nil
 }
 
 // AllCommentsForIssue fetch all comments for issue with its id

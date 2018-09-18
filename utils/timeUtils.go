@@ -2,6 +2,8 @@ package utils
 
 import (
 	"time"
+
+	"github.com/astaxie/beego"
 )
 
 const (
@@ -16,7 +18,11 @@ func TimeTickSince1970() int64 {
 
 // TimeFromTick convert time interval into time.Time
 func TimeFromTick(tick int64) time.Time {
-	return time.Unix(tick, int64(float32(tick)*0.001))
+
+	result := time.Unix(tick, int64(float32(tick)*0.001))
+	beego.Info(tick)
+	beego.Info(result)
+	return result
 }
 
 // FormatedTimeFromTick format time with given format

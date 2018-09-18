@@ -27,7 +27,8 @@ function issueDetailUpdate(issueId, key, value) {
         if (result.Code == 302) {
           window.location.href = result.URL;
         } else if (result.Code == 200) {
-          reloadDiv("issue_log_history");
+          reloadDiv("issue_log_history");   // issue log history section
+          reloadDiv("issue-level-band");    // colour band at top
         }
       }
     },

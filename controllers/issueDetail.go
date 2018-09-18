@@ -11,6 +11,31 @@ import (
 	"github.com/astaxie/beego"
 )
 
+// IssueDetailLogModel issue log wrapped model
+type IssueDetailLogModel struct {
+	models.IssueLogModel
+
+	CreatorName   string
+	CreatorAvatar string
+	TimeDisplay   string
+}
+
+func (c *IssueDetailLogModel) initWith(other *models.IssueLogModel, acc *models.AccountModel) {
+	c.IssueLogModel.ID = other.ID
+	c.IssueLogModel.IssueID = other.IssueID
+	c.IssueLogModel.Type = other.Type
+	c.IssueLogModel.Content = other.Content
+
+	c.IssueLogModel.CreatorID = other.CreatorID
+	c.IssueLogModel.StatusTitle = other.StatusTitle
+	c.IssueLogModel.PrvStatus = other.PrvStatus
+	c.IssueLogModel.NewStatus = other.NewStatus
+
+	c.CreatorName = acc.Name
+	c.CreatorAvatar = acc.Avatar
+	c.TimeDisplay = utils.StandardFormatedTimeFromTick(other.Time)
+}
+
 // IssueDetailController controller for display/edit issue in detail
 type IssueDetailController struct {
 	FFBaseController
@@ -25,15 +50,14 @@ func (c *IssueDetailController) Get() {
 	var issueID int64
 	var currentIssue *models.BugModel
 	var issueDetailData *TIssueNewCollectionType
-	var logHistory *[]models.IssueLogModel
+	var logHistory *[]IssueDetailLogModel
+	var allUsers *[]models.AccountModel
 
-	issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
-	if err != nil {
+	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
 		beego.Error(err)
 		c.Redirect("/issuelist", 302)
 		return
 	}
-	beego.Info(fmt.Sprintf("issue Id: %d", issueID))
 
 	if currentIssue, err = models.BugWithID(issueID); err != nil {
 		beego.Error(err)
@@ -41,8 +65,13 @@ func (c *IssueDetailController) Get() {
 		return
 	}
 
-	c.initVariables(&issueDetailData, currentIssue, issueID)
-	c.initLogHistory(issueID, &logHistory)
+	if allUsers, err = models.AllAccounts(); err != nil {
+		beego.Error(err)
+		err = nil
+	}
+
+	c.initVariables(&issueDetailData, currentIssue, issueID, allUsers)
+	c.initLogHistory(issueID, &logHistory, allUsers)
 	c.initPageContent(*currentIssue, *issueDetailData, *logHistory)
 
 	c.TplName = "issueDetail.html"
@@ -95,7 +124,7 @@ func (c *IssueDetailController) UpdateIssue() {
 		var err error
 		var nIssueID int64
 		var pIssue *models.BugModel
-		// var pAccount *models.AccountModel
+		var pAccount *models.AccountModel
 
 		if biz.HadLogin(c.Ctx) == false {
 			beego.Error("login is needed.")
@@ -104,7 +133,7 @@ func (c *IssueDetailController) UpdateIssue() {
 		}
 
 		nIssueID, _ = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64)
-		// pAccount, _ = biz.CurrentAccount(c.Ctx)
+		pAccount, _ = biz.CurrentAccount(c.Ctx)
 
 		// fetch bug data
 		if pIssue, err = models.BugWithID(nIssueID); err != nil {
@@ -149,10 +178,9 @@ func (c *IssueDetailController) UpdateIssue() {
 }
 
 // initVariables issue's properties
-func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64) {
+func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers *[]models.AccountModel) {
 
 	var err error
-	var allUsers *[]models.AccountModel
 
 	aIssue, err = models.BugWithID(nIssueID)
 	if err != nil {
@@ -172,13 +200,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	reproductData.DefaultValue = aIssue.Reproductability
 	reproductData.ID = nIssueID
 
-	//
-	allUsers, err = models.AllAccounts()
-	if err != nil {
-		beego.Error(err)
-		err = nil
-	}
-
+	// all account
 	allCreators := IssuePickerTemplateModel{}
 	allCreators.Title = IssueCreatorKey
 	allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allCreators.Title)
@@ -209,7 +231,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	}
 }
 
-func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]models.IssueLogModel) {
+func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]IssueDetailLogModel, allUsers *[]models.AccountModel) {
 
 	var err error
 	var logs *[]models.IssueLogModel
@@ -221,13 +243,30 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]mo
 
 	models.SortCommentByTime(logs)
 
-	*logHistory = logs
+	// Q: why create new array to carry the issue log data?? why?
+	// A: I was confuse about GO's memory managment
+	var issueLogs = []IssueDetailLogModel{}
+	for _, eachLog := range *logs {
 
-	beego.Debug(logHistory)
+		var pAcc *models.AccountModel
+		for _, eachAcc := range *allUsers {
+			if eachAcc.ID == eachLog.CreatorID {
+				pAcc = &eachAcc
+				break
+			}
+		}
+
+		newIssueLog := IssueDetailLogModel{}
+		newIssueLog.initWith(&eachLog, pAcc)
+
+		issueLogs = append(issueLogs, newIssueLog)
+	}
+
+	*logHistory = &issueLogs
 }
 
 // initPageContent initial settings in current page
-func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSource TIssueNewCollectionType, logHistory []models.IssueLogModel) {
+func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSource TIssueNewCollectionType, logHistory []IssueDetailLogModel) {
 
 	c.Data[constants.KeyIssueHTMLValue] = dataSource
 	c.Data[constants.KeyIssueLogHistory] = logHistory
