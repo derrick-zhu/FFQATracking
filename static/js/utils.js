@@ -43,8 +43,6 @@ function reloadDiv(section) {
     $("#" + section).load(window.location.href + " #" + section);
 }
 
-function getLocalTime(nS) {     
-    return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
- }
- 
- 
+function getLocalTime(nS) {
+    return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+}

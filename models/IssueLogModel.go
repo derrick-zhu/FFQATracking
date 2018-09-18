@@ -4,7 +4,6 @@ import (
 	"FFQATracking/utils"
 	"fmt"
 	"sort"
-	"time"
 
 	"github.com/astaxie/beego"
 
@@ -26,9 +25,15 @@ type IssueLogModel struct {
 	Content     string `orm:"size(4096)"`
 	CreatorID   int64
 	Time        int64
-	TimeDisplay time.Time `orm:"-"`
-	PrvStatus   int64     // 老的issue状态
-	NewStatus   int64     // 新的issue状态
+	TimeDisplay string `orm:"-"`
+	PrvStatus   int64  // 老的issue状态
+	NewStatus   int64  // 新的issue状态
+}
+
+// InitDisplayTime get formatted time
+func (c *IssueLogModel) InitDisplayTime() string {
+	c.TimeDisplay = utils.StandardFormatedTimeFromTick(c.Time)
+	return c.TimeDisplay
 }
 
 func init() {
@@ -115,11 +120,11 @@ func CommentWithRange(issueID int64, low, count int) (*[]IssueLogModel, error) {
 		return nil, err
 	}
 
-	for _, eachComm := range *comms {
-		eachComm.TimeDisplay = utils.TimeFromTick(eachComm.Time)
+	for _, comm := range *comms {
+		comm.InitDisplayTime()
 	}
 
-	beego.Debug(comms)
+	beego.Debug((*comms)[1])
 
 	return comms, nil
 }
