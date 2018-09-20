@@ -152,7 +152,6 @@ func (c *IssueDetailController) UpdateIssue() {
 
 		for kk, vv = range c.Input() {
 			inputMap[kk] = vv[0]
-			beego.Info(models.PropertyInIssue(kk, *pIssue))
 		}
 		beego.Info(inputMap)
 
@@ -168,11 +167,13 @@ func (c *IssueDetailController) UpdateIssue() {
 		newStatus = models.IntValueInIssue(kk, pIssue)
 
 		if oldStatus != newStatus {
-			if _, err = models.AddLogStatus(nIssueID, pAccount.ID, kk, oldStatus, newStatus); err != nil {
+			var log *models.IssueLogModel
+			if log, err = models.AddLogStatus(nIssueID, pAccount.ID, kk, oldStatus, newStatus); err != nil {
 				beego.Error(err)
 				utils.MakeRedirectURL(&c.Data, 302, "#", "")
 				break
 			}
+			beego.Error(log)
 		}
 
 		// update the latest edit date
