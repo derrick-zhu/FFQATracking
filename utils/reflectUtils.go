@@ -40,7 +40,13 @@ func FieldInObject(property string, obj interface{}) interface{} {
 		key := k.Field(i)
 		val := v.Field(i)
 		if key.Name == property {
-			return fmt.Sprintf("%v", val.Interface())
+			fieldType := v.FieldByName(property)
+			result, err := TypeConversion(fmt.Sprintf("%v", val), fieldType.Type().Name())
+			if err != nil {
+				return err
+			}
+			fmt.Println(result.Type().Name())
+			return result
 		}
 	}
 

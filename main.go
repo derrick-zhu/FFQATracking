@@ -14,8 +14,7 @@ import (
 
 func init() {
 	logs.EnableFuncCallDepth(true)
-	logs.SetLogFuncCallDepth(10)
-	orm.Debug = true
+	orm.Debug = false
 	models.RegisterDB(false)
 }
 

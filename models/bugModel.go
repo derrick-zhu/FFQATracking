@@ -214,63 +214,63 @@ func BugReproductabilityWithType(reproduct int64) string {
 	return "-"
 }
 
-func GetReadableProperty(pname string, issue BugModel) string {
+func BugGetReadableProperty(pname string, issue *BugModel) (int64, string) {
 
 	switch pname {
 	case "ID":
-		return strconv.FormatInt(int64(issue.ID), 10)
+		return int64(issue.ID), strconv.FormatInt(int64(issue.ID), 10)
 
 	case "Title":
-		return issue.Title
+		return 0, issue.Title
 
 	case "Description":
-		return issue.Description
+		return 0, issue.Description
 
 	case "Version":
-		return issue.Version
+		return 0, issue.Version
 
 	case "Source":
-		return issue.Source
+		return 0, issue.Source
 
 	case "Target":
-		return issue.Target
+		return 0, issue.Target
 
 	case "DevPeriod":
-		return issue.DevPeriod
+		return 0, issue.DevPeriod
 
 	case "SolveDate":
-		return utils.StandardFormatedTimeFromTick(int64(issue.SolveDate))
+		return int64(issue.SolveDate), utils.StandardFormatedTimeFromTick(int64(issue.SolveDate))
 
 	case "CreateDate":
-		return utils.StandardFormatedTimeFromTick(int64(issue.CreateDate))
+		return int64(issue.CreateDate), utils.StandardFormatedTimeFromTick(int64(issue.CreateDate))
 
 	case "Status":
-		return BugStatusWithType(issue.Status)
+		return issue.Status, BugStatusWithType(issue.Status)
 
 	case "Priority":
-		return BugPriorityWithType(issue.Priority)
+		return issue.Priority, BugPriorityWithType(issue.Priority)
 
 	case "Reproductability":
-		return BugReproductabilityWithType(issue.Reproductability)
+		return issue.Reproductability, BugReproductabilityWithType(issue.Reproductability)
 
 	case "Creator":
 		acc, err := AccountWithID(issue.Creator)
 		if err != nil {
 			beego.Error(err)
-			return "-"
+			return 0, "-"
 		}
-		return acc.Name
+		return 0, acc.Name
 
 	case "Assignor":
 		acc, err := AccountWithID(issue.Assignor)
 		if err != nil {
 			beego.Error(err)
-			return "-"
+			return 0, "-"
 		}
-		return acc.Name
+		return 0, acc.Name
 
 	default:
-		return "-"
+		return 0, "-"
 	}
 }
 
@@ -299,7 +299,7 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 // BugWithID fetch bug with id
 func BugWithID(id int64) (*BugModel, error) {
 
-	beego.Info("BugWithID: ", id)
+	beego.Debug("BugWithID: ", id)
 	pbug := &BugModel{ID: id}
 
 	o := GetOrmObject()

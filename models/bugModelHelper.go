@@ -23,13 +23,20 @@ func PropertyInIssue(pname string, value interface{}) string {
 			beego.Error(err)
 			return ""
 		}
-		return GetReadableProperty(pname, issue)
+		_, result := BugGetReadableProperty(pname, &issue)
+		return result
 
 	default:
+		beego.Error(value)
 		beego.Error(errors.New("Invalid issue data type"))
 	}
 
 	return ""
+}
+
+func IntValueInIssue(pname string, issue *BugModel) int64 {
+	nVal, _ := BugGetReadableProperty(pname, issue)
+	return nVal
 }
 
 // IssueCSSWithPriority get css style according to issue's priority level

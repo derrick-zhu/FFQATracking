@@ -44,7 +44,6 @@ type IssueDetailController struct {
 // Get handle HTTP Get request
 func (c *IssueDetailController) Get() {
 	c.FFBaseController.Get()
-	beego.Debug(c)
 
 	var err error
 	var issueID int64
@@ -126,6 +125,8 @@ func (c *IssueDetailController) UpdateIssue() {
 		var pIssue *models.BugModel
 		var pAccount *models.AccountModel
 
+		var oldStatus, newStatus int64
+
 		if biz.HadLogin(c.Ctx) == false {
 			beego.Error("login is needed.")
 			utils.MakeRedirectURL(&c.Data, 302, "/login", "")
@@ -146,17 +147,32 @@ func (c *IssueDetailController) UpdateIssue() {
 
 		// get query params
 		var inputMap = make(map[string]interface{})
-		for k, a := range c.Input() {
-			inputMap[k] = a[0]
-		}
+		var kk string
+		var vv []string
 
+		for kk, vv = range c.Input() {
+			inputMap[kk] = vv[0]
+			beego.Info(models.PropertyInIssue(kk, *pIssue))
+		}
 		beego.Info(inputMap)
+
+		oldStatus = models.IntValueInIssue(kk, pIssue)
 
 		// update bug data property
 		if err = utils.MapToStruct(inputMap, pIssue); err != nil {
 			beego.Error(err)
 			utils.MakeRedirectURL(&c.Data, 302, "#", "")
 			break
+		}
+
+		newStatus = models.IntValueInIssue(kk, pIssue)
+
+		if oldStatus != newStatus {
+			if _, err = models.AddLogStatus(nIssueID, pAccount.ID, kk, oldStatus, newStatus); err != nil {
+				beego.Error(err)
+				utils.MakeRedirectURL(&c.Data, 302, "#", "")
+				break
+			}
 		}
 
 		// update the latest edit date
