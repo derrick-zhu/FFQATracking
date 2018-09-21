@@ -3,7 +3,7 @@ package controllers
 import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
-	"FFQATracking/utils"
+	"FFQATracking/models"
 
 	"github.com/astaxie/beego"
 )
@@ -18,14 +18,13 @@ func (c *FFBaseController) Get() {
 	c.Data[constants.Title] = "Farfetch Q&A Tracking"
 	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 
-	email := utils.CookieInstance().Get(c.Ctx, constants.KeyEMAIL)
-	uname := utils.CookieInstance().Get(c.Ctx, constants.KeyUNAME)
-
-	if len(email) > 0 {
-		c.Data[constants.LoggedInAccount] = email
-	} else if len(uname) > 0 {
-		c.Data[constants.LoggedInAccount] = uname
+	var acc *models.AccountModel
+	var err error
+	if acc, err = biz.CurrentAccount(c.Ctx); err != nil {
+		beego.Error(err)
 	}
+
+	c.Data[constants.AccountData] = acc
 }
 
 // Post is the POST method for handler default Post request

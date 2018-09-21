@@ -74,13 +74,11 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 
 	ckEmail := utils.CookieInstance().Get(ctx, constants.KeyEMAIL)
-	beego.Info("ckEmail = " + ckEmail)
 	if len(ckEmail) <= 0 {
 		return false
 	}
 
 	ckPwd := utils.CookieInstance().GetSecret(ctx, constants.KeyPWD)
-	beego.Info("ckPwd = " + ckPwd)
 	if len(ckPwd) <= 0 {
 		return false
 	}

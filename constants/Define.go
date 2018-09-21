@@ -1,9 +1,9 @@
 package constants
 
 const (
-	Title           = "Title"
-	IsLogin         = "IsLogin"
-	LoggedInAccount = "LoggedInAccount"
+	Title       = "Title"
+	IsLogin     = "IsLogin"
+	AccountData = "AccountData"
 
 	/// login & signup
 

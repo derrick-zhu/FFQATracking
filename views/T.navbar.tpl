@@ -1,5 +1,7 @@
 {{define "navbar"}}
 
+{{$account := .AccountData}}
+
 <div>
     <ul class="nav navbar-nav">
         <li><img src="/static/img/ftech.jpg" height="50em"></li>
@@ -11,8 +13,8 @@
 
 <div class="pull-right">
     <ul class="nav navbar-nav">
-        {{if .IsLogin}} {{if .LoggedInAccount}}
-        <li><a href="/account">Welcome, {{.LoggedInAccount}}</a></li>
+        {{if .IsLogin}} {{if $account}}
+        <li><a href="/account/{{$account.ID}}">Welcome, {{$account.Email}}</a></li>
         {{end}}
         <li><a href="/login/exit">Logout</a></li>
         {{else}}

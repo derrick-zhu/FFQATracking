@@ -116,6 +116,8 @@ type BugModel struct {
 
 func init() {
 	orm.RegisterModel(new(BugModel))
+
+	beego.AddFuncMap("BugStatusWithType", BugStatusWithType)
 }
 
 // TableName for beego using
@@ -259,7 +261,7 @@ func BugGetReadableProperty(pname string, issue *BugModel) (int64, string) {
 			beego.Error(err)
 			return 0, "-"
 		}
-		return 0, acc.Name
+		return issue.Creator, acc.Name
 
 	case "Assignor":
 		acc, err := AccountWithID(issue.Assignor)
@@ -267,7 +269,7 @@ func BugGetReadableProperty(pname string, issue *BugModel) (int64, string) {
 			beego.Error(err)
 			return 0, "-"
 		}
-		return 0, acc.Name
+		return issue.Assignor, acc.Name
 
 	default:
 		return 0, "-"

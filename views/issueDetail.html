@@ -21,7 +21,7 @@
 
     <div class="container">
         <div>
-            <h1>Issue: <small><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></small></h1>
+            <label style="font-size:3rem">Issue: </label><span>  </span><label style="font-size:2.25rem"><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></label>
         </div>
 
         <div id="issue-level-band" class="issue-level-{{$issue.Priority}}" style="width:100%;height:0.5em;margin-top:1em;margin-bottom:0.5em;"></div>
@@ -37,8 +37,8 @@
         {{template "seperate-line"}}
 
         <div>
-            <label class="left" style="width:100%">Description:</label>
-            <p style="margin-left:5em;width:100%;max-height:20em;" class="scroll">{{$issue.Description}}</p>
+            <label class="left" style="font-size:2rem;width:100%">Description:</label>
+            <p style="margin-left:3em;width:100%;max-height:20em;" class="scroll">{{$issue.Description}}</p>
         </div>
 
         {{template "seperate-line"}}
@@ -46,9 +46,9 @@
         <form id="frmIssueDetail" method="POST" action="#" onsubmit="return false">
 
             <!-- 提交区 -->
-            <div id="issue_log_new" class="form-group">
-                <label>New Comment:</label>
-                <textarea name="issue_comment" id="issue_comment" cols="30" rows="10" placeholder="Write new comment here."></textarea>
+            <label style="font-size:2rem">New Comment:</label>
+            <div id="issue_log_new" class="form-group" style="margin-left: 3em;">
+                <textarea name="issue_comment" id="issue_comment" class="form-control" cols="30" rows="10" placeholder="Write new comment here."></textarea>
                 <input style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" onclick="issueDetailSubmitNewLog('{{$issue.ID}}')">
             </div>
 
@@ -58,14 +58,19 @@
 
         <!-- 历史记录区 -->
         <div id="issue_log_history">
-            <label>Comment history:</label>
+            <label style="font-size:2rem">Comment history:</label>
 
             {{range $index, $log := .issueLogHistory}}
-            <p>{{$index}} - {{$log}}</p>
-                <div>
-                    <p><a href="/account/{{$log.CreatorID}}">{{$log.CreatorID}}</a> update at {{$log.TimeDisplay}}</p>
-                    <p>{{$log.Content}}</p>
-                </div>
+            <!-- <p>{{$index}} - {{$log}}</p> -->
+            <div style="margin-left: 3em">
+
+                <label style="font-size:1.75rem;"><a href="/account/{{$log.CreatorID}}">{{$log.CreatorName}}</a></label> update at {{$log.TimeDisplay}}
+                {{if eq $log.Type 1}}
+                <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}} into {{BugStatusWithType $log.NewStatus}}</p>
+                {{else}}
+                <p>{{$log.Content}}</p>
+                {{end}}
+            </div>
             {{end}}
         </div>
     </div>

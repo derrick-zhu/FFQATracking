@@ -18,6 +18,8 @@ type IssueDetailLogModel struct {
 	CreatorName   string
 	CreatorAvatar string
 	TimeDisplay   string
+	PrvStatusStr  string
+	NewStatusStr  string
 }
 
 func (c *IssueDetailLogModel) initWith(other *models.IssueLogModel, acc *models.AccountModel) {
@@ -155,25 +157,24 @@ func (c *IssueDetailController) UpdateIssue() {
 		}
 		beego.Info(inputMap)
 
-		oldStatus = models.IntValueInIssue(kk, pIssue)
-
 		// update bug data property
+		oldStatus = models.IntValueInIssue(kk, pIssue)
 		if err = utils.MapToStruct(inputMap, pIssue); err != nil {
 			beego.Error(err)
 			utils.MakeRedirectURL(&c.Data, 302, "#", "")
 			break
 		}
-
 		newStatus = models.IntValueInIssue(kk, pIssue)
 
+		// save the status log into db
 		if oldStatus != newStatus {
-			var log *models.IssueLogModel
-			if log, err = models.AddLogStatus(nIssueID, pAccount.ID, kk, oldStatus, newStatus); err != nil {
+			// var log *models.IssueLogModel
+			if _, err = models.AddLogStatus(nIssueID, pAccount.ID, kk, oldStatus, newStatus); err != nil {
 				beego.Error(err)
 				utils.MakeRedirectURL(&c.Data, 302, "#", "")
 				break
 			}
-			beego.Error(log)
+			// beego.Error(log)
 		}
 
 		// update the latest edit date

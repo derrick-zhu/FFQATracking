@@ -76,23 +76,26 @@ func Register(email, pwd string, rule models.RuleType) (bool, *models.AccountMod
 
 // Login login with user account and password
 func Login(ctx *context.Context, email, pwd string) (bool, error) {
+
 	return AccountManagerInstance().Login(ctx, email, pwd)
 }
 
 // Logout logout user account with uid
 func Logout(ctx *context.Context) bool {
+
 	uid := utils.CookieInstance().Get(ctx, constants.KeyUID)
 	return AccountManagerInstance().Logout(ctx, uid)
 }
 
 // HadLogin check account login state
 func HadLogin(ctx *context.Context) bool {
-	beego.Info("biz.HadLogin()")
+
 	return AccountManagerInstance().HadLogin(ctx)
 }
 
 // CurrentAccount fetch current account
 func CurrentAccount(ctx *context.Context) (*models.AccountModel, error) {
+
 	beego.Info("fetch current account had been signed in")
 	return AccountManagerInstance().CurrentAccount(ctx)
 }
