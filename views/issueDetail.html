@@ -21,7 +21,8 @@
 
     <div class="container">
         <div>
-            <label style="font-size:3rem">Issue: </label><span>  </span><label style="font-size:2.25rem"><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></label>
+            <label style="font-size:3rem">Issue: </label><span> </span><label style="font-size:2.25rem"><a href="#">#{{$issue.ID}}
+                    {{$issue.Title}}</a></label>
         </div>
 
         <div id="issue-level-band" class="issue-level-{{$issue.Priority}}" style="width:100%;height:0.5em;margin-top:1em;margin-bottom:0.5em;"></div>
@@ -60,19 +61,28 @@
         <div id="issue_log_history">
             <label style="font-size:2rem">Comment history:</label>
 
-            {{range $index, $log := .issueLogHistory}}
-            <!-- <p>{{$index}} - {{$log}}</p> -->
-            <div style="margin-left: 3em">
+            <div style="margin-left: 3em"></div>
+            <ul>
 
-                <label style="font-size:1.75rem;"><a href="/account/{{$log.CreatorID}}">{{$log.CreatorName}}</a></label> update at {{$log.TimeDisplay}}
-                {{if eq $log.Type 1}}
-                <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}} into {{BugStatusWithType $log.NewStatus}}</p>
-                {{else}}
-                <p>{{$log.Content}}</p>
+                {{range $index, $log := .issueLogHistory}}
+                <!-- <p>{{$index}} - {{$log}}</p> -->
+                <li>
+                    <label style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></label>
+                    update at {{$log.TimeDisplay}}
+                    {{if eq $log.Type 1}}
+                    <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}}
+                        into
+                        {{BugStatusWithType $log.NewStatus}}</p>
+                    {{else}}
+                    <p>{{$log.Content}}</p>
+                    {{end}}
+                </li>
                 {{end}}
-            </div>
-            {{end}}
+            </ul>
+
+
         </div>
+    </div>
     </div>
 
 </body>
