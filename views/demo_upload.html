@@ -18,9 +18,9 @@
         </div> -->
 
         <div class="col-5 f-l text text-r">背景图(必须):</div>
-        <form id="fform" action="/upload" method="post" enctype="multipart/form-data">
+        <form id="fform" method="post" enctype="multipart/form-data">
             <input id="myfile" name="myfile" type="file" />
-            <input type="submit" value="保存" />
+            <input type="submit" onclick="uploadFile()" value="保存" />
         </form>
 
         <div class="img-file col-offset-5">
@@ -50,24 +50,25 @@
 
     <!--JS部分-->
     <script type="text/javascript">
+        function uploadFile() {
+            formData = new FormData($('#fform')[0]);
+            $.ajax({
+                type: 'post',
+                url: '/upload',
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
+            
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (result) {
+                    alert("上传错误");
+                }
+            })
+        }
 
-        // $(function () {
-        //     $('#uploadFile').click(function () {
-        //         formData = new FormData($('#uploadForm')[0]);
-        //         $.ajax({
-        //             type: 'post',
-        //             url: '/upload',
-        //             data: formData,
-        //             cache: false,
-        //             processData: false,
-        //             contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
-        //         }).success(function (result) {
-        //             alert(result);
-        //         }).error(function (result) {
-        //             alert("上传错误");
-        //         });
-        //     });
-        // });
 
         //创建text文件
         function createtxt() {

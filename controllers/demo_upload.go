@@ -3,8 +3,9 @@ package controllers
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
+
+	"FFQATracking/helpers"
 
 	"github.com/astaxie/beego"
 )
@@ -24,18 +25,12 @@ func (c *UploadController) Post() {
 
 	beego.Info(c.Input())
 
-	f, h, err := c.GetFile("myfile")
+	fp, err := helpers.SaveAttachFile(c.Ctx.Request, "myfile", "static/upload/")
 	if err != nil {
-		log.Fatal("getfile err ", err)
-	}
-	defer f.Close()
-
-	// 保存位置在 static/upload, 没有文件夹要先创建
-	if saveErr := c.SaveToFile("myfile", "static/upload/"+h.Filename); saveErr != nil {
-		beego.Error(saveErr)
+		beego.Error(err)
 	}
 
-	c.Data["json"] = h.Filename
+	c.Data["json"] = fp
 	c.ServeJSON()
 }
 

@@ -3,7 +3,9 @@ package controllers
 import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
+	"FFQATracking/helpers"
 	"FFQATracking/models"
+	"FFQATracking/utils"
 	"fmt"
 	"strconv"
 
@@ -137,6 +139,23 @@ func (c *IssueNewController) Create() {
 	}
 
 	c.Redirect("/issuelist", 302)
+}
+
+// NewAttchment handle append attachment POST request
+func (c *IssueNewController) NewAttchment() {
+	c.FFBaseController.Post()
+
+	attachName, err := helpers.SaveAttachFile(c.Ctx.Request, "myfile", constants.ServerUploadDir)
+	if err != nil {
+		beego.Error(err)
+	}
+
+	// TODO: add attachment into db here.
+
+	c.Data["json"] = attachName
+	utils.MakeRedirectURL(&c.Data, 302, "#", "")
+
+	c.ServeJSON()
 }
 
 // MARK - private helpers

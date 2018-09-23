@@ -1,5 +1,10 @@
 package models
 
+import (
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
+)
+
 // AttachmentModel for bug's attachment files
 type AttachmentModel struct {
 	ID         int64  `orm:"auto;index"`
@@ -8,18 +13,40 @@ type AttachmentModel struct {
 	FileName   string `orm:"size(256);nonull"` // encoded file's name in back-end
 }
 
+func init() {
+	orm.RegisterModel(new(AttachmentModel))
+}
+
+func (c *AttachmentModel) TableName() string {
+	return "attachmentmodel"
+}
+
 // NewAttachmentFile new attachment file's info
-func NewAttachmentFile(file string) string {
-	return ""
+func NewAttachmentFile(issueID, issueLogID int64, file string) (*AttachmentModel, error) {
+
+	pAttach := &AttachmentModel{
+		IssueID:    issueID,
+		IssueLogID: issueLogID,
+		FileName:   file,
+	}
+
+	o := GetOrmObject()
+	if _, err := o.Insert(pAttach); err != nil {
+
+		beego.Error(err)
+		return nil, err
+	}
+
+	return pAttach, nil
 }
 
 // AttachmentForIssue fetch all attachements for the issue with its ID
-func AttachmentForIssue(iid int64) (*AttachmentModel, error) {
+func AttachmentForIssue(iid int64) (*[]AttachmentModel, error) {
 	return nil, nil
 }
 
 // AttachmentForIssueLog fetch all attachments for issue's log with its issue-log ID
-func AttachmentForIssueLog(iid, ilid int64) (*AttachmentModel, error) {
+func AttachmentForIssueLog(iid, ilid int64) (*[]AttachmentModel, error) {
 	return nil, nil
 }
 

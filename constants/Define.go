@@ -28,5 +28,11 @@ const (
 )
 
 const (
+	// ServerUploadDir local upload dir
+	ServerUploadDir = "static/upload/"
+)
+
+const (
+	// MAXINT max integer number
 	MAXINT = 1<<32 - 1
 )

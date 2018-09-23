@@ -3,6 +3,22 @@
 
 <head>
     {{template "header" .}}
+    <link rel="stylesheet" href="/static/editor-md/css/editormd.min.css">
+    <script type="text/javascript" src="/static/editor-md/editormd.min.js"></script>
+    <script type="text/javascript">
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("editormd", {
+                width: "90%",
+                height: 640,
+                syncScrolling: "single",
+                path: "/static/editor-md/lib/",
+            });
+            testEditor.unwatch();
+            testEditor.previewing();
+        });
+    </script>
 </head>
 
 <body>
@@ -13,10 +29,20 @@
         </div>
     </div>
 
+
+
     <div class="container">
-        <object data="http://localhost:8080/weatherDemo" width="600" height="400">
-            <embed src="http://localhost:8080/weatherDemo" type="text/html" width="800px" height="600px">
-        </object>
+
+        <div id='editormd'>
+            <textarea style="display:none" name="" id=""></textarea>
+        </div>
+
+        <div>
+            <object data="http://localhost:8080/weatherDemo" width="600" height="400">
+                <embed src="http://localhost:8080/weatherDemo" type="text/html" width="800px" height="600px">
+            </object>
+        </div>
+
     </div>
 
 </body>
