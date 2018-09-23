@@ -17,8 +17,11 @@ const (
 type RuleType int64
 
 const (
+	// RuleAdmin as admin
 	RuleAdmin RuleType = 0
-	RuleUser  RuleType = 1
+	// RuleUser as normal user
+	RuleUser RuleType = 1
+	// RuleGuest as anonymouse user
 	RuleGuest RuleType = 2
 )
 

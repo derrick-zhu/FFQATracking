@@ -69,8 +69,8 @@ var IssueReproductionData = IssuePickerTemplateModel{
 	Collection:   models.AllReproductabilities,
 }
 
-// IssueController base issue create page
-type IssueController struct {
+// IssueNewController base issue create page
+type IssueNewController struct {
 	FFBaseController
 
 	issueTemplateData TIssueNewCollectionType
@@ -79,7 +79,7 @@ type IssueController struct {
 }
 
 // Get for handle new issue controller GET request
-func (c *IssueController) Get() {
+func (c *IssueNewController) Get() {
 	c.FFBaseController.Get()
 
 	c.Data[constants.Title] = "New Issue"
@@ -88,16 +88,16 @@ func (c *IssueController) Get() {
 	c.initPageVariables()
 	c.initPageContent()
 
-	c.TplName = "issue.html"
+	c.TplName = "issueNew.html"
 }
 
 // Post for handle new issue controller POST request
-func (c *IssueController) Post() {
+func (c *IssueNewController) Post() {
 	c.FFBaseController.Post()
 }
 
 // Create the method for creating issue
-func (c *IssueController) Create() {
+func (c *IssueNewController) Create() {
 
 	var err error
 	var nStatus int64
@@ -141,7 +141,7 @@ func (c *IssueController) Create() {
 
 // MARK - private helpers
 
-func (c *IssueController) initPageVariables() {
+func (c *IssueNewController) initPageVariables() {
 	// fetch all user data
 	allUsers, err := models.AllAccounts()
 	if err != nil {
@@ -185,7 +185,7 @@ func (c *IssueController) initPageVariables() {
 }
 
 // initPageContent initial settings in current page
-func (c *IssueController) initPageContent() {
+func (c *IssueNewController) initPageContent() {
 
 	c.Data[constants.KeyIssueHTMLValue] = c.issueTemplateData
 }

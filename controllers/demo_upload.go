@@ -3,10 +3,41 @@ package controllers
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/astaxie/beego"
 )
+
+type UploadController struct {
+	FFBaseController
+}
+
+func (c *UploadController) Get() {
+	c.FFBaseController.Get()
+
+	c.TplName = "demo_upload.html"
+}
+
+func (c *UploadController) Post() {
+	c.FFBaseController.Post()
+
+	beego.Info(c.Input())
+
+	f, h, err := c.GetFile("myfile")
+	if err != nil {
+		log.Fatal("getfile err ", err)
+	}
+	defer f.Close()
+
+	// 保存位置在 static/upload, 没有文件夹要先创建
+	if saveErr := c.SaveToFile("myfile", "static/upload/"+h.Filename); saveErr != nil {
+		beego.Error(saveErr)
+	}
+
+	c.Data["json"] = h.Filename
+	c.ServeJSON()
+}
 
 type ReadController struct {
 	FFBaseController

@@ -20,22 +20,15 @@ func init() {
 
 	beego.Router("/issuelist", &controllers.IssueListController{})
 
-	beego.Router("/issue", &controllers.IssueController{})
-	beego.AutoRouter(&controllers.IssueController{})
+	beego.Router("/issue", &controllers.IssueNewController{})
+	beego.AutoRouter(&controllers.IssueNewController{})
 
 	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})
 	beego.Router("/issuedetail/:issue(\\d+)/newlog", &controllers.IssueDetailController{}, "post:SubmitNewLog")
 	beego.Router("/issuedetail/:issue(\\d+)/update", &controllers.IssueDetailController{}, "post:UpdateIssue")
 
 	beego.Router("/weatherDemo", &controllers.WeatherDemoController{})
-	beego.Router("/upload", &controllers.ReadController{})
-	// beego.Router("/upload/PageData", &controllers.UserController{})
-	// beego.Router("/upload/PageNextData", &controllers.YonghuController{})
-	// beego.Router("/upload/Index", &controllers.PageController{})
-	// beego.Router("/upload/EasyUI", &controllers.EasyUIController{})
-	// beego.Router("/upload/EasyUIData", &controllers.EasyUIDataController{})
-	// beego.Router("/upload/FileOpt", &controllers.FileOptUploadController{})
-	// beego.Router("/upload/FileDown", &controllers.FileOptDownloadController{})
+	beego.Router("/upload", &controllers.UploadController{})
 	beego.Router("/upload/FileRead", &controllers.ReadController{})
 	beego.Router("/upload/FileWrite", &controllers.WriteController{})
 	beego.Router("/upload/FileCreate", &controllers.CreateController{})

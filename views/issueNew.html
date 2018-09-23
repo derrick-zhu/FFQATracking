@@ -29,6 +29,7 @@
                 <textarea id="Description" name="Description" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
             </div>
 
+            <!-- bug的各种状态设置 -->
             {{range .issueHTMLValue}}
                 {{template "dataPickerTemplate" .}}
             {{end}}
