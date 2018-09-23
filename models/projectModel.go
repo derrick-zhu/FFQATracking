@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ProjectDBTable string = "ProjectModel"
+	projectDBTable string = "ProjectModel"
 )
 
 type ProjectType int64
@@ -27,7 +27,7 @@ func init() {
 }
 
 func (c *ProjectModel) TableName() string {
-	return ProjectDBTable
+	return projectDBTable
 }
 
 func (c *ProjectModel) AddProject(title string, creator int64, prjType ProjectType) {

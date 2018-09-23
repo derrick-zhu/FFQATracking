@@ -34,6 +34,7 @@ func PropertyInIssue(pname string, value interface{}) string {
 	return ""
 }
 
+// IntValueInIssue get int value from the BugModel
 func IntValueInIssue(pname string, issue *BugModel) int64 {
 	nVal, _ := BugGetReadableProperty(pname, issue)
 	return nVal

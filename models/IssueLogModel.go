@@ -13,8 +13,10 @@ import (
 const (
 	issueLogTableName string = "issuelog"
 
+	// LogTypeComment for the comment change type of IssueLogModel
 	LogTypeComment = 0
-	LogTypeStatus  = 1
+	// LogTypeStatus for the status change of IssueLogModel
+	LogTypeStatus = 1
 )
 
 // IssueLogModel comments for issue
