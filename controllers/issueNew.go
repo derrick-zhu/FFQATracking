@@ -123,14 +123,6 @@ func (c *IssueNewController) Create() {
 	creatorID := c.Input().Get(issuePickerKey(IssueCreatorKey))
 	assignorID := c.Input().Get(issuePickerKey(IssueAssignorKey))
 
-	// beego.Debug(fmt.Sprintf("title: %s", title))
-	// beego.Debug(fmt.Sprintf("description: %s", description))
-	// beego.Debug(fmt.Sprintf("status: %s -> %s", IssueStatusKey, status))
-	// beego.Debug(fmt.Sprintf("priority: %s -> %s", IssuePriorityKey, priority))
-	// beego.Debug(fmt.Sprintf("reproduct: %s -> %s", IssueReproductionKey, reproduct))
-	// beego.Debug(fmt.Sprintf("creator: %s -> %s", IssueCreatorKey, creatorID))
-	// beego.Debug(fmt.Sprintf("assignor: %s -> %s", IssueAssignorKey, assignorID))
-
 	nStatus, err = strconv.ParseInt(status, 10, 64)
 	nPriority, err = strconv.ParseInt(priority, 10, 64)
 	nReproduct, err = strconv.ParseInt(reproduct, 10, 64)
@@ -221,4 +213,5 @@ func (c *IssueNewController) initPageVariables() {
 func (c *IssueNewController) initPageContent() {
 
 	c.Data[constants.KeyIssueHTMLValue] = c.issueTemplateData
+	c.Data[constants.KeyIssueAttachments] = c.issueAttachData
 }
