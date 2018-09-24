@@ -44,6 +44,9 @@ type IssuePickerTemplateModel struct {
 // TIssueNewCollectionType for issue template
 type TIssueNewCollectionType []IssuePickerTemplateModel
 
+// TIssueAttachmentType for issue's attachment
+type TIssueAttachmentType []models.AttachmentModel
+
 // IssueStatusData status data (temperary)
 var IssueStatusData = IssuePickerTemplateModel{
 	Title:        IssueStatusKey,
@@ -76,9 +79,13 @@ type IssueNewController struct {
 	FFBaseController
 
 	issueTemplateData TIssueNewCollectionType
+	issueAttachData   TIssueAttachmentType
 	allCreators       IssuePickerTemplateModel
 	allAssignors      IssuePickerTemplateModel
 }
+
+// just for store the attach session key
+var gAttachSessionKeyForNewIssue int64
 
 // Get for handle new issue controller GET request
 func (c *IssueNewController) Get() {
@@ -87,15 +94,15 @@ func (c *IssueNewController) Get() {
 	c.Data[constants.Title] = "New Issue"
 	c.Data[constants.KeyIsIssueList] = 1
 
+	if gAttachSessionKeyForNewIssue != 0 {
+		biz.SharedAttachManager().RemoveSession(gAttachSessionKeyForNewIssue)
+	}
+	gAttachSessionKeyForNewIssue = biz.SharedAttachManager().NewSession()
+
 	c.initPageVariables()
 	c.initPageContent()
 
 	c.TplName = "issueNew.html"
-}
-
-// Post for handle new issue controller POST request
-func (c *IssueNewController) Post() {
-	c.FFBaseController.Post()
 }
 
 // Create the method for creating issue
@@ -116,13 +123,13 @@ func (c *IssueNewController) Create() {
 	creatorID := c.Input().Get(issuePickerKey(IssueCreatorKey))
 	assignorID := c.Input().Get(issuePickerKey(IssueAssignorKey))
 
-	beego.Debug(fmt.Sprintf("title: %s", title))
-	beego.Debug(fmt.Sprintf("description: %s", description))
-	beego.Debug(fmt.Sprintf("status: %s -> %s", IssueStatusKey, status))
-	beego.Debug(fmt.Sprintf("priority: %s -> %s", IssuePriorityKey, priority))
-	beego.Debug(fmt.Sprintf("reproduct: %s -> %s", IssueReproductionKey, reproduct))
-	beego.Debug(fmt.Sprintf("creator: %s -> %s", IssueCreatorKey, creatorID))
-	beego.Debug(fmt.Sprintf("assignor: %s -> %s", IssueAssignorKey, assignorID))
+	// beego.Debug(fmt.Sprintf("title: %s", title))
+	// beego.Debug(fmt.Sprintf("description: %s", description))
+	// beego.Debug(fmt.Sprintf("status: %s -> %s", IssueStatusKey, status))
+	// beego.Debug(fmt.Sprintf("priority: %s -> %s", IssuePriorityKey, priority))
+	// beego.Debug(fmt.Sprintf("reproduct: %s -> %s", IssueReproductionKey, reproduct))
+	// beego.Debug(fmt.Sprintf("creator: %s -> %s", IssueCreatorKey, creatorID))
+	// beego.Debug(fmt.Sprintf("assignor: %s -> %s", IssueAssignorKey, assignorID))
 
 	nStatus, err = strconv.ParseInt(status, 10, 64)
 	nPriority, err = strconv.ParseInt(priority, 10, 64)
@@ -138,6 +145,12 @@ func (c *IssueNewController) Create() {
 		return
 	}
 
+	// 提交完issue之后，需要清理持有的attachment session
+	if gAttachSessionKeyForNewIssue != 0 {
+		biz.SharedAttachManager().RemoveSession(gAttachSessionKeyForNewIssue)
+		gAttachSessionKeyForNewIssue = 0
+	}
+
 	c.Redirect("/issuelist", 302)
 }
 
@@ -151,8 +164,9 @@ func (c *IssueNewController) NewAttchment() {
 	}
 
 	// TODO: add attachment into db here.
+	attachSession := biz.SharedAttachManager().SessionWithID(gAttachSessionKeyForNewIssue)
+	attachSession.AppendAttachement(attachName)
 
-	c.Data["json"] = attachName
 	utils.MakeRedirectURL(&c.Data, 302, "#", "")
 
 	c.ServeJSON()

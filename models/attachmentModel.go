@@ -7,9 +7,10 @@ import (
 
 // AttachmentModel for bug's attachment files
 type AttachmentModel struct {
-	ID         int64  `orm:"auto;index"`
-	IssueID    int64  `orm:"index"`            // for issue main body
-	IssueLogID int64  `orm:"index"`            // for issue's log history item
+	ID         int64 `orm:"auto;index"`
+	IssueID    int64 `orm:"index"` // for issue main body
+	IssueLogID int64 `orm:"index"` // for issue's log history item
+	Tm         int64
 	FileName   string `orm:"size(256);nonull"` // encoded file's name in back-end
 }
 
@@ -17,6 +18,7 @@ func init() {
 	orm.RegisterModel(new(AttachmentModel))
 }
 
+// TableName for attachment db table
 func (c *AttachmentModel) TableName() string {
 	return "attachmentmodel"
 }

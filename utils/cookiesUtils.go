@@ -3,6 +3,7 @@ package utils
 import (
 	"FFQATracking/constants"
 	"encoding/base64"
+	"log"
 	"sync"
 
 	"github.com/astaxie/beego"
@@ -15,24 +16,31 @@ type CookiesUtils struct {
 	Data    map[string]string
 }
 
-var cookieInstance *CookiesUtils
-var cookieOnce sync.Once
+var gCookieInstance *CookiesUtils
+var gCookieOnce sync.Once
 
 // CookieInstance cookie instance
 func CookieInstance() *CookiesUtils {
-	cookieOnce.Do(func() {
-		cookieInstance = &CookiesUtils{}
+	gCookieOnce.Do(func() {
+		gCookieInstance = &CookiesUtils{}
 	})
-	return cookieInstance
+	return gCookieInstance
 }
 
 // Init initialize the cookie manager
 func (cm *CookiesUtils) Init(ctx context.Context, version string) {
+	if cm != CookieInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 	cm.Version = version
 }
 
 // Set set value for key into cookie
 func (cm *CookiesUtils) Set(ctx *context.Context, key string, value string, life int) {
+
+	if cm != CookieInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	if life <= 0 {
 		life = constants.MAXINT
@@ -42,6 +50,10 @@ func (cm *CookiesUtils) Set(ctx *context.Context, key string, value string, life
 
 // Get get value for key from cookie
 func (cm *CookiesUtils) Get(ctx *context.Context, key string) string {
+
+	if cm != CookieInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	ck, err := ctx.Request.Cookie(key)
 	if err != nil {
@@ -54,12 +66,20 @@ func (cm *CookiesUtils) Get(ctx *context.Context, key string) string {
 // SetSecret set value for key into cookie
 func (cm *CookiesUtils) SetSecret(ctx *context.Context, key string, value string, life int) {
 
+	if cm != CookieInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
+
 	encodedValue := Base64Encode(value)
 	cm.Set(ctx, key, encodedValue, life)
 }
 
 // GetSecret get secret value from cookie
 func (cm *CookiesUtils) GetSecret(ctx *context.Context, key string) string {
+
+	if cm != CookieInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	encodedString := cm.Get(ctx, key)
 	decodedData, err := base64.StdEncoding.DecodeString(encodedString)

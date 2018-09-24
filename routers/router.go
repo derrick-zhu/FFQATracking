@@ -27,7 +27,7 @@ func init() {
 	beego.Router("/issuedetail/:issue(\\d+)/newlog", &controllers.IssueDetailController{}, "post:SubmitNewLog")
 	beego.Router("/issuedetail/:issue(\\d+)/update", &controllers.IssueDetailController{}, "post:UpdateIssue")
 
-	beego.Router("/weatherDemo", &controllers.WeatherDemoController{})
+	beego.Router("/weather", &controllers.WeatherDemoController{})
 	beego.Router("/upload", &controllers.UploadController{})
 	beego.Router("/upload/FileRead", &controllers.ReadController{})
 	beego.Router("/upload/FileWrite", &controllers.WriteController{})

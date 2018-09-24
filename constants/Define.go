@@ -15,7 +15,8 @@ const (
 
 	/// new issue
 
-	KeyIssueHTMLValue = "issueHTMLValue"
+	KeyIssueHTMLValue   = "issueHTMLValue"
+	KeyIssueAttachments = "issueAttachments"
 
 	/// issue detail
 

@@ -5,6 +5,7 @@ import (
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"errors"
+	"log"
 	"strconv"
 	"sync"
 
@@ -17,20 +18,24 @@ type AccountManager struct {
 	Account *models.AccountModel
 }
 
-// AccMgrInstance globel AccountManager instance
-var AccMgrInstance *AccountManager
-var cookieOnce sync.Once
+// gAccMgrInstance globel AccountManager instance
+var gAccMgrInstance *AccountManager
+var gCookieOnce sync.Once
 
 // AccountManagerInstance singleton
 func AccountManagerInstance() *AccountManager {
-	cookieOnce.Do(func() {
-		AccMgrInstance = &AccountManager{}
+	gCookieOnce.Do(func() {
+		gAccMgrInstance = &AccountManager{}
 	})
-	return AccMgrInstance
+	return gAccMgrInstance
 }
 
 // Login login with account's email and pwd
 func (am *AccountManager) Login(ctx *context.Context, email, pwd string) (bool, error) {
+
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	result, acc, _ := AccountManagerInstance().CheckAccount(email, pwd)
 	if true == result {
@@ -47,6 +52,10 @@ func (am *AccountManager) Login(ctx *context.Context, email, pwd string) (bool, 
 
 // Logout logout
 func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
+
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	var err error
 	var id int64
@@ -73,6 +82,10 @@ func (am *AccountManager) Logout(ctx *context.Context, uid string) bool {
 // HadLogin check account login state
 func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
+
 	ckEmail := utils.CookieInstance().Get(ctx, constants.KeyEMAIL)
 	if len(ckEmail) <= 0 {
 		return false
@@ -97,6 +110,10 @@ func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 // CurrentAccount get current signed up account
 func (am *AccountManager) CurrentAccount(ctx *context.Context) (*models.AccountModel, error) {
 
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
+
 	if am.HadLogin(ctx) == false {
 		return nil, errors.New("Not login")
 	}
@@ -115,21 +132,35 @@ func (am *AccountManager) CurrentAccount(ctx *context.Context) (*models.AccountM
 
 // AccountWithID fetch user account with uid
 func (am *AccountManager) AccountWithID(id int64) (*models.AccountModel, error) {
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
+
 	return models.AccountWithID(id)
 }
 
 // AccountWithUname fetch user account with uname
 func (am *AccountManager) AccountWithUname(uname string) (*models.AccountModel, error) {
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 	return models.AccountWithUname(uname)
 }
 
 // AccountWithEMail fetch user account with email
 func (am *AccountManager) AccountWithEMail(email string) (*models.AccountModel, error) {
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 	return models.AccountWithEmail(email)
 }
 
 // CheckAccount check user account is matched in db
 func (am *AccountManager) CheckAccount(uname, pwd string) (bool, *models.AccountModel, error) {
+
+	if am != AccountManagerInstance() {
+		log.Fatal("caller should using singleton handler")
+	}
 
 	var acc *models.AccountModel
 	var err error
