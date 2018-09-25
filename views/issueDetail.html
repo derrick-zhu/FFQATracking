@@ -63,36 +63,52 @@
             <label style="font-size:2rem">Comment history:</label>
 
             <div style="margin-left: 3em"></div>
-            <ul>
-                <!-- for issue log history loop -->
-                {{range $index, $log := .issueLogHistory}}
+            <table>
+                <tbody>
+                    <tr>
+                        <th style="width:30%;"></th>
+                        <th style="width:70%;"></th>
+                    </tr>
+                    <!-- for issue log history loop -->
+                    {{range $index, $log := .issueLogHistory}}
 
-                <!-- avatar canvas' local variable -->
-                {{$avaterName := printf "user_avatar_%d" $log.CreatorID}}
-                <li>
-                    <canvas id="{{$avaterName}}" name="{{$avaterName}}" width="64" height="64"></canvas>
-                    <label style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></label>
-                    update at {{$log.TimeDisplay}}
-                    {{if eq $log.Type 1}}
-                    <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}}
-                        into
-                        {{BugStatusWithType $log.NewStatus}}</p>
-                    {{else}}
-                    <p>{{$log.Content}}</p>
+                    <!-- avatar canvas' local variable -->
+                    {{$avaterName := printf "user_avatar_%d" $log.CreatorID}}
+                    <tr class="bugnote bugnote-note">
+
+                        <td>
+                            <div style="float: left !important">
+                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="avatar-4px" width="48" height="48"></canvas>
+                            </div>
+                            <div style="float: left !important">
+                                <p style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></p>
+                                <p style="font-size:1.5rem;">{{$log.TimeDisplay}}</p>
+                            </div>
+                        </td>
+                        <td>
+                            {{if eq $log.Type 1}}
+                            <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}} into {{BugStatusWithType $log.NewStatus}}</p>
+                            {{else}}
+                            <p>{{$log.Content}}</p>
+                            {{end}}
+
+                            <script type="text/javascript">
+                                $('#{{$avaterName}}').ready(function () {
+                                    appendAvatarCanvasCollection(
+                                        "{{$avaterName}}",
+                                        "{{$log.CreatorName}}");
+                                })
+                            </script>
+                        </td>
+                    </tr>
+                    <tr class="spacer"><td colspan="2"></td></tr>
+
                     {{end}}
+                    <!-- end for issueLogHistory loop -->
 
-                    <script type="text/javascript">
-                        $('#{{$avaterName}}').ready(function () {
-                            appendAvatarCanvasCollection(
-                                "{{$avaterName}}",
-                                "{{$log.CreatorName}}");
-                        })
-                    </script>
-                </li>
+                </tbody>
+            </table>
 
-                {{end}}
-                <!-- end for issueLogHistory loop -->
-            </ul>
         </div>
 
         <script type="text/javascript">
