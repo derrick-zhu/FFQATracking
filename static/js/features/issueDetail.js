@@ -1,3 +1,34 @@
+class cAvatarModel {
+  constructor(elemId, content) {
+    this.elemId = elemId;
+    this.content = content;
+  }
+}
+
+// 所有需要被刷新的(element id, content)
+var gAllAvatarCanvasSet = new Set();
+
+function appendAvatarCanvasCollection(elemId, content) {
+  if (content.length > 0 && elemId.length > 0) {
+
+    for (let item of gAllAvatarCanvasSet) {
+      if (item.elemId == elemId) {
+        return;
+      }
+    }
+
+    var newModel = new cAvatarModel(elemId, content);
+    gAllAvatarCanvasSet.add(newModel);
+  }
+}
+
+function refreshAllAvatar() {
+  for (let item of gAllAvatarCanvasSet) {
+    AvatarDrawCanvasWith(item.content, item.elemId);
+  }
+}
+
+
 function didSelectWith(id, type, desc, extID) {
 
   console.log(didSelectWith.caller);
@@ -8,6 +39,7 @@ function didSelectWith(id, type, desc, extID) {
 
   issueDetailUpdate(extID, id, type);
 }
+
 
 function issueDetailUpdate(issueId, key, value) {
 
@@ -27,8 +59,8 @@ function issueDetailUpdate(issueId, key, value) {
         if (result.Code == 302) {
           window.location.href = result.URL;
         } else if (result.Code == 200) {
-          reloadDiv("issue_log_history");   // issue log history section
-          reloadDiv("issue-level-band");    // colour band at top
+          reloadDiv("issue_log_history"); // issue log history section
+          reloadDiv("issue-level-band"); // colour band at top
         }
       }
     },
@@ -37,6 +69,7 @@ function issueDetailUpdate(issueId, key, value) {
     }
   });
 }
+
 
 function issueDetailSubmitNewLog(issueId) {
 

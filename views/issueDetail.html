@@ -5,6 +5,7 @@
     {{template "header" .}}
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueDetail.css">
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueList.css">
+    <script type="text/javascript" src="/static/js/avatar/avatar.js"></script>
     <script type="text/javascript" src="/static/js/features/issue.js"></script>
     <script type="text/javascript" src="/static/js/features/issueDetail.js"></script>
 </head>
@@ -63,10 +64,13 @@
 
             <div style="margin-left: 3em"></div>
             <ul>
-
+                <!-- for issue log history loop -->
                 {{range $index, $log := .issueLogHistory}}
-                <!-- <p>{{$index}} - {{$log}}</p> -->
+
+                <!-- avatar canvas' local variable -->
+                {{$avaterName := printf "user_avatar_%d" $log.CreatorID}}
                 <li>
+                    <canvas id="{{$avaterName}}" name="{{$avaterName}}" width="64" height="64"></canvas>
                     <label style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></label>
                     update at {{$log.TimeDisplay}}
                     {{if eq $log.Type 1}}
@@ -76,12 +80,26 @@
                     {{else}}
                     <p>{{$log.Content}}</p>
                     {{end}}
+
+                    <script type="text/javascript">
+                        $('#{{$avaterName}}').ready(function () {
+                            appendAvatarCanvasCollection(
+                                "{{$avaterName}}",
+                                "{{$log.CreatorName}}");
+                        })
+                    </script>
                 </li>
+
                 {{end}}
+                <!-- end for issueLogHistory loop -->
             </ul>
-
-
         </div>
+
+        <script type="text/javascript">
+            $('#issue_log_history').ready(function () {
+                refreshAllAvatar();
+            })
+        </script>
     </div>
     </div>
 
