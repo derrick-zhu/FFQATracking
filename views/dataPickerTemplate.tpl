@@ -15,7 +15,6 @@
  {{$id := .Identifier}}
  {{$data := .Collection}}
 
- 
 <div class="col-xs-3" style="margin:0.5px;"> 
     <label class="left label-ff-standard" style="max-width:100%">{{$title}} :</label>
     <div class="btn-group">

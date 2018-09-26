@@ -74,10 +74,9 @@
 
                     <!-- avatar canvas' local variable -->
                     {{$avaterName := printf "user_avatar_%d" $log.CreatorID}}
-                    <tr class="bugnote bugnote-note">
-
+                    <tr>
                         <td>
-                            <div style="float: left !important">
+                            <div class="bugnote bugnote-note" style="float: left !important">
                                 <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="avatar-4px" width="48" height="48"></canvas>
                             </div>
                             <div style="float: left !important">
