@@ -9,10 +9,6 @@
 <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <link href="/static/css/utils.css" type="text/css" rel="stylesheet">
 
-<!-- 
-    <link href="/static/css/commonltr.css" type="text/css" rel="stylesheet"> 
--->
-
 <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/utils.js"></script>
