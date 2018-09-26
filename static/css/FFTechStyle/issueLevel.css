@@ -1,0 +1,43 @@
+.issue-level-0 {
+    color: lightgray;
+    background-color: black;
+}
+
+.issue-level-1 {
+    color: lightgray;
+    background-color: red;
+}
+
+.issue-level-2 {
+    color: lightgray;
+    background-color: orangered;
+}
+
+.issue-level-3 {
+    background-color: orange;
+}
+
+.issue-level-4 {
+    background-color: yellow;
+}
+
+.issue-level-5 {
+    background-color: yellowgreen;
+}
+
+.issue-level-6 {
+    color: grey;
+    background-color: lightgreen;
+}
+
+.issue-level-0:hover,
+.issue-level-1:hover,
+.issue-level-2:hover,
+.issue-level-3:hover,
+.issue-level-4:hover,
+.issue-level-5:hover,
+.issue-level-6:hover 
+{
+    color: black;
+    background-color: white;
+}

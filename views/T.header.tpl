@@ -13,7 +13,7 @@
     <link href="/static/css/commonltr.css" type="text/css" rel="stylesheet"> 
 -->
 
-<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/js/utils.js"></script>
 

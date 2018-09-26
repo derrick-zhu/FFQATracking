@@ -4,7 +4,7 @@
 <head>
     {{template "header" .}}
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueDetail.css">
-    <link rel="stylesheet" href="/static/css/FFTechStyle/issueList.css">
+    <link rel="stylesheet" href="/static/css/FFTechStyle/issueLevel.css">
     <script type="text/javascript" src="/static/js/avatar/avatar.js"></script>
     <script type="text/javascript" src="/static/js/features/issue.js"></script>
     <script type="text/javascript" src="/static/js/features/issueDetail.js"></script>
@@ -60,31 +60,35 @@
 
         <!-- 历史记录区 -->
         <div id="issue_log_history">
-            <label style="font-size:2rem">Comment history:</label>
+            <label style="font-size:2rem">History:</label>
 
-            <div style="margin-left: 3em"></div>
-            <table>
+            <table class="table-body-log-history">
                 <tbody>
                     <tr>
                         <th style="width:30%;"></th>
                         <th style="width:70%;"></th>
                     </tr>
+
                     <!-- for issue log history loop -->
                     {{range $index, $log := .issueLogHistory}}
-
                     <!-- avatar canvas' local variable -->
                     {{$avaterName := printf "user_avatar_%d" $log.CreatorID}}
+
                     <tr>
-                        <td>
-                            <div class="bugnote bugnote-note" style="float: left !important">
-                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="avatar-4px" width="48" height="48"></canvas>
+                        <td class="align-top log-brief-secion">
+                            <div class="log-user-icon">
+                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="log-avatar" width="48px" height="48px"></canvas>
                             </div>
-                            <div style="float: left !important">
-                                <p style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></p>
-                                <p style="font-size:1.5rem;">{{$log.TimeDisplay}}</p>
+                            <div class="log-user-info">
+                                <div>
+                                    <p style="font-size:1.75rem;"><a href="/person/{{$log.CreatorID}}">{{$log.CreatorName}}</a></p>
+                                </div>
+                                <div>
+                                    <p style="font-size:1.5rem;">{{$log.TimeDisplay}}</p>
+                                </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="log-detail-section align-top">
                             {{if eq $log.Type 1}}
                             <p>Issue status {{$log.StatusTitle}} had been changed from {{BugStatusWithType $log.PrvStatus}} into {{BugStatusWithType $log.NewStatus}}</p>
                             {{else}}
@@ -100,7 +104,9 @@
                             </script>
                         </td>
                     </tr>
-                    <tr class="spacer"><td colspan="2"></td></tr>
+                    <tr class="spacer">
+                        <td colspan="2"></td>
+                    </tr>
 
                     {{end}}
                     <!-- end for issueLogHistory loop -->
