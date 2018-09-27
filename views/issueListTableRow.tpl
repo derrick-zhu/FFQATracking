@@ -7,11 +7,11 @@
         {{$creator := AccountForIDInArray $accounts $issue.Creator}}
         {{$assignor := AccountForIDInArray $accounts $issue.Assignor}}
     
-        <tr class='{{$issue | IssueCSSWithPriority}}' onclick="didIssueClicked('{{$issue.ID}}')">
+        <tr class='{{$issue | IssueCSSWithPriority}}'>
 
             <td></td>
             <td>{{$issue.ID}}</td>
-            <td class="tr-title">{{$issue.Title}}</td>
+            <td class="tr-title"><a href="/issuedetail/{{$issue.ID}}">{{$issue.Title}}</a></td>
             <td>{{PropertyInIssue "Status" $issue}}</td>
             <td>{{PropertyInIssue "Priority" $issue}}</td>
             <td><a href='#'>{{PropertyInIssue "Version" $issue}}</a></td>
