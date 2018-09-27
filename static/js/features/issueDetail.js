@@ -4,15 +4,19 @@ var gMDEditor;
 // 所有需要被刷新的(element id, content)
 var gAllAvatarCanvasSet = new Set();
 
-// on finish loading
-function initMarkdownEditorInstance() {
-  gMDEditor = new SimpleMDE({elements: $("#issue_comment")[0]});
-};
 
 class cAvatarModel {
   constructor(elemId, content) {
     this.elemId = elemId;
     this.content = content;
+  }
+}
+
+
+// on finish loading
+function initMarkdownEditorInstance() {
+  if (null == gMDEditor) {
+    gMDEditor = new SimpleMDE({elements: $("#issue_comment")[0]});
   }
 }
 
