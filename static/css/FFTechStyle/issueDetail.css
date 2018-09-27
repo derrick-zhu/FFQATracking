@@ -5,6 +5,10 @@ td {
 	border: 0px;
 }
 
+table > tbody > tr {
+    border-radius: 6px;
+}
+
 table > tbody > tr > td,
 table > tbody > tr > th,
 table > tfoot > tr > td,
@@ -32,7 +36,7 @@ th.log-tdetail {
 
 .table-body-log-history {
     margin-left: 3em;
-    width: 100%;
+    width: 97%;
 }
 
 .log-brief-secion {
@@ -41,6 +45,7 @@ th.log-tdetail {
 
 .log-detail-section {
     background-color: #e8e8e8;
+    width: 100%;
 }
 
 .align-top {

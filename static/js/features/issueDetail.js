@@ -1,3 +1,14 @@
+
+// markdown editor
+var gMDEditor;
+// 所有需要被刷新的(element id, content)
+var gAllAvatarCanvasSet = new Set();
+
+// on finish loading
+function initMarkdownEditorInstance() {
+  gMDEditor = new SimpleMDE({elements: $("#issue_comment")[0]});
+};
+
 class cAvatarModel {
   constructor(elemId, content) {
     this.elemId = elemId;
@@ -5,9 +16,7 @@ class cAvatarModel {
   }
 }
 
-// 所有需要被刷新的(element id, content)
-var gAllAvatarCanvasSet = new Set();
-
+// add elemId and content into avatar render collection
 function appendAvatarCanvasCollection(elemId, content) {
   if (content.length > 0 && elemId.length > 0) {
 
@@ -22,12 +31,22 @@ function appendAvatarCanvasCollection(elemId, content) {
   }
 }
 
+// render all avatars which listed in avatar render collection.
 function refreshAllAvatar() {
   for (let item of gAllAvatarCanvasSet) {
     AvatarDrawCanvasWith(item.content, item.elemId);
   }
 }
 
+//
+function convertMDtoHtml(md) {
+  var result = gMDEditor.markdown(md);
+  if (result.length == 0) {
+    return md;
+  } else {
+    return result;
+  }
+}
 
 function didSelectWith(id, type, desc, extID) {
 
@@ -73,11 +92,14 @@ function issueDetailUpdate(issueId, key, value) {
 
 function issueDetailSubmitNewLog(issueId) {
 
+  var strOriginMD = gMDEditor.value();
+  var arguData = {issue_comment: strOriginMD};
+
   $.ajax({
     type: 'POST',
     dataType: 'json',
     url: '/issuedetail/' + issueId + '/newlog',
-    data: $('#frmIssueDetail').serialize(),
+    data: arguData,
     success: function (result) {
       if (result == null) {
         trackCallStack();

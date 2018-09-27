@@ -3,7 +3,7 @@
 
 <head>
     {{template "header" .}}
-    <link rel="stylesheet" href="/static/editor-md/css/editormd.min.css">
+    <!-- <link rel="stylesheet" href="/static/editor-md/css/editormd.min.css">
     <script type="text/javascript" src="/static/editor-md/editormd.min.js"></script>
     <script type="text/javascript">
         var testEditor;
@@ -18,7 +18,10 @@
             testEditor.unwatch();
             testEditor.previewing();
         });
-    </script>
+    </script> -->
+
+    <link rel="stylesheet" href="/static/simplemde/dist/simplemde.min.css">
+    <script src="/static/simplemde/dist/simplemde.min.js"></script>
 </head>
 
 <body>
@@ -33,15 +36,16 @@
 
     <div class="container">
 
-        <div id='editormd'>
+        <!-- <div id='editormd'>
             <textarea style="display:none" name="" id=""></textarea>
-        </div>
+        </div> -->
 
         <div>
-            <object data="http://localhost:8080/weatherDemo" width="600" height="400">
-                <embed src="http://localhost:8080/weatherDemo" type="text/html" width="800px" height="600px">
-            </object>
+            <textarea name="mdeditor" id="mdeditor" cols="30" rows="10"></textarea>
         </div>
+        <script>
+            var simplemde = new SimpleMDE({ elements: $("#mdeditor")[0] });
+        </script>
 
     </div>
 
