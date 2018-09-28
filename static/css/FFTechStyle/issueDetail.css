@@ -15,7 +15,11 @@ table > tfoot > tr > td,
 table > tfoot > tr > th,
 table > thead > tr > td,
 table > thead > tr > th {
-    padding: 5px;
+    padding-bottom: 6px;
+    padding-inline-start: 6px;
+    padding-inline-end: 6px;
+    padding-block-start: 6px;
+    padding-block-end: 6px;
 }
 
 th.log-thead {
@@ -26,6 +30,11 @@ th.log-thead {
 th.log-tdetail {
 	text-align: left; 
 	width: 75%;
+}
+
+div.issue {
+    border-width: 1px;
+    border-color: black;
 }
 
 .table {
@@ -62,13 +71,13 @@ th.log-tdetail {
     border-radius: 48px;
     width: 48px;
     height: 48px;
-    
 }
 
 .log-user-info {
 	margin: 4px 4px 4px 4px;
 	float: left;
 }
+
 .log-user-info > div > p {
 	margin: 0px 4px 4px 4px;
 }

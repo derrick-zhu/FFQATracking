@@ -25,6 +25,12 @@
     </div>
 
     {{$issue := .issueData}}
+    <script>
+        window.onload=function(){
+            // sorry about that, description should be refreshed after the whole page content were loadded.
+            document.getElementById("issue-detail-{{$issue.ID}}").innerHTML = convertMDtoHtml('{{$issue.Description}}');
+        }
+    </script>
 
     <div class="container">
         <div>
@@ -46,7 +52,7 @@
 
         <div>
             <label class="left" style="font-size:2rem;width:100%">Description:</label>
-            <p style="margin-left:3em;width:100%;max-height:20em;" class="scroll">{{$issue.Description}}</p>
+            <div class="issue issue-detail" id="issue-detail-{{$issue.ID}}" style="margin-left:3em;width:100%;">{{$issue.Description}}</div>
         </div>
 
         {{template "seperate-line"}}
@@ -106,7 +112,7 @@
                             {{else}}
                             <div id="issue_comment_{{$index}}"></div>
                             <script>
-                                $('#issue_comment').ready(function(){
+                                $("#issue_comment_{{$index}}").ready(function(){
                                     document.getElementById("issue_comment_{{$index}}").innerHTML = convertMDtoHtml('{{$log.Content}}');
                                 });
                             </script>

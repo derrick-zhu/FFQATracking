@@ -12,7 +12,6 @@ class cAvatarModel {
   }
 }
 
-
 // on finish loading
 function initMarkdownEditorInstance() {
   if (null == gMDEditor) {
