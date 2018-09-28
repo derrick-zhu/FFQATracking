@@ -18,13 +18,15 @@
 
 <body>
 
+    <!-- $issue likes global var in current page -->
+    {{$issue := .issueData}}
+
     <div class="navbar navbar-default">
         <div class="container">
             {{template "navbar" .}}
         </div>
     </div>
 
-    {{$issue := .issueData}}
     <script>
         window.onload=function(){
             // sorry about that, description should be refreshed after the whole page content were loadded.
@@ -38,6 +40,13 @@
                     {{$issue.Title}}</a></label>
         </div>
 
+        {{template "seperate-line"}}
+
+        <div>
+            <label class="left" style="font-size:2rem;width:100%">Description:</label>
+            <div class="issue issue-detail" id="issue-detail-{{$issue.ID}}" style="margin-left:3em;width:100%;">{{$issue.Description}}</div>
+        </div>
+
         <div id="issue-level-band" class="issue-level-{{$issue.Priority}}" style="width:100%;height:0.5em;margin-top:1em;margin-bottom:0.5em;"></div>
 
         <form id="frmIssueUpdate" method="POST" action="#" onsubmit="return false">
@@ -47,15 +56,12 @@
             {{end}}
             <!-- </div> -->
         </form>
+    </div>
 
-        {{template "seperate-line"}}
 
-        <div>
-            <label class="left" style="font-size:2rem;width:100%">Description:</label>
-            <div class="issue issue-detail" id="issue-detail-{{$issue.ID}}" style="margin-left:3em;width:100%;">{{$issue.Description}}</div>
-        </div>
+    <div class="container">
 
-        {{template "seperate-line"}}
+            {{template "seperate-line"}}
 
         <form id="frmIssueDetail" method="POST" action="#" onsubmit="return false">
 
@@ -67,7 +73,7 @@
             </div>
 
             <script>
-                $('#issue_comment').ready(function(){
+                $('#issue_comment').ready(function () {
                     initMarkdownEditorInstance();
                 });
             </script>
@@ -95,7 +101,8 @@
                     <tr>
                         <td class="align-top log-brief-secion">
                             <div class="log-user-icon">
-                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="log-avatar" width="48px" height="48px"></canvas>
+                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="log-avatar" width="48px"
+                                    height="48px"></canvas>
                             </div>
                             <div class="log-user-info">
                                 <div>
@@ -112,7 +119,7 @@
                             {{else}}
                             <div id="issue_comment_{{$index}}"></div>
                             <script>
-                                $("#issue_comment_{{$index}}").ready(function(){
+                                $("#issue_comment_{{$index}}").ready(function () {
                                     document.getElementById("issue_comment_{{$index}}").innerHTML = convertMDtoHtml('{{$log.Content}}');
                                 });
                             </script>

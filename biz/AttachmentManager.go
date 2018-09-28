@@ -58,6 +58,7 @@ var gAttachmentOnce sync.Once
 func SharedAttachManager() *AttachmentManager {
 	gAttachmentOnce.Do(func() {
 		gAttachmentManagerInstance = &AttachmentManager{}
+		gAttachmentManagerInstance.Sessions = make(map[int64]*AttachmentSession)
 	})
 	return gAttachmentManagerInstance
 }

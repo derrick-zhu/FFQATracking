@@ -1,4 +1,3 @@
-
 // markdown editor
 var gMDEditor;
 // 所有需要被刷新的(element id, content)
@@ -15,7 +14,9 @@ class cAvatarModel {
 // on finish loading
 function initMarkdownEditorInstance() {
   if (null == gMDEditor) {
-    gMDEditor = new SimpleMDE({elements: $("#issue_comment")[0]});
+    gMDEditor = new SimpleMDE({
+      elements: $("#issue_comment")[0]
+    });
   }
 }
 
@@ -96,7 +97,9 @@ function issueDetailUpdate(issueId, key, value) {
 function issueDetailSubmitNewLog(issueId) {
 
   var strOriginMD = gMDEditor.value();
-  var arguData = {issue_comment: strOriginMD};
+  var arguData = {
+    issue_comment: strOriginMD
+  };
 
   $.ajax({
     type: 'POST',
