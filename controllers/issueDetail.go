@@ -3,6 +3,7 @@ package controllers
 import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
+	"FFQATracking/helpers"
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"fmt"
@@ -191,6 +192,22 @@ func (c *IssueDetailController) UpdateIssue() {
 		utils.MakeRedirectURL(&c.Data, 200, "#", "")
 		break
 	}
+
+	c.ServeJSON()
+}
+
+// NewAttachment new attachment request (POST)
+func (c *IssueDetailController) NewAttachment() {
+	c.FFBaseController.Post()
+
+	beego.Info(c.Ctx.Input)
+
+	fp, err := helpers.SaveAttachFile(c.Ctx.Request, "attach-image", "static/upload/")
+	if err != nil {
+		beego.Error(err)
+	}
+
+	c.Data["json"] = fp
 
 	c.ServeJSON()
 }

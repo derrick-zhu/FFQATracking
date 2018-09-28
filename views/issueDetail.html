@@ -61,7 +61,7 @@
 
     <div class="container">
 
-            {{template "seperate-line"}}
+        {{template "seperate-line"}}
 
         <form id="frmIssueDetail" method="POST" action="#" onsubmit="return false">
 
@@ -79,6 +79,19 @@
             </script>
 
         </form>
+
+    </div>
+
+    <div class="container layout-flex">
+        <div class="padding"><label>Insert attach image:</label></div>
+        <form class="layout-flex padding" id="form-insert-attach" method="post" enctype="multipart/form-data">
+            <input id="attach-image" name="attach-image" type="file" />
+            <input type="submit" onclick="eventUploadAttachImage('{{$issue.ID}}')" value="Upload & Insert" />
+        </form>
+    </div>
+
+
+    <div class="container">
 
         {{template "seperate-line"}}
 
@@ -101,8 +114,7 @@
                     <tr>
                         <td class="align-top log-brief-secion">
                             <div class="log-user-icon">
-                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="log-avatar" width="48px"
-                                    height="48px"></canvas>
+                                <canvas id="{{$avaterName}}" name="{{$avaterName}}" class="log-avatar" width="48px" height="48px"></canvas>
                             </div>
                             <div class="log-user-info">
                                 <div>
@@ -120,7 +132,8 @@
                             <div id="issue_comment_{{$index}}"></div>
                             <script>
                                 $("#issue_comment_{{$index}}").ready(function () {
-                                    document.getElementById("issue_comment_{{$index}}").innerHTML = convertMDtoHtml('{{$log.Content}}');
+                                    document.getElementById("issue_comment_{{$index}}").innerHTML =
+                                        convertMDtoHtml('{{$log.Content}}');
                                 });
                             </script>
                             {{end}}

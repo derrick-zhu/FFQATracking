@@ -52,6 +52,26 @@ function convertMDtoHtml(md) {
   }
 }
 
+// event to upload attachment file (image)
+function eventUploadAttachImage(issueId) {
+  formData = new FormData($('#form-insert-attach')[0]);
+  $.ajax({
+    type: 'post',
+    url: '/issuedetail/' + issueId + '/newattach',
+    data: formData,
+    cache: false,
+    processData: false,
+    contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
+    success: function (result) {
+      alert(result);
+    },
+    error: function (result) {
+      alert(result);
+    }
+  });
+}
+
+// change issue property by click the drop-down menu
 function didSelectWith(id, type, desc, extID) {
 
   console.log(didSelectWith.caller);
@@ -63,7 +83,7 @@ function didSelectWith(id, type, desc, extID) {
   issueDetailUpdate(extID, id, type);
 }
 
-
+// issue property change event
 function issueDetailUpdate(issueId, key, value) {
 
   var param = Object.create(null);
@@ -93,7 +113,7 @@ function issueDetailUpdate(issueId, key, value) {
   });
 }
 
-
+// the event about adding issue's new log 
 function issueDetailSubmitNewLog(issueId) {
 
   var strOriginMD = gMDEditor.value();

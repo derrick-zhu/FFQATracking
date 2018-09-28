@@ -37,6 +37,29 @@ div.issue {
     border-color: black;
 }
 
+div.frame {
+    border-color: #e8e8e8;
+    border-width: 0.5px;
+    border-style: solid;
+    border-radius: 4px;
+}
+
+.padding {
+    padding: 4px;
+}
+
+.layout-flex {
+    display: flex;
+}
+
+.layout-flex-left {
+    float: left;
+}
+
+.layout-flex-right {
+    float: right;
+}
+
 .table {
     border-top: 1px solid #e5e5e5;
     margin-bottom: 0px;
