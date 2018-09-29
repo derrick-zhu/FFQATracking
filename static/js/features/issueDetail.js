@@ -54,14 +54,16 @@ function convertMDtoHtml(md) {
 
 // event to upload attachment file (image)
 function eventUploadAttachImage(issueId) {
+
+  targetUrl = '/issuedetail/' + issueId + '/newattach';
   formData = new FormData($('#form-insert-attach')[0]);
+
   $.ajax({
     type: 'post',
-    url: '/issuedetail/' + issueId + '/newattach',
+    url: targetUrl,
     data: formData,
     cache: false,
     processData: false,
-    contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
     success: function (result) {
       alert(result);
     },
