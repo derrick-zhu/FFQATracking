@@ -7,6 +7,7 @@ import (
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"fmt"
+	"reflect"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -308,6 +309,10 @@ func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSour
 	c.Data[constants.KeyIssueData] = aIssue
 }
 
+/**
+public functions in issue detail page
+*/
+
 func indexOf(id int64, allAccs []models.AccountModel) int64 {
 
 	for idx, acc := range allAccs {
@@ -316,4 +321,16 @@ func indexOf(id int64, allAccs []models.AccountModel) int64 {
 		}
 	}
 	return -1
+}
+
+/**
+funcs for golang template
+*/
+
+func init() {
+	beego.AddFuncMap("isLastItemIn", isLastItemIn)
+}
+
+func isLastItemIn(x int, a interface{}) bool {
+	return (x == (reflect.ValueOf(a).Len() - 1))
 }

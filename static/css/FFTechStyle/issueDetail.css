@@ -1,20 +1,30 @@
+hr {
+    border: none;
+    border-top-color: currentcolor;
+    border-top-style: none;
+    border-top-width: medium;
+    border-top: 1px solid #e8e8e8;
+    margin: 2rem auto;
+    clear: both;
+}
+
 table,
 tr,
 th,
 td {
-	border: 0px;
+    border: 0px;
 }
 
-table > tbody > tr {
+table>tbody>tr {
     border-radius: 6px;
 }
 
-table > tbody > tr > td,
-table > tbody > tr > th,
-table > tfoot > tr > td,
-table > tfoot > tr > th,
-table > thead > tr > td,
-table > thead > tr > th {
+table>tbody>tr>td,
+table>tbody>tr>th,
+table>tfoot>tr>td,
+table>tfoot>tr>th,
+table>thead>tr>td,
+table>thead>tr>th {
     padding-bottom: 6px;
     padding-inline-start: 6px;
     padding-inline-end: 6px;
@@ -23,13 +33,13 @@ table > thead > tr > th {
 }
 
 th.log-thead {
-	text-align: left;
-	width: 300px;
+    text-align: left;
+    width: 300px;
 }
 
 th.log-tdetail {
-	text-align: left; 
-	width: 75%;
+    text-align: left;
+    width: 75%;
 }
 
 div.issue {
@@ -85,24 +95,30 @@ div.frame {
 }
 
 .log-user-icon {
-	float: left;
+    float: left;
     background-color: transparent;
 }
 
 .log-avatar {
-	margin: 4px 4px 4px 4px;
+    margin: 4px 4px 4px 4px;
     border-radius: 48px;
     width: 48px;
     height: 48px;
 }
 
 .log-user-info {
-	margin: 4px 4px 4px 4px;
-	float: left;
+    margin: 4px 4px 4px 4px;
+    float: left;
 }
 
-.log-user-info > div > p {
-	margin: 0px 4px 4px 4px;
+.log-user-info>div>p {
+    margin: 0px 4px 4px 4px;
 }
 
+.no-top-padding {
+    padding-top: 0 !important;
+}
 
+.no-bottom-padding {
+    padding-bottom: 0 !important;
+}
