@@ -53,7 +53,7 @@ function appendMarkdownCollection(elemId, content) {
   }
 }
 
-//
+// render all markdown script into html script by markdown collection. this will be runs after finishing load whole page.
 function refreshAllMarkdown() {
 
   var result = "";
