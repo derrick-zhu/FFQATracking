@@ -79,8 +79,8 @@
 
     <div class="container layout-flex">
         <div class="padding"><label>Insert attach image:</label></div>
-        <form class="layout-flex padding" id="form-insert-attach" method="post" enctype="multipart/form-data">
-            <input id="attach-image" name="attach-image" type="file" />
+        <form id="formInsertAttach" method="POST" enctype="multipart/form-data">
+            <input id="attachImage" name="attachImage" type="file" />
             <input type="submit" onclick="eventUploadAttachImage('{{$issue.ID}}')" value="Upload & Insert" />
         </form>
     </div>

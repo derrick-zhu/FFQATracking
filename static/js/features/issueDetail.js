@@ -45,7 +45,7 @@ function appendMarkdownCollection(elemId, content) {
     for (let item of gAllMarkDownSet) {
       if (item.elemId == elemId) {
         return;
-      }
+      } 
     }
 
     var newModel = new jsLazyLoadModel(elemId, content);
@@ -68,19 +68,31 @@ function refreshAllMarkdown() {
 
 // event to upload attachment file (image)
 function eventUploadAttachImage(issueId) {
-  targetUrl = '/issuedetail/' + issueId + '/newattach';
-  formData = new FormData($('#form-insert-attach')[0]);
 
   $.ajax({
     type: 'post',
-    url: targetUrl,
-    data: formData,
+    url: '/issuedetail/' + issueId + '/newattach',
+    data: new FormData($('#formInsertAttach')[0]),
     cache: false,
     processData: false,
-    contentType:
-        'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
+    contentType: false,
     success: function(result) {
-      alert(result);
+      if (result == null) {
+
+        trackCallStack();
+        console.log('error: no result data');
+      } else {
+
+        attachFN = result.UserInfo;
+        if (!attachFN.startsWith("/")) {
+          attachFN = "/" + attachFN;
+        }
+
+        oldMD = gMDEditor.value();
+        newMD = oldMD + '![' + attachFN + '](' + attachFN + ')';
+        gMDEditor.value(newMD);
+        window.location.href = result.URL;
+      }
     },
     error: function(result) {
       alert(result);

@@ -80,6 +80,13 @@ func (c *IssueDetailController) Get() {
 	c.TplName = "issueDetail.html"
 }
 
+// Post handle the POST request (nothing to do with it)
+func (c *IssueDetailController) Post() {
+	c.FFBaseController.Post()
+
+	c.TplName = "issueDetail.html"
+}
+
 // SubmitNewLog handle POST rquest to append new issue log.
 func (c *IssueDetailController) SubmitNewLog() {
 	c.FFBaseController.Post()
@@ -201,14 +208,21 @@ func (c *IssueDetailController) UpdateIssue() {
 func (c *IssueDetailController) NewAttachment() {
 	c.FFBaseController.Post()
 
-	beego.Info(c.Ctx.Input)
+	var issueID int64
+	var err error
+	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
+		beego.Error(err)
+		c.Redirect("/issuelist", 302)
+		return
+	}
 
-	fp, err := helpers.SaveAttachFile(c.Ctx.Request, "attach-image", "static/upload/")
+	fp, err := helpers.SaveAttachFile(c.Ctx.Request, "attachImage", "static/upload/")
 	if err != nil {
 		beego.Error(err)
 	}
 
-	c.Data["json"] = fp
+	finalURL := fmt.Sprintf("/issuedetail/%d/#", issueID)
+	utils.MakeRedirectURLWithUserInfo(&c.Data, 303, finalURL, "", fp)
 
 	c.ServeJSON()
 }
