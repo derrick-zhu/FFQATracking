@@ -64,6 +64,7 @@ function eventUploadAttachImage(issueId) {
     data: formData,
     cache: false,
     processData: false,
+    contentType: 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7',
     success: function (result) {
       alert(result);
     },
