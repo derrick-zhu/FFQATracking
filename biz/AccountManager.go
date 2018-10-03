@@ -102,7 +102,7 @@ func (am *AccountManager) HadLogin(ctx *context.Context) bool {
 		beego.Error(err)
 		return false
 	}
-	beego.Info("Got account: " + acc.Email)
+	// beego.Info("Got account: " + acc.Email)
 
 	return (acc.Pwd == utils.Base64Encode(utils.MD5(ckPwd)))
 }

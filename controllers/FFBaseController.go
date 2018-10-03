@@ -15,6 +15,18 @@ type FFBaseController struct {
 
 // Get is the GET method for handler default Get request
 func (c *FFBaseController) Get() {
+	c.initCommonResponse()
+}
+
+// Post is the POST method for handler default Post request
+func (c *FFBaseController) Post() {
+	c.initCommonResponse()
+}
+
+/**
+init the common info
+*/
+func (c *FFBaseController) initCommonResponse() {
 	c.Data[constants.Title] = "Farfetch Q&A Tracking"
 	c.Data[constants.IsLogin] = biz.HadLogin(c.Ctx)
 
@@ -25,9 +37,4 @@ func (c *FFBaseController) Get() {
 	}
 
 	c.Data[constants.AccountData] = acc
-}
-
-// Post is the POST method for handler default Post request
-func (c *FFBaseController) Post() {
-
 }

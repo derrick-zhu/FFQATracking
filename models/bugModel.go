@@ -301,7 +301,7 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 // BugWithID fetch bug with id
 func BugWithID(id int64) (*BugModel, error) {
 
-	beego.Debug("BugWithID: ", id)
+	beego.Info("BugWithID: ", id)
 	pbug := &BugModel{ID: id}
 
 	o := GetOrmObject()

@@ -8,6 +8,23 @@
     <link rel="stylesheet" type="text/css" href="/static/simplemde/dist/simplemde.min.css">
     <script type="text/javascript" src="/static/simplemde/dist/simplemde.min.js"></script>
 
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/vendor/jquery.ui.widget.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/blueimp/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/blueimp/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+
+    <!-- file upload -->
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="/static/jQuery-File-Upload-9.22.0/js/jquery.fileupload-image.js"></script>
+
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueDetail.css">
     <link rel="stylesheet" href="/static/css/FFTechStyle/issueLevel.css">
     <script type="text/javascript" src="/static/js/avatar/avatar.js"></script>
@@ -25,13 +42,6 @@
     </div>
 
     {{$issue := .issueData}}
-
-    <script>
-        window.onload=function(){
-            // sorry about that, description should be refreshed after the whole page content were loadded.
-            refreshAllMarkdown();
-        }
-    </script>
 
     <div class="container">
         <label style="font-size:3rem">Issue: </label><label style="font-size:2.25rem"><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></label>
@@ -65,26 +75,12 @@
             <div id="issue_log_new" class="form-group" style="margin-left: 3em;">
                 <textarea name="issue_comment" id="issue_comment" class="form-control" cols="30" rows="10" placeholder="Write new comment here."></textarea>
                 <input style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" onclick="issueDetailSubmitNewLog('{{$issue.ID}}')">
+                <input id="attachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
             </div>
 
-            <script>
-                $('#issue_comment').ready(function () {
-                    initMarkdownEditorInstance();
-                });
-            </script>
-
         </form>
 
     </div>
-
-    <div class="container layout-flex">
-        <div class="padding"><label>Insert attach image:</label></div>
-        <form id="formInsertAttach" method="POST" enctype="multipart/form-data">
-            <input id="attachImage" name="attachImage" type="file" />
-            <input type="submit" onclick="eventUploadAttachImage('{{$issue.ID}}')" value="Upload & Insert" />
-        </form>
-    </div>
-
 
     <div class="container">
 
@@ -93,7 +89,7 @@
 
             <!-- for issue log history loop -->
             {{range .issueLogHistory}}
-            
+
             {{template "issueLogItem" .}}
 
             {{end}}

@@ -9,8 +9,14 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
+)
+
+const (
+	// KDraftCommentKey key for temp saving issue comment
+	KDraftCommentKey string = "issue-detail-draft-comment"
 )
 
 // IssueDetailLogModel issue log wrapped model
@@ -49,41 +55,7 @@ type IssueDetailController struct {
 func (c *IssueDetailController) Get() {
 	c.FFBaseController.Get()
 
-	var err error
-	var issueID int64
-	var currentIssue *models.BugModel
-	var issueDetailData *TIssueNewCollectionType
-	var logHistory *[]IssueDetailLogModel
-	var allUsers *[]models.AccountModel
-
-	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
-		beego.Error(err)
-		c.Redirect("/issuelist", 302)
-		return
-	}
-
-	if currentIssue, err = models.BugWithID(issueID); err != nil {
-		beego.Error(err)
-		c.Redirect("/issuelist", 302)
-		return
-	}
-
-	if allUsers, err = models.AllAccounts(); err != nil {
-		beego.Error(err)
-		err = nil
-	}
-
-	c.initVariables(&issueDetailData, currentIssue, issueID, allUsers)
-	c.initLogHistory(issueID, &logHistory, allUsers)
-	c.initPageContent(*currentIssue, *issueDetailData, *logHistory)
-
-	c.TplName = "issueDetail.html"
-}
-
-// Post handle the POST request (nothing to do with it)
-func (c *IssueDetailController) Post() {
-	c.FFBaseController.Post()
-
+	c.setupNormalResponseData()
 	c.TplName = "issueDetail.html"
 }
 
@@ -212,7 +184,7 @@ func (c *IssueDetailController) NewAttachment() {
 	var err error
 	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
 		beego.Error(err)
-		c.Redirect("/issuelist", 302)
+		c.Redirect("/issuelist", 303)
 		return
 	}
 
@@ -221,9 +193,18 @@ func (c *IssueDetailController) NewAttachment() {
 		beego.Error(err)
 	}
 
-	finalURL := fmt.Sprintf("/issuedetail/%d/#", issueID)
+	curComment := c.GetString("issue_comment")
+	if strings.HasPrefix(fp, "/") == false {
+		fp = "/" + fp
+	}
+
+	newComment := curComment + "![" + fp + "](" + fp + ")"
+	utils.CookieInstance().Set(c.Ctx, KDraftCommentKey, newComment, 1<<32-1)
+
+	finalURL := fmt.Sprintf("/issuedetail/%d/", issueID)
 	utils.MakeRedirectURLWithUserInfo(&c.Data, 303, finalURL, "", fp)
 
+	// c.Redirect(finalURL, 303)
 	c.ServeJSON()
 }
 
@@ -281,6 +262,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	}
 }
 
+// initLogHistory issue's comment history (log history)
 func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]IssueDetailLogModel, allUsers *[]models.AccountModel) {
 
 	var err error
@@ -315,6 +297,14 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]Is
 	*logHistory = &issueLogs
 }
 
+func (c *IssueDetailController) initCommentContent() {
+	draftComment := utils.CookieInstance().Get(c.Ctx, KDraftCommentKey)
+	if len(draftComment) == 0 {
+		return
+	}
+	c.Data[KDraftCommentKey] = draftComment
+}
+
 // initPageContent initial settings in current page
 func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSource TIssueNewCollectionType, logHistory []IssueDetailLogModel) {
 
@@ -347,4 +337,34 @@ func init() {
 
 func isLastItemIn(x int, a interface{}) bool {
 	return (x == (reflect.ValueOf(a).Len() - 1))
+}
+
+func (c *IssueDetailController) setupNormalResponseData() {
+	var err error
+	var issueID int64
+	var currentIssue *models.BugModel
+	var issueDetailData *TIssueNewCollectionType
+	var logHistory *[]IssueDetailLogModel
+	var allUsers *[]models.AccountModel
+
+	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
+		beego.Error(err)
+		c.Redirect("/issuelist", 302)
+		return
+	}
+
+	if currentIssue, err = models.BugWithID(issueID); err != nil {
+		beego.Error(err)
+		c.Redirect("/issuelist", 302)
+		return
+	}
+
+	if allUsers, err = models.AllAccounts(); err != nil {
+		beego.Error(err)
+		err = nil
+	}
+
+	c.initVariables(&issueDetailData, currentIssue, issueID, allUsers)
+	c.initLogHistory(issueID, &logHistory, allUsers)
+	c.initPageContent(*currentIssue, *issueDetailData, *logHistory)
 }

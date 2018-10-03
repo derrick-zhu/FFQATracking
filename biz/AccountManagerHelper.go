@@ -96,6 +96,6 @@ func HadLogin(ctx *context.Context) bool {
 // CurrentAccount fetch current account
 func CurrentAccount(ctx *context.Context) (*models.AccountModel, error) {
 
-	beego.Info("fetch current account had been signed in")
+	// beego.Info("fetch current account had been signed in")
 	return AccountManagerInstance().CurrentAccount(ctx)
 }

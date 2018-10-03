@@ -19,7 +19,7 @@ func SaveAttachFile(c *http.Request, htmlID, baseDir string) (string, error) {
 	var filePath string
 
 	for true {
-
+		beego.Debug(htmlID, " ", baseDir)
 		infile, fheader, inErr := c.FormFile(htmlID)
 		if inErr != nil {
 			beego.Error(inErr)

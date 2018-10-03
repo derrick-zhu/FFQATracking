@@ -5,6 +5,46 @@ var gAllAvatarCanvasSet = new Set();
 var gAllMarkDownSet = new Set();
 
 
+window.onload = function() {
+  // sorry about that, description should be refreshed after the whole page
+  // content were loadded.
+  refreshAllMarkdown();
+};
+
+
+$(function() {
+
+  /**
+   * initialize the markdown editor 
+   */
+  $('#issue_comment').ready(function () {
+    initMarkdownEditorInstance();
+  });
+  
+  /**
+   * method for uploading and insert attachement file into comment
+   */
+  $('#attachImage').fileupload({
+    dataType: 'json',
+    url: "/issuedetail/{{$issue.ID}}/newattach",
+    type: 'POST',
+    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+    imageMaxWidth: 800,
+    imageMaxHeight: 800,
+    imageCrop: false, // Force cropped images
+    done: function (e, data) {
+        if (null != data.result && null != data.result.UserInfo && 0 < data.result.UserInfo.length) {
+            oldComment = gMDEditor.value();
+            newComment = oldComment + '![' + data.files[0].name + '](' + data.result.UserInfo + ')';
+            gMDEditor.value(newComment);
+        }
+    } 
+  });
+  
+});
+
+
+
 class jsLazyLoadModel {
   constructor(elemId, content) {
     this.elemId = elemId;
@@ -45,7 +85,7 @@ function appendMarkdownCollection(elemId, content) {
     for (let item of gAllMarkDownSet) {
       if (item.elemId == elemId) {
         return;
-      } 
+      }
     }
 
     var newModel = new jsLazyLoadModel(elemId, content);
@@ -53,10 +93,10 @@ function appendMarkdownCollection(elemId, content) {
   }
 }
 
-// render all markdown script into html script by markdown collection. this will be runs after finishing load whole page.
+// render all markdown script into html script by markdown collection. this will
+// be runs after finishing load whole page.
 function refreshAllMarkdown() {
-
-  var result = "";
+  var result = '';
   for (let item of gAllMarkDownSet) {
     result = gMDEditor.markdown(item.content);
     if (result.length <= 0) {
@@ -64,40 +104,6 @@ function refreshAllMarkdown() {
     }
     document.getElementById(item.elemId).innerHTML = result;
   }
-}
-
-// event to upload attachment file (image)
-function eventUploadAttachImage(issueId) {
-
-  $.ajax({
-    type: 'post',
-    url: '/issuedetail/' + issueId + '/newattach',
-    data: new FormData($('#formInsertAttach')[0]),
-    cache: false,
-    processData: false,
-    contentType: false,
-    success: function(result) {
-      if (result == null) {
-
-        trackCallStack();
-        console.log('error: no result data');
-      } else {
-
-        attachFN = result.UserInfo;
-        if (!attachFN.startsWith("/")) {
-          attachFN = "/" + attachFN;
-        }
-
-        oldMD = gMDEditor.value();
-        newMD = oldMD + '![' + attachFN + '](' + attachFN + ')';
-        gMDEditor.value(newMD);
-        window.location.href = result.URL;
-      }
-    },
-    error: function(result) {
-      alert(result);
-    }
-  });
 }
 
 // change issue property by click the drop-down menu
