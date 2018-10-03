@@ -24,10 +24,10 @@ $(function () {
   /**
    * method for uploading and insert attachement file into comment
    */
-  $('#attachImage').fileupload({
+  $('#btnAttachImage').fileupload({
     dataType: 'json',
-    url: "/issuedetail/{{$issue.ID}}/newattach",
     type: 'POST',
+    loadImageFileTypes: /^image\/(gif|jpeg|jpg|png|svg\+xml)$/, // ?? 貌似目前没有作用
     disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
     imageMaxWidth: 800,
     imageMaxHeight: 800,
@@ -39,6 +39,20 @@ $(function () {
         gMDEditor.value(newComment);
       }
     }
+  });
+
+  /**
+   * 提交评论
+   */
+  $('#btnCommitComment').click(function () {
+    $.post(
+      "/issuedetail/" + this.name + "/newlog", {
+        issue_comment: gMDEditor.value(),
+      },
+      function (data, status) {
+        window.location.href = window.location.href;
+      }
+    );
   });
 
 });
@@ -145,37 +159,6 @@ function issueDetailUpdate(issueId, key, value) {
     },
     error: function (result) {
       console.log(result);
-    }
-  });
-}
-
-// the event about adding issue's new log
-function issueDetailSubmitNewLog(issueId) {
-  var strOriginMD = gMDEditor.value();
-  var arguData = {
-    issue_comment: strOriginMD
-  };
-
-  $.ajax({
-    type: 'POST',
-    dataType: 'json',
-    url: '/issuedetail/' + issueId + '/newlog',
-    data: arguData,
-    success: function (result) {
-      if (result == null) {
-        trackCallStack();
-        console.log('error: no result data');
-      } else {
-        if (result.Code == 200) {
-          reloadDiv('issue_log_history');
-          reloadDiv('issue_log_new');
-        } else if (result.Code == 302) {
-          window.location.href = result.URL;
-        }
-      }
-    },
-    error: function (result) {
-      console.log('Fails in register account with ' + result);
     }
   });
 }

@@ -74,8 +74,8 @@
             <label style="font-size:2rem">New Comment:</label>
             <div id="issue_log_new" class="form-group" style="margin-left: 3em;">
                 <textarea name="issue_comment" id="issue_comment" class="form-control" cols="30" rows="10" placeholder="Write new comment here."></textarea>
-                <input style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" onclick="issueDetailSubmitNewLog('{{$issue.ID}}')">
-                <input id="attachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
+                <input id="btnCommitComment" name="{{$issue.ID}}" style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" >
+                <input id="btnAttachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
             </div>
 
         </form>
