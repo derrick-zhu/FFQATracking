@@ -5,14 +5,14 @@ var gAllAvatarCanvasSet = new Set();
 var gAllMarkDownSet = new Set();
 
 
-window.onload = function() {
+window.onload = function () {
   // sorry about that, description should be refreshed after the whole page
   // content were loadded.
   refreshAllMarkdown();
 };
 
 
-$(function() {
+$(function () {
 
   /**
    * initialize the markdown editor 
@@ -20,7 +20,7 @@ $(function() {
   $('#issue_comment').ready(function () {
     initMarkdownEditorInstance();
   });
-  
+
   /**
    * method for uploading and insert attachement file into comment
    */
@@ -33,14 +33,14 @@ $(function() {
     imageMaxHeight: 800,
     imageCrop: false, // Force cropped images
     done: function (e, data) {
-        if (null != data.result && null != data.result.UserInfo && 0 < data.result.UserInfo.length) {
-            oldComment = gMDEditor.value();
-            newComment = oldComment + '![' + data.files[0].name + '](' + data.result.UserInfo + ')';
-            gMDEditor.value(newComment);
-        }
-    } 
+      if (null != data.result && null != data.result.UserInfo && 0 < data.result.UserInfo.length) {
+        oldComment = gMDEditor.value();
+        newComment = oldComment + '![' + data.files[0].name + '](' + data.result.UserInfo + ')';
+        gMDEditor.value(newComment);
+      }
+    }
   });
-  
+
 });
 
 
@@ -55,7 +55,10 @@ class jsLazyLoadModel {
 // on finish loading
 function initMarkdownEditorInstance() {
   if (null == gMDEditor) {
-    gMDEditor = new SimpleMDE({elements: $('#issue_comment')[0]});
+    gMDEditor = new SimpleMDE({
+      elements: $('#issue_comment')[0],
+      toolbar: ["bold", "italic", "heading", "code", "unordered-list", "ordered-list", "|", "link", "table", "horizontal-rule", "|", "preview", "side-by-side", "fullscreen"]
+    });
   }
 }
 
@@ -127,7 +130,7 @@ function issueDetailUpdate(issueId, key, value) {
     method: 'post',
     url: '/issuedetail/' + issueId + '/update',
     data: $.param(param),
-    success: function(result) {
+    success: function (result) {
       if (result == null) {
         trackCallStack();
         console.log('error: no result data');
@@ -135,12 +138,12 @@ function issueDetailUpdate(issueId, key, value) {
         if (result.Code == 302) {
           window.location.href = result.URL;
         } else if (result.Code == 200) {
-          reloadDiv('issue_log_history');  // issue log history section
-          reloadDiv('issue-level-band');   // colour band at top
+          reloadDiv('issue_log_history'); // issue log history section
+          reloadDiv('issue-level-band'); // colour band at top
         }
       }
     },
-    error: function(result) {
+    error: function (result) {
       console.log(result);
     }
   });
@@ -149,14 +152,16 @@ function issueDetailUpdate(issueId, key, value) {
 // the event about adding issue's new log
 function issueDetailSubmitNewLog(issueId) {
   var strOriginMD = gMDEditor.value();
-  var arguData = {issue_comment: strOriginMD};
+  var arguData = {
+    issue_comment: strOriginMD
+  };
 
   $.ajax({
     type: 'POST',
     dataType: 'json',
     url: '/issuedetail/' + issueId + '/newlog',
     data: arguData,
-    success: function(result) {
+    success: function (result) {
       if (result == null) {
         trackCallStack();
         console.log('error: no result data');
@@ -169,7 +174,7 @@ function issueDetailSubmitNewLog(issueId) {
         }
       }
     },
-    error: function(result) {
+    error: function (result) {
       console.log('Fails in register account with ' + result);
     }
   });
