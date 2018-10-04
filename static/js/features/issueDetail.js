@@ -13,12 +13,6 @@ class jsLazyLoadModel {
 }
 
 
-// $(window).on('load', function() {
-//   // sorry about that, description should be refreshed after the whole page
-//   // content were loadded.
-//   refreshAllMarkdown();
-// });
-
 $(function () {
   $('#issue_detail_last_div').ready(function() {
     initMarkdownEditorInstance();
