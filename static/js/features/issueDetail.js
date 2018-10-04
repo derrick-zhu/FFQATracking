@@ -1,24 +1,29 @@
 // markdown editor
-var gMDEditor;
+var gMDEditor = null;
 // 所有需要被刷新的(element id, content)
 var gAllAvatarCanvasSet = new Set();
 var gAllMarkDownSet = new Set();
 
+// model for lazy loading
+class jsLazyLoadModel {
+  constructor(elemId, content) {
+    this.elemId = elemId;
+    this.content = content;
+  }
+}
 
-window.onload = function () {
-  // sorry about that, description should be refreshed after the whole page
-  // content were loadded.
-  refreshAllMarkdown();
-};
 
+// $(window).on('load', function() {
+//   // sorry about that, description should be refreshed after the whole page
+//   // content were loadded.
+//   refreshAllMarkdown();
+// });
 
 $(function () {
-
-  /**
-   * initialize the markdown editor 
-   */
-  $('#issue_comment').ready(function () {
+  $('#issue_detail_last_div').ready(function() {
     initMarkdownEditorInstance();
+    refreshAllMarkdown();
+    refreshAllAvatar();
   });
 
   /**
@@ -33,9 +38,11 @@ $(function () {
     imageMaxHeight: 800,
     imageCrop: false, // Force cropped images
     done: function (e, data) {
-      if (null != data.result && null != data.result.UserInfo && 0 < data.result.UserInfo.length) {
+      if (null != data.result && null != data.result.UserInfo &&
+        0 < data.result.UserInfo.length) {
         oldComment = gMDEditor.value();
-        newComment = oldComment + '![' + data.files[0].name + '](' + data.result.UserInfo + ')';
+        newComment = oldComment + '![' + data.files[0].name + '](' +
+          data.result.UserInfo + ')';
         gMDEditor.value(newComment);
       }
     }
@@ -46,38 +53,35 @@ $(function () {
    */
   $('#btnCommitComment').click(function () {
     $.post(
-      "/issuedetail/" + this.name + "/newlog", {
+      '/issuedetail/' + this.name + '/newlog', {
         issue_comment: gMDEditor.value(),
       },
       function (data, status) {
         window.location.href = window.location.href;
-      }
-    );
+      });
   });
-
 });
 
 
 
-class jsLazyLoadModel {
-  constructor(elemId, content) {
-    this.elemId = elemId;
-    this.content = content;
-  }
-}
-
 // on finish loading
-function initMarkdownEditorInstance() {
+function  initMarkdownEditorInstance() {
+  trackCallStack();
   if (null == gMDEditor) {
     gMDEditor = new SimpleMDE({
       elements: $('#issue_comment')[0],
-      toolbar: ["bold", "italic", "heading", "code", "unordered-list", "ordered-list", "|", "link", "table", "horizontal-rule", "|", "preview", "side-by-side", "fullscreen"]
+      toolbar: [
+        'bold', 'italic', 'heading', 'code', 'unordered-list', 'ordered-list',
+        '|', 'link', 'table', 'horizontal-rule', '|', 'preview', 'side-by-side',
+        'fullscreen'
+      ]
     });
   }
 }
 
 // add elemId and content into avatar render collection
 function appendAvatarCanvasCollection(elemId, content) {
+  trackCallStack();
   if (content.length > 0 && elemId.length > 0) {
     for (let item of gAllAvatarCanvasSet) {
       if (item.elemId == elemId) {
@@ -92,12 +96,14 @@ function appendAvatarCanvasCollection(elemId, content) {
 
 // render all avatars which listed in avatar render collection.
 function refreshAllAvatar() {
+  trackCallStack();
   for (let item of gAllAvatarCanvasSet) {
     AvatarDrawCanvasWith(item.content, item.elemId);
   }
 }
 
 function appendMarkdownCollection(elemId, content) {
+  trackCallStack();
   if (content.length > 0 && elemId.length > 0) {
     for (let item of gAllMarkDownSet) {
       if (item.elemId == elemId) {
@@ -113,6 +119,7 @@ function appendMarkdownCollection(elemId, content) {
 // render all markdown script into html script by markdown collection. this will
 // be runs after finishing load whole page.
 function refreshAllMarkdown() {
+  trackCallStack();
   var result = '';
   for (let item of gAllMarkDownSet) {
     result = gMDEditor.markdown(item.content);
@@ -125,8 +132,7 @@ function refreshAllMarkdown() {
 
 // change issue property by click the drop-down menu
 function didSelectWith(id, type, desc, extID) {
-  console.log(didSelectWith.caller);
-  console.log('id: ' + id + ', type:' + type + ', param:' + desc);
+  trackCallStack();
 
   setInnerHtmlWithID(id + '-btn', desc);
   setHtmlValueWithID(id, type);

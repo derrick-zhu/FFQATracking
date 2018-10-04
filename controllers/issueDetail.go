@@ -7,7 +7,6 @@ import (
 	"FFQATracking/models"
 	"FFQATracking/utils"
 	"fmt"
-	"reflect"
 	"strconv"
 	"strings"
 
@@ -23,14 +22,15 @@ const (
 type IssueDetailLogModel struct {
 	models.IssueLogModel
 
-	CreatorName   string
-	CreatorAvatar string
-	TimeDisplay   string
-	PrvStatusStr  string
-	NewStatusStr  string
+	CreatorName      string
+	CreatorAvatar    string
+	TimeDisplay      string
+	PrvStatusStr     string
+	NewStatusStr     string
+	IsViewersComment bool
 }
 
-func (c *IssueDetailLogModel) initWith(other *models.IssueLogModel, acc *models.AccountModel) {
+func (c *IssueDetailLogModel) initWith(other *models.IssueLogModel, acc *models.AccountModel, isViewersLog bool) {
 	c.IssueLogModel.ID = other.ID
 	c.IssueLogModel.IssueID = other.IssueID
 	c.IssueLogModel.Type = other.Type
@@ -43,6 +43,7 @@ func (c *IssueDetailLogModel) initWith(other *models.IssueLogModel, acc *models.
 
 	c.CreatorName = acc.Name
 	c.CreatorAvatar = acc.Avatar
+	c.IsViewersComment = isViewersLog
 	c.TimeDisplay = utils.StandardFormatedTimeFromTick(other.Time)
 }
 
@@ -266,9 +267,15 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]IssueDetailLogModel, allUsers *[]models.AccountModel) {
 
 	var err error
+	var viewerAcc *models.AccountModel
 	var logs *[]models.IssueLogModel
 
 	if logs, err = models.AllCommentsForIssue(nIssueID); err != nil {
+		beego.Error(err)
+		return
+	}
+
+	if viewerAcc, err = biz.AccountManagerInstance().CurrentAccount(c.Ctx); err != nil {
 		beego.Error(err)
 		return
 	}
@@ -288,8 +295,10 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]Is
 			}
 		}
 
+		isViewersLog := viewerAcc.ID == eachLog.CreatorID
+
 		newIssueLog := IssueDetailLogModel{}
-		newIssueLog.initWith(&eachLog, pAcc)
+		newIssueLog.initWith(&eachLog, pAcc, isViewersLog)
 
 		issueLogs = append(issueLogs, newIssueLog)
 	}
@@ -330,14 +339,6 @@ func indexOf(id int64, allAccs []models.AccountModel) int64 {
 /**
 funcs for golang template
 */
-
-func init() {
-	beego.AddFuncMap("isLastItemIn", isLastItemIn)
-}
-
-func isLastItemIn(x int, a interface{}) bool {
-	return (x == (reflect.ValueOf(a).Len() - 1))
-}
 
 func (c *IssueDetailController) setupNormalResponseData() {
 	var err error

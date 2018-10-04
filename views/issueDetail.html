@@ -56,6 +56,7 @@
         </script>
     </div>
 
+    <!-- issue的状态selector集合 -->
     <div class="container clearfix card">
         <form id="frmIssueUpdate" method="POST" action="#" onsubmit="return false">
             <!-- <div class="form-group"> -->
@@ -66,15 +67,15 @@
         </form>
     </div>
 
+    <!-- 评论编辑区 -->
     <div class="container">
 
         <form id="frmIssueDetail" method="POST" action="#" onsubmit="return false">
 
-            <!-- 提交区 -->
             <label style="font-size:2rem">New Comment:</label>
             <div id="issue_log_new" class="form-group" style="margin-left: 3em;">
                 <textarea name="issue_comment" id="issue_comment" class="form-control" cols="30" rows="10" placeholder="Write new comment here."></textarea>
-                <input id="btnCommitComment" name="{{$issue.ID}}" style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit" >
+                <input id="btnCommitComment" name="{{$issue.ID}}" style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit">
                 <input id="btnAttachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
             </div>
 
@@ -82,27 +83,21 @@
 
     </div>
 
+    <!-- issue的评论历史 -->
     <div class="container">
-
-        <div id="issue_log_history" class="clearfix card">
-            <h2>History:</h2>
-
+        <h2>History:</h2>
+        <div id="issue_log_history" class="clearfix">
             <!-- for issue log history loop -->
             {{range .issueLogHistory}}
 
             {{template "issueLogItem" .}}
 
             {{end}}
-
         </div>
-
-        <script type="text/javascript">
-            $('#issue_log_history').ready(function () {
-                refreshAllAvatar();
-            });
-        </script>
-
     </div>
+
+    <!-- 这个就是用来最后加载的部分，实在没辙了 -->
+    <div id="issue_detail_last_div" type="display:none;"></div>
 
 </body>
 
