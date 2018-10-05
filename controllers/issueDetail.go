@@ -209,6 +209,46 @@ func (c *IssueDetailController) NewAttachment() {
 	c.ServeJSON()
 }
 
+// DeleteComment delete current user's comment in issue's log history
+func (c *IssueDetailController) DeleteComment() {
+	c.FFBaseController.Post()
+
+	beego.Info(c.Input())
+
+	var issueID int64
+	var issueCommentID int64
+	var err error
+
+	for true {
+
+		var finalURL = fmt.Sprintf("/issuedetail/%d", issueID)
+
+		if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
+			beego.Error(err)
+			err = nil
+			c.Redirect("#", 404)
+			break
+		}
+
+		if issueCommentID, err = strconv.ParseInt(c.Input().Get("comment"), 10, 64); err != nil {
+			beego.Error(err)
+			err = nil
+			c.Redirect("#", 404)
+			break
+		}
+
+		if err = models.RemoveComment(issueID, issueCommentID); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, finalURL, "fails in remove issue log")
+		}
+
+		utils.MakeRedirectURL(&c.Data, 200, finalURL, "")
+		break
+	}
+
+	c.ServeJSON()
+}
+
 // initVariables issue's properties
 func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers *[]models.AccountModel) {
 

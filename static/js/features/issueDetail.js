@@ -14,7 +14,7 @@ class jsLazyLoadModel {
 
 
 $(function () {
-  $('#issue_detail_last_div').ready(function() {
+  $('#issue_detail_last_div').ready(function () {
     initMarkdownEditorInstance();
     refreshAllMarkdown();
     refreshAllAvatar();
@@ -54,12 +54,33 @@ $(function () {
         window.location.href = window.location.href;
       });
   });
+
+  /**
+   * 删除当前评论下的某个评论信息（只有发表评论的用户和超级用户才有权限进行该操作）
+   * @param {*} issueId 问题索引值
+   * @param {*} issueCommentId 该问题下的评论索引值
+   */
+  $.fn.fnDeleteComment = function (issueId, issueCommentId) {
+
+    if (true == confirm("Are you sure to delete this comment?")) {
+      $.post('/issuedetail/' + issueId + '/deletecomment', {
+          comment: issueCommentId
+        },
+        function (data, status) {
+          if (data.Code != 200) {
+            alert(data.Msg);
+          } else {
+            window.location.href = window.location.href;
+          }
+        });
+    }
+  };
 });
 
 
 
 // on finish loading
-function  initMarkdownEditorInstance() {
+function initMarkdownEditorInstance() {
   trackCallStack();
   if (null == gMDEditor) {
     gMDEditor = new SimpleMDE({

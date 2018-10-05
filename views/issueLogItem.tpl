@@ -31,7 +31,9 @@
         <!-- 只有提交评论的用户才能够删除当前comment -->
         {{if .IsViewersComment}}
         <div class="card-button-area">
-            <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+            <a id="btnDeleteComment" value="{{.ID}}" type="submit" class="btn btn-xs btn-danger" onclick="$().fnDeleteComment({{.IssueID}}, {{.ID}});">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </a>
         </div>
         {{end}}
 
