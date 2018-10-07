@@ -1,5 +1,11 @@
 package private
 
+import (
+	"reflect"
+
+	"github.com/astaxie/beego"
+)
+
 type TemplateDataCtrlType int
 
 const (
@@ -15,4 +21,17 @@ type BaseDataTemplateModel struct {
 	Title      string
 	Identifier string
 	Type       TemplateDataCtrlType
+}
+
+func init() {
+	beego.AddFuncMap("ControllerTypeOfTemplateData", ControllerTypeOfTemplateData)
+}
+
+// ControllerTypeOfTemplateData get controller type of this template model
+func ControllerTypeOfTemplateData(tplData interface{}) TemplateDataCtrlType {
+	beego.Info(tplData)
+	typeName := reflect.TypeOf(tplData).Name()
+	beego.Info(typeName)
+
+	return TextField
 }

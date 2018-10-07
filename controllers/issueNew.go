@@ -194,6 +194,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allCreators = models.DataPickerTemplateModel{}
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
+	c.allCreators.Type = private.Number
 	c.allCreators.DefaultValue = int64(createorDefaultIndex)
 	c.allCreators.Collection = *allUsers
 
@@ -203,6 +204,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allAssignors = models.DataPickerTemplateModel{}
 	c.allAssignors.Title = IssueAssignorKey
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
+	c.allAssignors.Type = private.Number
 	c.allAssignors.DefaultValue = 0
 	c.allAssignors.Collection = *allUsers
 

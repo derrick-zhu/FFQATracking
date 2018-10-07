@@ -1,6 +1,8 @@
 package models
 
-import "FFQATracking/models/private"
+import (
+	"FFQATracking/models/private"
+)
 
 // DataFieldTemplateModel input field template model
 type DataFieldTemplateModel struct {
