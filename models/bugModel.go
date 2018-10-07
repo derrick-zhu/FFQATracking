@@ -290,11 +290,11 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 	}
 
 	o, _ := GetQuerySeterWithTable(BugsTable)
-	_, err := o.Insert(pBug)
-	if err != nil {
+	if _, err := o.Insert(pBug); err != nil {
 		beego.Error(err)
 		return nil, err
 	}
+
 	return pBug, nil
 }
 
@@ -304,10 +304,8 @@ func BugWithID(id int64) (*BugModel, error) {
 	beego.Info("BugWithID: ", id)
 	pbug := &BugModel{ID: id}
 
-	o := GetOrmObject()
-	err := o.Read(pbug)
-
-	if err != nil {
+	o, _ := GetQuerySeterWithTable(BugsTable)
+	if err := o.Read(pbug); err != nil {
 		beego.Error(err)
 		return nil, err
 	}
@@ -326,8 +324,8 @@ func BugsWithRange(lower, count int) (*[]BugModel, error) {
 	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", BugsTable, count, lower)
 	rawResult = o.Raw(sqlQuery)
 
-	_, err = rawResult.QueryRows(result)
-	if err != nil {
+	if _, err = rawResult.QueryRows(result); err != nil {
+		beego.Error(err)
 		return nil, err
 	}
 
@@ -343,10 +341,9 @@ func AllBugsData() (*[]BugModel, error) {
 // UpdateBug update bug model data
 func UpdateBug(pBug *BugModel) error {
 
-	o := GetOrmObject()
-	_, err := o.Update(pBug)
+	o, _ := GetQuerySeterWithTable(BugsTable)
 
-	if err != nil {
+	if _, err := o.Update(pBug); err != nil {
 		beego.Error(err)
 		return err
 	}
@@ -360,7 +357,10 @@ func DeleteBug(id int64) error {
 	o, _ := GetQuerySeterWithTable(BugsTable)
 
 	bug := &BugModel{ID: id}
-	_, err := o.Delete(bug)
+	if _, err := o.Delete(bug); err != nil {
+		beego.Error(err)
+		return err
+	}
 
-	return err
+	return nil
 }

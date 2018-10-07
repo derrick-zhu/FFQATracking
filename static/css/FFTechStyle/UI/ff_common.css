@@ -5,25 +5,65 @@
     padding-right: 2%;
 }
 
-.span_1of6 {
-    width: 16%;
-}
+.span {
+    margin: 1rem 0rem 1rem 0rem;}
 
-.span_2of6 {
-    width: 32%;
-}
+    .span.span_1of6 {
+    width: 16%;}
+    .span.span_1of6.span_float_left {
+        float:left;}
+    .span.span_1of6.span_float_right {
+            float:right;}
 
-.span_3of6 {
-    width: 49.5%;
-}
+    .span.span_2of6 {
+        width: 32%;}
+        .span.span_2of6.span_float_left {
+            float:left;}
+        .span.span_2of6.span_float_right {
+            float:right;}
 
-.span_4of6 {
-    width: 66%;
-}
+    .span.span_3of6 {
+        width: 49.5%;}
+        .span.span_3of6.span_float_left {
+            float:left;}
+        .span.span_3of6.span_float_right {
+            float:right;}
 
-.span_5of6 {
-    width: 83%;
-}
+    .span.span_4of6 {
+        width: 66%;}
+        .span.span_4of6.span_float_left {
+            float:left;}
+        .span.span_4of6.span_float_right {
+            float:right;}
+
+    .span.span_5of6 {
+        width: 83%;}
+        .span.span_5of6.span_float_left {
+            float:left;}
+        .span.span_5of6.span_float_right {
+            float:right;}
+
+    .span.span_full {
+        width: 100%;}
+        .span.span_full.span_float_left {
+            float:left;}
+        .span.span_full.span_float_right {
+            float:right;}
+
+.text {
+    font-size: 1.5rem; }
+    .text.text-align-left {
+        text-align: left;}
+    .text.text-align-right {
+        text-align: right;}
+    .text.text-align-center {
+        text-align: center;}
+    .text.text-align-top {
+        vertical-align: top;}
+    .text.text-align-middle {
+        vertical-align: middle;}
+    .text.text-align-bottom {
+        vertical-align: bottom;}
 
 .clearfix {
     zoom: auto;
@@ -89,20 +129,9 @@
     border-left-color: lightgreen;
 }
 
-.label-ff-standard {
+label.standard-ff {
     min-width: 95px;
-}
-
-.center {
-    text-align: center;
-}
-
-.middle {
-    text-align: middle;
-}
-
-.right {
-    text-align: right;
+    max-width: 100%;
 }
 
 .seperate-line {

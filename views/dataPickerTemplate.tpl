@@ -16,7 +16,7 @@
  {{$data := .Collection}}
 
 <div class="col-xs-3" style="margin:0.5px;"> 
-    <label class="left label-ff-standard" style="max-width:100%">{{$title}} :</label>
+    <label class="left standard-ff">{{$title}} :</label>
     <div class="btn-group">
         <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal" style="max-width:100%">{{$defaultContent}}</button>
         <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultValue}}" style="max-width:100%">

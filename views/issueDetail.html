@@ -16,6 +16,7 @@
     <script src="/static/jQuery-File-Upload-9.22.0/js/blueimp/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
 
     <!-- file upload -->
+    <link rel="stylesheet" href="/static/jQuery-File-Upload-9.22.0/css/jquery.fileupload.css">
     <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
     <script src="/static/jQuery-File-Upload-9.22.0/js/jquery.iframe-transport.js"></script>
     <!-- The basic File Upload plugin -->
@@ -75,8 +76,13 @@
 
             <div id="issue_log_new" class="form-group">
                 <textarea name="issue_comment" id="issue_comment" class="form-control" cols="30" rows="10" placeholder="Write new comment here."></textarea>
-                <input id="btnCommitComment" name="{{$issue.ID}}" style="margin-top:1em;" type="submit" class="btn btn-default" value="Submit">
-                <input id="btnAttachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
+
+                <input id="btnCommitComment" name="{{$issue.ID}}" type="submit" class="btn btn-default" style="width:150px" value="Submit">
+                <span class="btn btn-success fileinput-button" style="width:150px">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add image...</span>
+                    <input id="btnAttachImage" name="attachImage" type="file" data-url="/issuedetail/{{$issue.ID}}/newattach" multiple>
+                </span>
             </div>
 
         </form>

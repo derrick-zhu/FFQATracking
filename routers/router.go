@@ -23,6 +23,10 @@ func init() {
 	beego.Router("/issue", &controllers.IssueNewController{})
 	beego.AutoRouter(&controllers.IssueNewController{})
 
+	// 工程相关的控制器
+	beego.Router("/initiative", &controllers.InitiativeNewController{})
+
+	// issue详情页的控制器
 	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})
 	beego.Router("/issuedetail/:issue(\\d+)/newlog", &controllers.IssueDetailController{}, "post:SubmitNewLog")
 	beego.Router("/issuedetail/:issue(\\d+)/update", &controllers.IssueDetailController{}, "post:UpdateIssue")

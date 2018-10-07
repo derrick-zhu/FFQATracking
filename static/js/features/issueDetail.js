@@ -13,8 +13,8 @@ class jsLazyLoadModel {
 }
 
 
-$(function () {
-  $('#issue_detail_last_div').ready(function () {
+$(function() {
+  $('#issue_detail_last_div').ready(function() {
     initMarkdownEditorInstance();
     refreshAllMarkdown();
     refreshAllAvatar();
@@ -26,17 +26,19 @@ $(function () {
   $('#btnAttachImage').fileupload({
     dataType: 'json',
     type: 'POST',
-    loadImageFileTypes: /^image\/(gif|jpeg|jpg|png|svg\+xml)$/, // ?? 貌似目前没有作用
-    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+    loadImageFileTypes:
+        /^image\/(gif|jpeg|jpg|png|svg\+xml)$/,  // ?? 貌似目前没有作用
+    disableImageResize:
+        /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
     imageMaxWidth: 800,
     imageMaxHeight: 800,
-    imageCrop: false, // Force cropped images
-    done: function (e, data) {
+    imageCrop: false,  // Force cropped images
+    done: function(e, data) {
       if (null != data.result && null != data.result.UserInfo &&
-        0 < data.result.UserInfo.length) {
+          0 < data.result.UserInfo.length) {
         oldComment = gMDEditor.value();
         newComment = oldComment + '![' + data.files[0].name + '](' +
-          data.result.UserInfo + ')';
+            data.result.UserInfo + ')';
         gMDEditor.value(newComment);
       }
     }
@@ -45,14 +47,14 @@ $(function () {
   /**
    * 提交评论
    */
-  $('#btnCommitComment').click(function () {
+  $('#btnCommitComment').click(function() {
     $.post(
-      '/issuedetail/' + this.name + '/newlog', {
-        issue_comment: gMDEditor.value(),
-      },
-      function (data, status) {
-        window.location.href = window.location.href;
-      });
+        '/issuedetail/' + this.name + '/newlog', {
+          issue_comment: gMDEditor.value(),
+        },
+        function(data, status) {
+          window.location.href = window.location.href;
+        });
   });
 
   /**
@@ -60,19 +62,17 @@ $(function () {
    * @param {*} issueId 问题索引值
    * @param {*} issueCommentId 该问题下的评论索引值
    */
-  $.fn.fnDeleteComment = function (issueId, issueCommentId) {
-
-    if (true == confirm("Are you sure to delete this comment?")) {
-      $.post('/issuedetail/' + issueId + '/deletecomment', {
-          comment: issueCommentId
-        },
-        function (data, status) {
-          if (data.Code != 200) {
-            alert(data.Msg);
-          } else {
-            window.location.href = window.location.href;
-          }
-        });
+  $.fn.fnDeleteComment = function(issueId, issueCommentId) {
+    if (true == confirm('Are you sure to delete this comment?')) {
+      $.post(
+          '/issuedetail/' + issueId + '/deletecomment',
+          {comment: issueCommentId}, function(data, status) {
+            if (data.Code != 200) {
+              alert(data.Msg);
+            } else {
+              window.location.href = window.location.href;
+            }
+          });
     }
   };
 });
@@ -165,7 +165,7 @@ function issueDetailUpdate(issueId, key, value) {
     method: 'post',
     url: '/issuedetail/' + issueId + '/update',
     data: $.param(param),
-    success: function (result) {
+    success: function(result) {
       if (result == null) {
         trackCallStack();
         console.log('error: no result data');
@@ -173,12 +173,12 @@ function issueDetailUpdate(issueId, key, value) {
         if (result.Code == 302) {
           window.location.href = result.URL;
         } else if (result.Code == 200) {
-          reloadDiv('issue_log_history'); // issue log history section
-          reloadDiv('issue-level-band'); // colour band at top
+          reloadDiv('issue_log_history');  // issue log history section
+          reloadDiv('issue-level-band');   // colour band at top
         }
       }
     },
-    error: function (result) {
+    error: function(result) {
       console.log(result);
     }
   });

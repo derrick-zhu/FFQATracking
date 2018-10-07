@@ -273,7 +273,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	reproductData.ID = nIssueID
 
 	// all account
-	allCreators := IssuePickerTemplateModel{}
+	allCreators := models.DataPickerTemplateModel{}
 	allCreators.Title = IssueCreatorKey
 	allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allCreators.Title)
 	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), *allUsers)
@@ -287,7 +287,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 		err = nil
 	}
 
-	allAssignors := IssuePickerTemplateModel{}
+	allAssignors := models.DataPickerTemplateModel{}
 	allAssignors.Title = IssueAssignorKey
 	allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allAssignors.Title)
 	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), *allUsers)

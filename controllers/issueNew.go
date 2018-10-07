@@ -5,6 +5,7 @@ import (
 	"FFQATracking/constants"
 	"FFQATracking/helpers"
 	"FFQATracking/models"
+	"FFQATracking/models/private"
 	"FFQATracking/utils"
 	"fmt"
 	"strconv"
@@ -31,44 +32,43 @@ func issuePickerKey(key string) string {
 	return key
 }
 
-// IssuePickerTemplateModel class template
-type IssuePickerTemplateModel struct {
-	ID           int64 // just ID for any index num
-	Title        string
-	Identifier   string
-	DefaultValue int64
-	Value        int64
-	Collection   interface{}
-}
-
 // TIssueNewCollectionType for issue template
-type TIssueNewCollectionType []IssuePickerTemplateModel
+type TIssueNewCollectionType []models.DataPickerTemplateModel
 
 // TIssueAttachmentType for issue's attachment
 type TIssueAttachmentType []models.AttachmentModel
 
 // IssueStatusData status data (temperary)
-var IssueStatusData = IssuePickerTemplateModel{
-	Title:        IssueStatusKey,
-	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
+var IssueStatusData = models.DataPickerTemplateModel{
+	BaseDataTemplateModel: private.BaseDataTemplateModel{
+		Title:      IssueStatusKey,
+		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
+		Type:       private.Number,
+	},
 	DefaultValue: 0,
 	Value:        0,
 	Collection:   models.AllBugStatus,
 }
 
 // IssuePriorityData priority data (temperary)
-var IssuePriorityData = IssuePickerTemplateModel{
-	Title:        IssuePriorityKey,
-	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
+var IssuePriorityData = models.DataPickerTemplateModel{
+	BaseDataTemplateModel: private.BaseDataTemplateModel{
+		Title:      IssuePriorityKey,
+		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
+		Type:       private.Number,
+	},
 	DefaultValue: 0,
 	Value:        0,
 	Collection:   models.AllPriorities,
 }
 
 // IssueReproductionData reproduction data (temperary)
-var IssueReproductionData = IssuePickerTemplateModel{
-	Title:        IssueReproductionKey,
-	Identifier:   fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
+var IssueReproductionData = models.DataPickerTemplateModel{
+	BaseDataTemplateModel: private.BaseDataTemplateModel{
+		Title:      IssueReproductionKey,
+		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
+		Type:       private.Number,
+	},
 	DefaultValue: 0,
 	Value:        0,
 	Collection:   models.AllReproductabilities,
@@ -80,8 +80,8 @@ type IssueNewController struct {
 
 	issueTemplateData TIssueNewCollectionType
 	issueAttachData   TIssueAttachmentType
-	allCreators       IssuePickerTemplateModel
-	allAssignors      IssuePickerTemplateModel
+	allCreators       models.DataPickerTemplateModel
+	allAssignors      models.DataPickerTemplateModel
 }
 
 // just for store the attach session key
@@ -191,7 +191,7 @@ func (c *IssueNewController) initPageVariables() {
 	}
 
 	// append all creators data into `pickData`
-	c.allCreators = IssuePickerTemplateModel{}
+	c.allCreators = models.DataPickerTemplateModel{}
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
 	c.allCreators.DefaultValue = int64(createorDefaultIndex)
@@ -200,7 +200,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
 	// append all assignor data into `pickData`
-	c.allAssignors = IssuePickerTemplateModel{}
+	c.allAssignors = models.DataPickerTemplateModel{}
 	c.allAssignors.Title = IssueAssignorKey
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
 	c.allAssignors.DefaultValue = 0
