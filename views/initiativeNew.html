@@ -23,7 +23,15 @@
 
             {{range $index, $section := .modelPropertySection}}
             <div class="span span_3of6 clearfix">
-                {{template "inputFieldTemplate" $section}}
+                {{$section}}
+                {{$ctrlType := ControllerTypeOfTemplateData $section}}
+                {{if eq $ctrlType 1}}
+                {{template "dataFieldTemplate" $section}}
+                {{else if eq $ctrlType 2}}
+                {{template "dataTextareaTemplate" $section}}
+                {{else if eq $ctrlType 3}}
+                {{template "dataPickerTemplate" $section}}
+                {{end}}
             </div>
             {{end}}
         </div>

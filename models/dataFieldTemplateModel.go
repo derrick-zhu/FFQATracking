@@ -8,6 +8,6 @@ type DataFieldTemplateModel struct {
 	Value        string
 }
 
-func (c *DataFieldTemplateModel) ControllerType() TemplateDataCtrlType {
-	return Number
+func (c DataFieldTemplateModel) ControllerType() TemplateDataCtrlType {
+	return TextField
 }

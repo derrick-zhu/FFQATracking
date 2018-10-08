@@ -32,7 +32,7 @@ func issuePickerKey(key string) string {
 }
 
 // TIssueNewCollectionType for issue template
-type TIssueNewCollectionType []models.DataPickerTemplateModel
+type TIssueNewCollectionType []interface{}
 
 // TIssueAttachmentType for issue's attachment
 type TIssueAttachmentType []models.AttachmentModel

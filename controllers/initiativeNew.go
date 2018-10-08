@@ -23,7 +23,7 @@ var initiativeProperties = []interface{}{
 		Value:        "",
 	},
 
-	models.DataFieldTemplateModel{
+	models.DataTextareaTemplateModel{
 		BaseDataTemplateModel: models.BaseDataTemplateModel{
 			Title:      "Description:",
 			Identifier: "description",
@@ -41,6 +41,7 @@ var initiativeProperties = []interface{}{
 		},
 		DefaultValue: 0,
 		Value:        0,
+		Collection:   make([]interface{}, 0),
 	},
 
 	models.DataPickerTemplateModel{
@@ -51,6 +52,7 @@ var initiativeProperties = []interface{}{
 		},
 		DefaultValue: 0,
 		Value:        0,
+		Collection:   make([]interface{}, 0),
 	},
 }
 

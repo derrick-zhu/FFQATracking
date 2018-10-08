@@ -4,26 +4,32 @@ import (
 	"github.com/astaxie/beego"
 )
 
-// VarModel common variable model
-type VarModel struct {
-	Type int64
-	Desc string
-}
-
 // BugStatusModel for bug status
 type BugStatusModel struct {
-	VarModel
+	dataType    int64
+	description string
 }
+
+func (c BugStatusModel) Type() int64  { return c.dataType }
+func (c BugStatusModel) Desc() string { return c.description }
 
 // BugPriorityModel priority model
 type BugPriorityModel struct {
-	VarModel
+	dataType    int64
+	description string
 }
+
+func (c BugPriorityModel) Type() int64  { return c.dataType }
+func (c BugPriorityModel) Desc() string { return c.description }
 
 // BugReproductableModel reproductability model
 type BugReproductableModel struct {
-	VarModel
+	dataType    int64
+	description string
 }
+
+func (c BugReproductableModel) Type() int64  { return c.dataType }
+func (c BugReproductableModel) Desc() string { return c.description }
 
 func init() {
 
@@ -41,7 +47,7 @@ func GetTypeFromModel(value interface{}) int64 {
 			beego.Error(err)
 			return 0
 		}
-		return newValue.Type
+		return newValue.Type()
 
 	case BugStatusModel:
 		newValue, err := value.(BugStatusModel)
@@ -49,7 +55,7 @@ func GetTypeFromModel(value interface{}) int64 {
 			beego.Error(err)
 			return 0
 		}
-		return newValue.Type
+		return newValue.Type()
 
 	case BugPriorityModel:
 		newValue, err := value.(BugPriorityModel)
@@ -57,7 +63,7 @@ func GetTypeFromModel(value interface{}) int64 {
 			beego.Error(err)
 			return 0
 		}
-		return newValue.Type
+		return newValue.Type()
 
 	case BugReproductableModel:
 		newValue, err := value.(BugReproductableModel)
@@ -65,7 +71,7 @@ func GetTypeFromModel(value interface{}) int64 {
 			beego.Error(err)
 			return 0
 		}
-		return newValue.Type
+		return newValue.Type()
 
 	case AccountModel:
 		newValue, err := value.(AccountModel)
@@ -91,7 +97,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			beego.Error(err)
 			return ""
 		}
-		return newValue.Desc
+		return newValue.Desc()
 
 	case BugStatusModel:
 		newValue, err := value.(BugStatusModel)
@@ -99,7 +105,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			beego.Error(err)
 			return ""
 		}
-		return newValue.Desc
+		return newValue.Desc()
 
 	case BugPriorityModel:
 		newValue, err := value.(BugPriorityModel)
@@ -107,7 +113,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			beego.Error(err)
 			return ""
 		}
-		return newValue.Desc
+		return newValue.Desc()
 
 	case BugReproductableModel:
 		newValue, err := value.(BugReproductableModel)
@@ -115,7 +121,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			beego.Error(err)
 			return ""
 		}
-		return newValue.Desc
+		return newValue.Desc()
 
 	case AccountModel:
 		newValue, err := value.(AccountModel)

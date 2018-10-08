@@ -1,6 +1,8 @@
 package models
 
 import (
+	"reflect"
+
 	"github.com/astaxie/beego"
 )
 
@@ -12,6 +14,12 @@ const (
 	TextArea
 	Number
 )
+
+// VarModel common variable model
+type VarModel interface {
+	Type() int64
+	Desc() string
+}
 
 type DataControllerTypeProtocol interface {
 	ControllerType() TemplateDataCtrlType
@@ -29,17 +37,16 @@ func init() {
 	beego.AddFuncMap("ControllerTypeOfTemplateData", ControllerTypeOfTemplateData)
 }
 
-func (c *BaseDataTemplateModel) DataControllerType() TemplateDataCtrlType {
+func (c BaseDataTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextField
 }
 
 // ControllerTypeOfTemplateData get controller type of this template model
 func ControllerTypeOfTemplateData(tplData DataControllerTypeProtocol) TemplateDataCtrlType {
 
-	// beego.Info(tplData)
-	// typeDefine := reflect.TypeOf(tplData)
-	// typeName := typeDefine.Name()
-	// beego.Info(typeName)
+	beego.Info(tplData)
+	typeName := reflect.TypeOf(tplData).Name()
+	beego.Info(typeName)
 
 	return tplData.ControllerType()
 }

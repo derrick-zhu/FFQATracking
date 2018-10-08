@@ -1,4 +1,4 @@
-{{define "inputFieldTemplate"}}
+{{define "dataFieldTemplate"}}
 
 <div class="span span_2of6 span_float_left text text-align-right">{{.Title}}</div>
 <div class="span span_4of6 span_float_right" >

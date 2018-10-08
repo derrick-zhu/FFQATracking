@@ -16,23 +16,23 @@ const (
 
 var (
 	// BugNew NEW
-	BugNew = BugStatusModel{VarModel: VarModel{Type: 0, Desc: "New"}}
+	BugNew = BugStatusModel{dataType: 0, description: "New"}
 	// BugFixed NEW
-	BugFixed = BugStatusModel{VarModel: VarModel{Type: 1, Desc: "Fixed"}}
+	BugFixed = BugStatusModel{dataType: 1, description: "Fixed"}
 	// BugReopen NEW
-	BugReopen = BugStatusModel{VarModel: VarModel{Type: 2, Desc: "Reopen"}}
+	BugReopen = BugStatusModel{dataType: 2, description: "Reopen"}
 	// BugConfirm NEW
-	BugConfirm = BugStatusModel{VarModel: VarModel{Type: 3, Desc: "Confirm"}}
+	BugConfirm = BugStatusModel{dataType: 3, description: "Confirm"}
 	// BugClose NEW
-	BugClose = BugStatusModel{VarModel: VarModel{Type: 4, Desc: "Close"}}
+	BugClose = BugStatusModel{dataType: 4, description: "Close"}
 	// BugNotABug NEW
-	BugNotABug = BugStatusModel{VarModel: VarModel{Type: 5, Desc: "Not a bug"}}
+	BugNotABug = BugStatusModel{dataType: 5, description: "Not a bug"}
 	// BugWillNotFix NEW
-	BugWillNotFix = BugStatusModel{VarModel: VarModel{Type: 6, Desc: "Will not fix"}}
+	BugWillNotFix = BugStatusModel{dataType: 6, description: "Will not fix"}
 	// BugDelay NEW
-	BugDelay = BugStatusModel{VarModel: VarModel{Type: 7, Desc: "Delay"}}
+	BugDelay = BugStatusModel{dataType: 7, description: "Delay"}
 	// BugMustBeFix NEW
-	BugMustBeFix = BugStatusModel{VarModel: VarModel{Type: 8, Desc: "Must be fix"}}
+	BugMustBeFix = BugStatusModel{dataType: 8, description: "Must be fix"}
 )
 
 // AllBugStatus collections of all bug status
@@ -59,13 +59,13 @@ const (
 )
 
 var (
-	PriorityUrgent     = BugPriorityModel{VarModel: VarModel{Type: IssueUrget, Desc: "Urgent"}}
-	PriorityImportant  = BugPriorityModel{VarModel: VarModel{Type: IssueImportant, Desc: "Important"}}
-	PriorityHigh       = BugPriorityModel{VarModel: VarModel{Type: IssueHigh, Desc: "High"}}
-	PriorityMiddle     = BugPriorityModel{VarModel: VarModel{Type: IssueMiddle, Desc: "Middle"}}
-	PriorityLow        = BugPriorityModel{VarModel: VarModel{Type: IssueLow, Desc: "Low"}}
-	PriorityQuestion   = BugPriorityModel{VarModel: VarModel{Type: IssueQuestion, Desc: "Question"}}
-	PrioritySuggestion = BugPriorityModel{VarModel: VarModel{Type: IssueSuggestion, Desc: "Suggestion"}}
+	PriorityUrgent     = BugPriorityModel{dataType: IssueUrget, description: "Urgent"}
+	PriorityImportant  = BugPriorityModel{dataType: IssueImportant, description: "Important"}
+	PriorityHigh       = BugPriorityModel{dataType: IssueHigh, description: "High"}
+	PriorityMiddle     = BugPriorityModel{dataType: IssueMiddle, description: "Middle"}
+	PriorityLow        = BugPriorityModel{dataType: IssueLow, description: "Low"}
+	PriorityQuestion   = BugPriorityModel{dataType: IssueQuestion, description: "Question"}
+	PrioritySuggestion = BugPriorityModel{dataType: IssueSuggestion, description: "Suggestion"}
 )
 
 // AllPriorities collections of all bug priority
@@ -80,11 +80,11 @@ var AllPriorities = []BugPriorityModel{
 }
 
 var (
-	Reproductability100 = BugReproductableModel{VarModel: VarModel{Type: 0, Desc: "100%"}}
-	Reproductability80  = BugReproductableModel{VarModel: VarModel{Type: 1, Desc: "80%"}}
-	Reproductability60  = BugReproductableModel{VarModel: VarModel{Type: 2, Desc: "60%"}}
-	Reproductability40  = BugReproductableModel{VarModel: VarModel{Type: 3, Desc: "40%"}}
-	Reproductability20  = BugReproductableModel{VarModel: VarModel{Type: 4, Desc: "20%"}}
+	Reproductability100 = BugReproductableModel{dataType: 0, description: "100%"}
+	Reproductability80  = BugReproductableModel{dataType: 1, description: "80%"}
+	Reproductability60  = BugReproductableModel{dataType: 2, description: "60%"}
+	Reproductability40  = BugReproductableModel{dataType: 3, description: "40%"}
+	Reproductability20  = BugReproductableModel{dataType: 4, description: "20%"}
 )
 
 var AllReproductabilities = []BugReproductableModel{
@@ -131,7 +131,7 @@ func EnumAllBugsStatus() []string {
 	var result []string
 
 	for _, eachBugModel := range AllBugStatus {
-		result = append(result, eachBugModel.Desc)
+		result = append(result, eachBugModel.Desc())
 	}
 
 	return result
@@ -140,8 +140,8 @@ func EnumAllBugsStatus() []string {
 func BugStatusWithString(str string) int64 {
 
 	for _, eachStatus := range AllBugStatus {
-		if eachStatus.Desc == str {
-			return eachStatus.Type
+		if eachStatus.Desc() == str {
+			return eachStatus.Type()
 		}
 	}
 	return 0
@@ -149,8 +149,8 @@ func BugStatusWithString(str string) int64 {
 
 func BugStatusWithType(status int64) string {
 	for _, eachStatus := range AllBugStatus {
-		if eachStatus.Type == status {
-			return eachStatus.Desc
+		if eachStatus.Type() == status {
+			return eachStatus.Desc()
 		}
 	}
 	return "-"
@@ -162,7 +162,7 @@ func EnumAllBugsPriority() []string {
 	var result []string
 
 	for _, eachPriority := range AllPriorities {
-		result = append(result, eachPriority.Desc)
+		result = append(result, eachPriority.Desc())
 	}
 
 	return result
@@ -171,8 +171,8 @@ func EnumAllBugsPriority() []string {
 func BugPriorityWithString(str string) int64 {
 
 	for _, eachPriority := range AllPriorities {
-		if eachPriority.Desc == str {
-			return eachPriority.Type
+		if eachPriority.Desc() == str {
+			return eachPriority.Type()
 		}
 	}
 	return 0
@@ -180,8 +180,8 @@ func BugPriorityWithString(str string) int64 {
 
 func BugPriorityWithType(priority int64) string {
 	for _, eachPriority := range AllPriorities {
-		if eachPriority.Type == priority {
-			return eachPriority.Desc
+		if eachPriority.Type() == priority {
+			return eachPriority.Desc()
 		}
 	}
 	return "-"
@@ -192,7 +192,7 @@ func EnumAllReproductabilities() []string {
 	var result []string
 
 	for _, eachRepro := range AllReproductabilities {
-		result = append(result, eachRepro.Desc)
+		result = append(result, eachRepro.Desc())
 	}
 
 	return result
@@ -200,8 +200,8 @@ func EnumAllReproductabilities() []string {
 
 func BugReproductabilityWithString(str string) int64 {
 	for _, eachRepro := range AllReproductabilities {
-		if eachRepro.Desc == str {
-			return eachRepro.Type
+		if eachRepro.Desc() == str {
+			return eachRepro.Type()
 		}
 	}
 	return 0
@@ -209,8 +209,8 @@ func BugReproductabilityWithString(str string) int64 {
 
 func BugReproductabilityWithType(reproduct int64) string {
 	for _, eachRepro := range AllReproductabilities {
-		if eachRepro.Type == reproduct {
-			return eachRepro.Desc
+		if eachRepro.Type() == reproduct {
+			return eachRepro.Desc()
 		}
 	}
 	return "-"

@@ -6,9 +6,9 @@ type DataPickerTemplateModel struct {
 
 	DefaultValue int64
 	Value        int64
-	Collection   interface{}
+	Collection   []interface{}
 }
 
-func (c *DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {
+func (c DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {
 	return Number
 }
