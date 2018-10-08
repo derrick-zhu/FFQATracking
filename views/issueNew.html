@@ -31,14 +31,12 @@
 
             <!-- bug的各种状态设置 -->
             {{range $idx, $issueTpl := .issueHTMLValue}}
+                <div class="col-xs-3" style="margin:0.5px;"> 
                 {{$ctrlType := ControllerTypeOfTemplateData $issueTpl}}
                 {{if eq $ctrlType 3}}
-                <h4>we get {{$ctrlType}}</h4>
-                {{else if eq $ctrlType 2}}
                 {{template "dataPickerTemplate" $issueTpl}}
-                {{else if eq $ctrlType 1}}
-                <h4>we get {{$ctrlType}}</h4>
                 {{end}}
+                </div>
             {{end}}
 
             <!-- 分割线 -->

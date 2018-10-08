@@ -62,7 +62,9 @@
         <div class="clearfix card">
             <form id="frmIssueUpdate" method="POST" action="#" onsubmit="return false">
                 {{range .issueHTMLValue}}
+                <div class="col-xs-3" style="margin:0.5px;"> 
                 {{template "dataPickerTemplate" .}}
+                </div>
                 {{end}}
             </form>
         </div>

@@ -1,13 +1,13 @@
 package models
 
-import (
-	"FFQATracking/models/private"
-)
-
 // DataFieldTemplateModel input field template model
 type DataFieldTemplateModel struct {
-	private.BaseDataTemplateModel
+	BaseDataTemplateModel
 
 	DefaultValue string
 	Value        string
+}
+
+func (c *DataFieldTemplateModel) ControllerType() TemplateDataCtrlType {
+	return Number
 }

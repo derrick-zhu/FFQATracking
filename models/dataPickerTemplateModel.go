@@ -1,14 +1,14 @@
 package models
 
-import (
-	"FFQATracking/models/private"
-)
-
 // DataPickerTemplateModel class template
 type DataPickerTemplateModel struct {
-	private.BaseDataTemplateModel
+	BaseDataTemplateModel
 
 	DefaultValue int64
 	Value        int64
 	Collection   interface{}
+}
+
+func (c *DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {
+	return Number
 }

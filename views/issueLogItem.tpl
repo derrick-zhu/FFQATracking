@@ -7,7 +7,7 @@
 
     <div class="col span span_1of6">
         <div class="log-user-icon">
-            <canvas id="{{$avatarName}}" name="{{$avatarName}}" class="log-avatar" width="48px" height="48px"></canvas>
+            <canvas class="avatar" id="{{$avatarName}}" name="{{$avatarName}}" width="48px" height="48px"></canvas>
             <script type="text/javascript">
                 $('#{{$avatarName}}').ready(function () {
                     appendAvatarCanvasCollection(

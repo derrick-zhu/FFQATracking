@@ -2,7 +2,10 @@ package controllers
 
 import (
 	"FFQATracking/models"
-	"FFQATracking/models/private"
+)
+
+const (
+	modelPropertySectionKey string = "modelPropertySection"
 )
 
 /**
@@ -11,40 +14,40 @@ page's basic data
 
 var initiativeProperties = []interface{}{
 	models.DataFieldTemplateModel{
-		BaseDataTemplateModel: private.BaseDataTemplateModel{
+		BaseDataTemplateModel: models.BaseDataTemplateModel{
 			Title:      "Title:",
-			Identifier: "",
-			Type:       private.TextField,
+			Identifier: "title",
+			Type:       models.TextField,
 		},
 		DefaultValue: "",
 		Value:        "",
 	},
 
 	models.DataFieldTemplateModel{
-		BaseDataTemplateModel: private.BaseDataTemplateModel{
+		BaseDataTemplateModel: models.BaseDataTemplateModel{
 			Title:      "Description:",
-			Identifier: "",
-			Type:       private.TextArea,
+			Identifier: "description",
+			Type:       models.TextArea,
 		},
 		DefaultValue: "",
 		Value:        "",
 	},
 
 	models.DataPickerTemplateModel{
-		BaseDataTemplateModel: private.BaseDataTemplateModel{
+		BaseDataTemplateModel: models.BaseDataTemplateModel{
 			Title:      "Creator:",
-			Identifier: "",
-			Type:       private.Number,
+			Identifier: "creator",
+			Type:       models.Number,
 		},
 		DefaultValue: 0,
 		Value:        0,
 	},
 
 	models.DataPickerTemplateModel{
-		BaseDataTemplateModel: private.BaseDataTemplateModel{
+		BaseDataTemplateModel: models.BaseDataTemplateModel{
 			Title:      "Assignor:",
-			Identifier: "",
-			Type:       private.Number,
+			Identifier: "assignor",
+			Type:       models.Number,
 		},
 		DefaultValue: 0,
 		Value:        0,
@@ -58,6 +61,9 @@ type InitiativeNewController struct {
 
 func (c *InitiativeNewController) Get() {
 
+	c.FFBaseController.Get()
+
+	c.initCommonVar()
 	c.TplName = "initiativeNew.html"
 }
 
@@ -67,4 +73,17 @@ private helpers
 
 func (c *InitiativeNewController) initCommonVar() {
 
+	// var allUsers *[]models.AccountModel
+	// var err error
+
+	// for true {
+
+	// 	if allUsers, err = models.AllAccounts(); err != nil {
+	// 		beego.Error(err)
+	// 		break
+	// 	}
+
+	// }
+
+	c.Data[modelPropertySectionKey] = initiativeProperties
 }

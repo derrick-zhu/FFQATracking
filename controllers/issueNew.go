@@ -5,7 +5,6 @@ import (
 	"FFQATracking/constants"
 	"FFQATracking/helpers"
 	"FFQATracking/models"
-	"FFQATracking/models/private"
 	"FFQATracking/utils"
 	"fmt"
 	"strconv"
@@ -40,10 +39,10 @@ type TIssueAttachmentType []models.AttachmentModel
 
 // IssueStatusData status data (temperary)
 var IssueStatusData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: private.BaseDataTemplateModel{
+	BaseDataTemplateModel: models.BaseDataTemplateModel{
 		Title:      IssueStatusKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
-		Type:       private.Number,
+		Type:       models.Number,
 	},
 	DefaultValue: 0,
 	Value:        0,
@@ -52,10 +51,10 @@ var IssueStatusData = models.DataPickerTemplateModel{
 
 // IssuePriorityData priority data (temperary)
 var IssuePriorityData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: private.BaseDataTemplateModel{
+	BaseDataTemplateModel: models.BaseDataTemplateModel{
 		Title:      IssuePriorityKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
-		Type:       private.Number,
+		Type:       models.Number,
 	},
 	DefaultValue: 0,
 	Value:        0,
@@ -64,10 +63,10 @@ var IssuePriorityData = models.DataPickerTemplateModel{
 
 // IssueReproductionData reproduction data (temperary)
 var IssueReproductionData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: private.BaseDataTemplateModel{
+	BaseDataTemplateModel: models.BaseDataTemplateModel{
 		Title:      IssueReproductionKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
-		Type:       private.Number,
+		Type:       models.Number,
 	},
 	DefaultValue: 0,
 	Value:        0,
@@ -194,7 +193,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allCreators = models.DataPickerTemplateModel{}
 	c.allCreators.Title = IssueCreatorKey
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
-	c.allCreators.Type = private.Number
+	c.allCreators.Type = models.Number
 	c.allCreators.DefaultValue = int64(createorDefaultIndex)
 	c.allCreators.Collection = *allUsers
 
@@ -204,7 +203,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allAssignors = models.DataPickerTemplateModel{}
 	c.allAssignors.Title = IssueAssignorKey
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
-	c.allAssignors.Type = private.Number
+	c.allAssignors.Type = models.Number
 	c.allAssignors.DefaultValue = 0
 	c.allAssignors.Collection = *allUsers
 
