@@ -5,7 +5,7 @@
 
 <div class="card clearfix">
 
-    <div class="col span_1of6">
+    <div class="col span span_1of6">
         <div class="log-user-icon">
             <canvas id="{{$avatarName}}" name="{{$avatarName}}" class="log-avatar" width="48px" height="48px"></canvas>
             <script type="text/javascript">
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="col span_5of6 card-content">
+    <div class="col span span_5of6 card-content">
 
         <!-- 只有提交评论的用户才能够删除当前comment -->
         {{if .IsViewersComment}}
