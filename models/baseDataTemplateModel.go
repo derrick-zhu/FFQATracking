@@ -15,8 +15,8 @@ const (
 	Number
 )
 
-// VarModel common variable model
-type VarModel interface {
+// VarModelProtocol common variable model
+type VarModelProtocol interface {
 	Type() int64
 	Desc() string
 }

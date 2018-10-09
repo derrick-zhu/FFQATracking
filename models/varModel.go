@@ -37,12 +37,12 @@ func init() {
 	beego.AddFuncMap("GetBriefTitleFromModel", GetBriefTitleFromModel)
 }
 
-// GetTypeFromModel get Type data from value which should be VarModel
+// GetTypeFromModel get Type data from value which should be VarModelProtocol
 func GetTypeFromModel(value interface{}) int64 {
 
 	switch value.(type) {
-	case VarModel:
-		newValue, err := value.(VarModel)
+	case VarModelProtocol:
+		newValue, err := value.(VarModelProtocol)
 		if err == false {
 			beego.Error(err)
 			return 0
@@ -87,12 +87,12 @@ func GetTypeFromModel(value interface{}) int64 {
 	return 0
 }
 
-// GetBriefTitleFromModel get Desc data from value which should be VarModel
+// GetBriefTitleFromModel get Desc data from value which should be VarModelProtocol
 func GetBriefTitleFromModel(value interface{}) string {
 
 	switch value.(type) {
-	case VarModel:
-		newValue, err := value.(VarModel)
+	case VarModelProtocol:
+		newValue, err := value.(VarModelProtocol)
 		if err == false {
 			beego.Error(err)
 			return ""
