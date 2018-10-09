@@ -6,7 +6,7 @@ type DataPickerTemplateModel struct {
 
 	DefaultValue int64
 	Value        int64
-	Collection   []interface{}
+	Collection   []VarModelProtocol
 }
 
 func (c DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {

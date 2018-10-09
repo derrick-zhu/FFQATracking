@@ -8,6 +8,6 @@ type DataTextareaTemplateModel struct {
 	Value        string
 }
 
-func (c *DataTextareaTemplateModel) ControlType() TemplateDataCtrlType {
+func (c DataTextareaTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextArea
 }

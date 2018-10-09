@@ -16,24 +16,34 @@
     </div>
 
     <div class="container">
-        <h1>New Initiative:</h1>
+        <h1>Create new initiative:</h1>
 
         <div class="card clearfix">
-            <span>hello world</span>
 
-            {{range $index, $section := .modelPropertySection}}
-            <div class="span span_3of6 clearfix">
-                {{$section}}
-                {{$ctrlType := ControllerTypeOfTemplateData $section}}
-                {{if eq $ctrlType 1}}
-                {{template "dataFieldTemplate" $section}}
-                {{else if eq $ctrlType 2}}
-                {{template "dataTextareaTemplate" $section}}
-                {{else if eq $ctrlType 3}}
-                {{template "dataPickerTemplate" $section}}
-                {{end}}
+            <div class="span span_3of6 span_float_left clearfix">
+                    {{range $index, $section := .modelPropertySection}}
+                    <div class="span span_full clearfix">
+                        <!-- {{$section}} -->
+                        {{$ctrlType := ControllerTypeOfTemplateData $section}}
+
+                        {{if eq $ctrlType 1}}
+                        {{template "dataFieldTemplate" $section}}
+
+                        {{else if eq $ctrlType 2}}
+                        {{template "dataTextareaTemplate" $section}}
+
+                        {{else if eq $ctrlType 3}}
+                        {{template "dataPickerTemplate" $section}}
+
+                        {{end}}
+                    </div>
+                    {{end}}
             </div>
-            {{end}}
+
+            <div class="span span_3of6 span_float_right clearfix">
+                <span>hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, hello world, </span>
+            </div>
+
         </div>
     </div>
     

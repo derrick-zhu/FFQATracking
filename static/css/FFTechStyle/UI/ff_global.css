@@ -1,5 +1,6 @@
 body {
     background-color: #f9f9f9;
+    line-height: none;
 }
 
 label.standard-ff {

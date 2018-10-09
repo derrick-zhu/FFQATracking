@@ -21,6 +21,7 @@ type VarModelProtocol interface {
 	Desc() string
 }
 
+// DataControllerTypeProtocol for identify the controller type
 type DataControllerTypeProtocol interface {
 	ControllerType() TemplateDataCtrlType
 }
@@ -37,6 +38,7 @@ func init() {
 	beego.AddFuncMap("ControllerTypeOfTemplateData", ControllerTypeOfTemplateData)
 }
 
+// ControllerType BaseDataTemplateModel's implementation
 func (c BaseDataTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextField
 }
@@ -44,9 +46,8 @@ func (c BaseDataTemplateModel) ControllerType() TemplateDataCtrlType {
 // ControllerTypeOfTemplateData get controller type of this template model
 func ControllerTypeOfTemplateData(tplData DataControllerTypeProtocol) TemplateDataCtrlType {
 
-	beego.Info(tplData)
 	typeName := reflect.TypeOf(tplData).Name()
-	beego.Info(typeName)
+	beego.Info(typeName, " ", tplData.ControllerType())
 
 	return tplData.ControllerType()
 }

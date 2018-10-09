@@ -48,6 +48,14 @@ type AccountModel struct {
 	Pwd    string
 }
 
+func (c AccountModel) Type() int64 {
+	return c.ID
+}
+
+func (c AccountModel) Desc() string {
+	return c.Name
+}
+
 func init() {
 	orm.RegisterModel(new(AccountModel))
 }

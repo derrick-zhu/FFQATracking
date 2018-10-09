@@ -14,6 +14,33 @@ const (
 	BugsTable string = "bugmodel"
 )
 
+// BugStatusModel for bug status
+type BugStatusModel struct {
+	dataType    int64
+	description string
+}
+
+func (c BugStatusModel) Type() int64  { return c.dataType }
+func (c BugStatusModel) Desc() string { return c.description }
+
+// BugPriorityModel priority model
+type BugPriorityModel struct {
+	dataType    int64
+	description string
+}
+
+func (c BugPriorityModel) Type() int64  { return c.dataType }
+func (c BugPriorityModel) Desc() string { return c.description }
+
+// BugReproductableModel reproductability model
+type BugReproductableModel struct {
+	dataType    int64
+	description string
+}
+
+func (c BugReproductableModel) Type() int64  { return c.dataType }
+func (c BugReproductableModel) Desc() string { return c.description }
+
 var (
 	// BugNew NEW
 	BugNew = BugStatusModel{dataType: 0, description: "New"}
@@ -36,7 +63,7 @@ var (
 )
 
 // AllBugStatus collections of all bug status
-var AllBugStatus = []BugStatusModel{
+var AllBugStatus = []VarModelProtocol{
 	BugNew,
 	BugFixed,
 	BugReopen,
@@ -69,7 +96,7 @@ var (
 )
 
 // AllPriorities collections of all bug priority
-var AllPriorities = []BugPriorityModel{
+var AllPriorities = []VarModelProtocol{
 	PriorityUrgent,
 	PriorityImportant,
 	PriorityHigh,
@@ -87,7 +114,7 @@ var (
 	Reproductability20  = BugReproductableModel{dataType: 4, description: "20%"}
 )
 
-var AllReproductabilities = []BugReproductableModel{
+var AllReproductabilities = []VarModelProtocol{
 	Reproductability100,
 	Reproductability80,
 	Reproductability60,

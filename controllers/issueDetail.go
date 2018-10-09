@@ -250,7 +250,7 @@ func (c *IssueDetailController) DeleteComment() {
 }
 
 // initVariables issue's properties
-func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers *[]models.AccountModel) {
+func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers []models.VarModelProtocol) {
 
 	var err error
 
@@ -276,22 +276,22 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 	allCreators := models.DataPickerTemplateModel{}
 	allCreators.Title = IssueCreatorKey
 	allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allCreators.Title)
-	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), *allUsers)
-	allCreators.Collection = *allUsers
+	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), allUsers)
+	allCreators.Collection = allUsers
 	allCreators.ID = nIssueID
 
-	//
-	allUsers, err = models.AllAccounts()
-	if err != nil {
-		beego.Error(err)
-		err = nil
-	}
+	// //
+	// allUsers, err = models.AllAccounts()
+	// if err != nil {
+	// 	beego.Error(err)
+	// 	err = nil
+	// }
 
 	allAssignors := models.DataPickerTemplateModel{}
 	allAssignors.Title = IssueAssignorKey
 	allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allAssignors.Title)
-	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), *allUsers)
-	allAssignors.Collection = *allUsers
+	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), allUsers)
+	allAssignors.Collection = allUsers
 	allAssignors.ID = nIssueID
 
 	*dataSource = &TIssueNewCollectionType{
@@ -366,10 +366,10 @@ func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSour
 public functions in issue detail page
 */
 
-func indexOf(id int64, allAccs []models.AccountModel) int64 {
+func indexOf(id int64, allAccs []models.VarModelProtocol) int64 {
 
 	for idx, acc := range allAccs {
-		if int64(acc.ID) == id {
+		if int64(acc.Type()) == id {
 			return int64(idx)
 		}
 	}
@@ -405,7 +405,12 @@ func (c *IssueDetailController) setupNormalResponseData() {
 		err = nil
 	}
 
-	c.initVariables(&issueDetailData, currentIssue, issueID, allUsers)
+	allUserVars := []models.VarModelProtocol{}
+	for _, v := range *allUsers {
+		allUserVars = append(allUserVars, v)
+	}
+
+	c.initVariables(&issueDetailData, currentIssue, issueID, allUserVars)
 	c.initLogHistory(issueID, &logHistory, allUsers)
 	c.initPageContent(*currentIssue, *issueDetailData, *logHistory)
 }

@@ -172,6 +172,11 @@ func (c *IssueNewController) initPageVariables() {
 		beego.Error(err)
 	}
 
+	allUsersVar := []models.VarModelProtocol{}
+	for _, v := range *allUsers {
+		allUsersVar = append(allUsersVar, v)
+	}
+
 	c.issueTemplateData = TIssueNewCollectionType{
 
 		IssueStatusData, IssuePriorityData, IssueReproductionData,
@@ -195,7 +200,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
 	c.allCreators.Type = models.Number
 	c.allCreators.DefaultValue = int64(createorDefaultIndex)
-	c.allCreators.Collection = *allUsers
+	c.allCreators.Collection = allUsersVar
 
 	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
 
@@ -205,7 +210,7 @@ func (c *IssueNewController) initPageVariables() {
 	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
 	c.allAssignors.Type = models.Number
 	c.allAssignors.DefaultValue = 0
-	c.allAssignors.Collection = *allUsers
+	c.allAssignors.Collection = allUsersVar
 
 	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
 }

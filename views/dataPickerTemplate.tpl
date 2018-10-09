@@ -16,16 +16,16 @@
  {{$data := .Collection}}
 
 
-<label class="left standard-ff">{{$title}} :</label>
-<div class="btn-group">
-    <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal" style="max-width:100%">{{$defaultContent}}</button>
-    <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultValue}}" style="max-width:100%">
-    <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="max-width:100%">
+<label class="span span_2of6 span_float_left text text-align-right">{{$title}}</label>
+<div class="btn-group span span_4of6 span_float_right">
+    <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal" style="width:90%;text-align:left;padding:0px">{{$defaultContent}}</button>
+    <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultValue}}" style="width:95%;">
+    <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding:0px;width:8%;min-width:1rem">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>
 
-    <ul class="dropdown-menu" style="max-height: 20em; overflow-y: scroll">
+    <ul class="dropdown-menu" style="width:90%; max-height:20em; overflow-y: scroll">
         {{range $index, $item := $data}}
             {{$itemValue := GetTypeFromModel $item}}
             {{$itemContent := GetBriefTitleFromModel $item}}

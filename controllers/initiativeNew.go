@@ -2,59 +2,13 @@ package controllers
 
 import (
 	"FFQATracking/models"
+
+	"github.com/astaxie/beego"
 )
 
 const (
 	modelPropertySectionKey string = "modelPropertySection"
 )
-
-/**
-page's basic data
-*/
-
-var initiativeProperties = []interface{}{
-	models.DataFieldTemplateModel{
-		BaseDataTemplateModel: models.BaseDataTemplateModel{
-			Title:      "Title:",
-			Identifier: "title",
-			Type:       models.TextField,
-		},
-		DefaultValue: "",
-		Value:        "",
-	},
-
-	models.DataTextareaTemplateModel{
-		BaseDataTemplateModel: models.BaseDataTemplateModel{
-			Title:      "Description:",
-			Identifier: "description",
-			Type:       models.TextArea,
-		},
-		DefaultValue: "",
-		Value:        "",
-	},
-
-	models.DataPickerTemplateModel{
-		BaseDataTemplateModel: models.BaseDataTemplateModel{
-			Title:      "Creator:",
-			Identifier: "creator",
-			Type:       models.Number,
-		},
-		DefaultValue: 0,
-		Value:        0,
-		Collection:   make([]interface{}, 0),
-	},
-
-	models.DataPickerTemplateModel{
-		BaseDataTemplateModel: models.BaseDataTemplateModel{
-			Title:      "Assignor:",
-			Identifier: "assignor",
-			Type:       models.Number,
-		},
-		DefaultValue: 0,
-		Value:        0,
-		Collection:   make([]interface{}, 0),
-	},
-}
 
 // InitiativeNewController controller for create initiative
 type InitiativeNewController struct {
@@ -66,6 +20,7 @@ func (c *InitiativeNewController) Get() {
 	c.FFBaseController.Get()
 
 	c.initCommonVar()
+	beego.Error(c.Data)
 	c.TplName = "initiativeNew.html"
 }
 
@@ -75,17 +30,72 @@ private helpers
 
 func (c *InitiativeNewController) initCommonVar() {
 
-	// var allUsers *[]models.AccountModel
-	// var err error
+	var initiativeProperties = []interface{}{}
+	var allUsers *[]models.AccountModel
+	var allUsersVar = []models.VarModelProtocol{}
+	var err error
 
-	// for true {
+	if allUsers, err = models.AllAccounts(); err != nil {
+		beego.Error(err)
+	}
 
-	// 	if allUsers, err = models.AllAccounts(); err != nil {
-	// 		beego.Error(err)
-	// 		break
-	// 	}
+	for _, v := range *allUsers {
+		allUsersVar = append(allUsersVar, v)
+	}
 
-	// }
+	initiativeProperties = append(
+		initiativeProperties,
+		models.DataFieldTemplateModel{
+			BaseDataTemplateModel: models.BaseDataTemplateModel{
+				Title:      "Title:",
+				Identifier: "title",
+				Type:       models.TextField,
+			},
+			DefaultValue: "",
+			Value:        "",
+		},
+	)
+
+	initiativeProperties = append(
+		initiativeProperties,
+		models.DataTextareaTemplateModel{
+			BaseDataTemplateModel: models.BaseDataTemplateModel{
+				Title:      "Description:",
+				Identifier: "description",
+				Type:       models.TextArea,
+			},
+			DefaultValue: "",
+			Value:        "",
+		},
+	)
+
+	initiativeProperties = append(
+		initiativeProperties,
+		models.DataPickerTemplateModel{
+			BaseDataTemplateModel: models.BaseDataTemplateModel{
+				Title:      "Creator:",
+				Identifier: "creator",
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   allUsersVar,
+		},
+	)
+
+	initiativeProperties = append(
+		initiativeProperties,
+		models.DataPickerTemplateModel{
+			BaseDataTemplateModel: models.BaseDataTemplateModel{
+				Title:      "Assignor:",
+				Identifier: "assignor",
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   allUsersVar,
+		},
+	)
 
 	c.Data[modelPropertySectionKey] = initiativeProperties
 }
