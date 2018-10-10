@@ -40,39 +40,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			return ""
 		}
 		return newValue.Desc()
-
-	// case BugStatusModel:
-	// 	newValue, err := value.(BugStatusModel)
-	// 	if err == false {
-	// 		beego.Error(err)
-	// 		return ""
-	// 	}
-	// 	return newValue.Desc()
-
-	// case BugPriorityModel:
-	// 	newValue, err := value.(BugPriorityModel)
-	// 	if err == false {
-	// 		beego.Error(err)
-	// 		return ""
-	// 	}
-	// 	return newValue.Desc()
-
-	// case BugReproductableModel:
-	// 	newValue, err := value.(BugReproductableModel)
-	// 	if err == false {
-	// 		beego.Error(err)
-	// 		return ""
-	// 	}
-	// 	return newValue.Desc()
-
-	// case AccountModel:
-	// 	newValue, err := value.(AccountModel)
-	// 	if err == false {
-	// 		beego.Error(err)
-	// 		return ""
-	// 	}
-	// return newValue.Name
-
+		
 	default:
 		beego.Info("other", value)
 	}
