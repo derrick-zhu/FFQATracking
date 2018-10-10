@@ -40,6 +40,7 @@ func NewInitiative(name, desc string, creatorID int64) (*InitiativeModel, error)
 	o := GetOrmObject()
 	if _, err := o.Insert(aNewInit); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return nil, err
 	}
 
@@ -51,23 +52,31 @@ func RemoveInitiative(initiativeID int64) error {
 
 	o, _ := GetQuerySeterWithTable(initiativeModelTblName)
 
+	var err error
 	aInitiative := &InitiativeModel{ID: initiativeID}
-	_, err := o.Delete(aInitiative)
+	if _, err = o.Delete(aInitiative); err != nil {
+		beego.Error(err)
+		o.Rollback()
+	}
 
 	return err
 }
 
+// InitiativeUpdate update initiative with its new properties
 func InitiativeUpdate(newInitiative *InitiativeModel) error {
 
 	o, _ := GetQuerySeterWithTable(initiativeModelTblName)
+
 	if _, err := o.Update(newInitiative); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return err
 	}
 
 	return nil
 }
 
+// Initiatives fetch initiative data
 func Initiatives(low, count int64) (*[]InitiativeModel, error) {
 
 	var results = &[]InitiativeModel{}

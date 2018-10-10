@@ -34,12 +34,9 @@ func issuePickerKey(key string) string {
 // TIssueNewCollectionType for issue template
 type TIssueNewCollectionType []interface{}
 
-// TIssueAttachmentType for issue's attachment
-type TIssueAttachmentType []models.AttachmentModel
-
 // IssueStatusData status data (temperary)
 var IssueStatusData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: models.BaseDataTemplateModel{
+	DataBaseTemplateModel: models.DataBaseTemplateModel{
 		Title:      IssueStatusKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
 		Type:       models.Number,
@@ -51,7 +48,7 @@ var IssueStatusData = models.DataPickerTemplateModel{
 
 // IssuePriorityData priority data (temperary)
 var IssuePriorityData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: models.BaseDataTemplateModel{
+	DataBaseTemplateModel: models.DataBaseTemplateModel{
 		Title:      IssuePriorityKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
 		Type:       models.Number,
@@ -63,7 +60,7 @@ var IssuePriorityData = models.DataPickerTemplateModel{
 
 // IssueReproductionData reproduction data (temperary)
 var IssueReproductionData = models.DataPickerTemplateModel{
-	BaseDataTemplateModel: models.BaseDataTemplateModel{
+	DataBaseTemplateModel: models.DataBaseTemplateModel{
 		Title:      IssueReproductionKey,
 		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
 		Type:       models.Number,
@@ -78,13 +75,9 @@ type IssueNewController struct {
 	FFBaseController
 
 	issueTemplateData TIssueNewCollectionType
-	issueAttachData   TIssueAttachmentType
 	allCreators       models.DataPickerTemplateModel
 	allAssignors      models.DataPickerTemplateModel
 }
-
-// just for store the attach session key
-var gAttachSessionKeyForNewIssue int64
 
 // Get for handle new issue controller GET request
 func (c *IssueNewController) Get() {
@@ -92,11 +85,6 @@ func (c *IssueNewController) Get() {
 
 	c.Data[constants.Title] = "New Issue"
 	c.Data[constants.KeyIsIssueList] = 1
-
-	if gAttachSessionKeyForNewIssue != 0 {
-		biz.SharedAttachManager().RemoveSession(gAttachSessionKeyForNewIssue)
-	}
-	gAttachSessionKeyForNewIssue = biz.SharedAttachManager().NewSession()
 
 	c.initPageVariables()
 	c.initPageContent()
@@ -136,12 +124,6 @@ func (c *IssueNewController) Create() {
 		return
 	}
 
-	// 提交完issue之后，需要清理持有的attachment session
-	if gAttachSessionKeyForNewIssue != 0 {
-		biz.SharedAttachManager().RemoveSession(gAttachSessionKeyForNewIssue)
-		gAttachSessionKeyForNewIssue = 0
-	}
-
 	c.Redirect("/issuelist", 302)
 }
 
@@ -149,17 +131,11 @@ func (c *IssueNewController) Create() {
 func (c *IssueNewController) NewAttchment() {
 	c.FFBaseController.Post()
 
-	attachName, err := helpers.SaveAttachFile(c.Ctx.Request, "myfile", constants.ServerUploadDir)
-	if err != nil {
+	if _, err := helpers.SaveAttachFile(c.Ctx.Request, "myfile", constants.ServerUploadDir); err != nil {
 		beego.Error(err)
 	}
 
-	// TODO: add attachment into db here.
-	attachSession := biz.SharedAttachManager().SessionWithID(gAttachSessionKeyForNewIssue)
-	attachSession.AppendAttachement(attachName)
-
 	utils.MakeRedirectURL(&c.Data, 302, "#", "")
-
 	c.ServeJSON()
 }
 
@@ -219,5 +195,4 @@ func (c *IssueNewController) initPageVariables() {
 func (c *IssueNewController) initPageContent() {
 
 	c.Data[constants.KeyIssueHTMLValue] = c.issueTemplateData
-	c.Data[constants.KeyIssueAttachments] = c.issueAttachData
 }

@@ -2,7 +2,7 @@ package models
 
 // DataFieldTemplateModel input field template model
 type DataFieldTemplateModel struct {
-	BaseDataTemplateModel
+	DataBaseTemplateModel
 
 	DefaultValue string
 	Value        string

@@ -46,7 +46,7 @@ func (c *InitiativeNewController) initCommonVar() {
 	initiativeProperties = append(
 		initiativeProperties,
 		models.DataFieldTemplateModel{
-			BaseDataTemplateModel: models.BaseDataTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Title:",
 				Identifier: "title",
 				Type:       models.TextField,
@@ -59,7 +59,7 @@ func (c *InitiativeNewController) initCommonVar() {
 	initiativeProperties = append(
 		initiativeProperties,
 		models.DataTextareaTemplateModel{
-			BaseDataTemplateModel: models.BaseDataTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Description:",
 				Identifier: "description",
 				Type:       models.TextArea,
@@ -72,7 +72,7 @@ func (c *InitiativeNewController) initCommonVar() {
 	initiativeProperties = append(
 		initiativeProperties,
 		models.DataPickerTemplateModel{
-			BaseDataTemplateModel: models.BaseDataTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Creator:",
 				Identifier: "creator",
 				Type:       models.Number,
@@ -86,7 +86,7 @@ func (c *InitiativeNewController) initCommonVar() {
 	initiativeProperties = append(
 		initiativeProperties,
 		models.DataPickerTemplateModel{
-			BaseDataTemplateModel: models.BaseDataTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Assignor:",
 				Identifier: "assignor",
 				Type:       models.Number,

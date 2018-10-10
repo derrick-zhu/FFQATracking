@@ -57,6 +57,7 @@ func AddLogComment(issueID, creatorID int64, content string) (*IssueLogModel, er
 	o := GetOrmObject()
 	if _, err := o.Insert(newComment); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return nil, err
 	}
 
@@ -79,6 +80,7 @@ func AddLogStatus(issueID, creatorID int64, statusTitle string, prvStatus, newSt
 	o := GetOrmObject()
 	if _, err := o.Insert(newComment); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return nil, err
 	}
 
@@ -90,8 +92,13 @@ func RemoveComment(issueID, commentID int64) error {
 
 	o, _ := GetQuerySeterWithTable(issueLogTableName)
 
+	var err error
 	comm := &IssueLogModel{ID: commentID}
-	_, err := o.Delete(comm)
+
+	if _, err = o.Delete(comm); err != nil {
+		beego.Error(err)
+		o.Rollback()
+	}
 
 	return err
 }

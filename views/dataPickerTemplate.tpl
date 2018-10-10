@@ -18,9 +18,9 @@
 
 <label class="span span_2of6 span_float_left text text-align-right">{{$title}}</label>
 <div class="btn-group span span_4of6 span_float_right">
-    <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal" style="width:90%;text-align:left;padding:0px">{{$defaultContent}}</button>
+    <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal" style="width:90%;text-align:left;">{{$defaultContent}}</button>
     <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultValue}}" style="width:95%;">
-    <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding:0px;width:8%;min-width:1rem">
+    <button type="button" class="btn btn-normal dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:8%;min-width:1rem;padding-left: 4px;padding-right: 10px;">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>

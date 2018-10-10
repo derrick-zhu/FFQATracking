@@ -2,7 +2,7 @@ package models
 
 // DataTextareaTemplateModel model type for textare
 type DataTextareaTemplateModel struct {
-	BaseDataTemplateModel
+	DataBaseTemplateModel
 
 	DefaultValue string
 	Value        string

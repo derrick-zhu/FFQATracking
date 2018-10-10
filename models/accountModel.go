@@ -48,13 +48,11 @@ type AccountModel struct {
 	Pwd    string
 }
 
-func (c AccountModel) Type() int64 {
-	return c.ID
-}
+// Type implements the VarModelProtocol interface.
+func (c AccountModel) Type() int64 { return c.ID }
 
-func (c AccountModel) Desc() string {
-	return c.Name
-}
+// Desc implements the VarModelProtocol interface
+func (c AccountModel) Desc() string { return c.Name }
 
 func init() {
 	orm.RegisterModel(new(AccountModel))
@@ -78,14 +76,8 @@ func InstallAdminAccount() {
 	acc.Pwd = utils.Base64Encode(utils.MD5("admin"))
 
 	beego.Info(acc)
-	err = UpdateAccount(acc.ID, map[string]interface{}{
-		"Rule": acc.Rule,
-		"Job":  acc.Job,
-		"Pwd":  acc.Pwd,
-	})
-
-	if err != nil {
-		beego.Debug(err)
+	if err = UpdateAccount(acc); err != nil {
+		beego.Error(err)
 	}
 }
 
@@ -106,8 +98,10 @@ func AddAccount(name string, email string) (*AccountModel, error) {
 
 	_, insertErr := o.Insert(account)
 	if insertErr != nil {
+		o.Rollback()
 		return nil, insertErr
 	}
+
 	return account, nil
 }
 
@@ -181,23 +175,20 @@ func AllAccounts() (*[]AccountModel, error) {
 }
 
 // UpdateAccount [WIP] update account's content
-func UpdateAccount(id int64, params map[string]interface{}) error {
+func UpdateAccount(newAcc *AccountModel) error {
 
-	_, qs := GetQuerySeterWithTable(AccountTable)
+	var err error
 
-	_, err := AccountWithID(id)
-	if err != nil {
+	o, _ := GetQuerySeterWithTable(AccountTable)
 
-		beego.Debug("could not find account: %d.", id)
-
+	if _, err := AccountWithID(newAcc.ID); err != nil {
+		beego.Debug("could not find account: %d.", newAcc.ID)
 		return err
 	}
 
-	beego.Info(params)
-	_, err = qs.Filter("id", fmt.Sprintf("%d", id)).Update(params)
-	if err != nil {
-
-		beego.Error("[orm] fails to update account")
+	if _, err = o.Update(newAcc); err != nil {
+		beego.Error(err)
+		o.Rollback()
 
 		return err
 	}

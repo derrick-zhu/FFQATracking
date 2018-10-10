@@ -26,8 +26,8 @@ type DataControllerTypeProtocol interface {
 	ControllerType() TemplateDataCtrlType
 }
 
-// BaseDataTemplateModel basic data template struct for input
-type BaseDataTemplateModel struct {
+// DataBaseTemplateModel basic data template struct for input
+type DataBaseTemplateModel struct {
 	ID         int64 // just ID for any index num
 	Title      string
 	Identifier string
@@ -38,8 +38,8 @@ func init() {
 	beego.AddFuncMap("ControllerTypeOfTemplateData", ControllerTypeOfTemplateData)
 }
 
-// ControllerType BaseDataTemplateModel's implementation
-func (c BaseDataTemplateModel) ControllerType() TemplateDataCtrlType {
+// ControllerType DataBaseTemplateModel's implementation
+func (c DataBaseTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextField
 }
 

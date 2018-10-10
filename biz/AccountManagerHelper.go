@@ -40,6 +40,8 @@ func CheckAccount(email, pwd string) (bool, *models.AccountModel) {
 func Register(email, pwd string, rule models.RuleType) (bool, *models.AccountModel, error) {
 
 	var nickName string
+	var acc *models.AccountModel
+	var err error
 
 	if utils.MatchRegexEmail(email) == false {
 
@@ -48,9 +50,7 @@ func Register(email, pwd string, rule models.RuleType) (bool, *models.AccountMod
 
 	nickName = email[0:strings.Index(email, "@")]
 
-	acc, err := models.AddAccount(nickName, email)
-	if err != nil {
-
+	if acc, err = models.AddAccount(nickName, email); err != nil {
 		beego.Debug(err)
 		return false, nil, err
 	}
@@ -59,15 +59,8 @@ func Register(email, pwd string, rule models.RuleType) (bool, *models.AccountMod
 	acc.Job = models.JobDeveloper
 	acc.Pwd = utils.Base64Encode(utils.MD5(pwd))
 
-	err = models.UpdateAccount(acc.ID, map[string]interface{}{
-
-		"Rule": acc.Rule,
-		"Job":  acc.Job,
-		"Pwd":  acc.Pwd,
-	})
-
-	if err != nil {
-
+	if err = models.UpdateAccount(acc); err != nil {
+		beego.Error(err)
 		return false, nil, err
 	}
 

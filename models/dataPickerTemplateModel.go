@@ -2,7 +2,7 @@ package models
 
 // DataPickerTemplateModel class template
 type DataPickerTemplateModel struct {
-	BaseDataTemplateModel
+	DataBaseTemplateModel
 
 	DefaultValue int64
 	Value        int64
