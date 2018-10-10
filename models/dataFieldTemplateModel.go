@@ -8,6 +8,7 @@ type DataFieldTemplateModel struct {
 	Value        string
 }
 
+// ControllerType implements VarModelProtocol interface
 func (c DataFieldTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextField
 }

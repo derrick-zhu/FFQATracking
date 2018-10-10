@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 )
 
+// TemplateDataCtrlType data controller for html components
 type TemplateDataCtrlType int
 
 const (

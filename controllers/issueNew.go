@@ -15,13 +15,20 @@ import (
 const (
 	issueIDPrefix = ""
 
-	IssueTitleKey        = "Title"
-	IssueDescriptionKey  = "Description"
-	IssueStatusKey       = "Status"
-	IssuePriorityKey     = "Priority"
+	// IssueTitleKey ...
+	IssueTitleKey = "Title"
+	// IssueDescriptionKey ...
+	IssueDescriptionKey = "Description"
+	// IssueStatusKey ...
+	IssueStatusKey = "Status"
+	// IssuePriorityKey ...
+	IssuePriorityKey = "Priority"
+	// IssueReproductionKey ...
 	IssueReproductionKey = "Reproductability"
-	IssueCreatorKey      = "Creator"
-	IssueAssignorKey     = "Assignor"
+	// IssueCreatorKey ...
+	IssueCreatorKey = "Creator"
+	// IssueAssignorKey ...
+	IssueAssignorKey = "Assignor"
 )
 
 func issuePickerKey(key string) string {

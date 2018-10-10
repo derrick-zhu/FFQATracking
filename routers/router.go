@@ -32,6 +32,4 @@ func init() {
 	beego.Router("/issuedetail/:issue(\\d+)/update", &controllers.IssueDetailController{}, "post:UpdateIssue")
 	beego.Router("/issuedetail/:issue(\\d+)/newattach", &controllers.IssueDetailController{}, "post:NewAttachment")
 	beego.Router("/issuedetail/:issue(\\d+)/deletecomment", &controllers.IssueDetailController{}, "post:DeleteComment")
-
-	// beego.Router("/weather", &controllers.WeatherDemoController{})
 }

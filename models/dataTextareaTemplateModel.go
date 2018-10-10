@@ -8,6 +8,7 @@ type DataTextareaTemplateModel struct {
 	Value        string
 }
 
+// ControllerType implements VarModelProtocol interface
 func (c DataTextareaTemplateModel) ControllerType() TemplateDataCtrlType {
 	return TextArea
 }

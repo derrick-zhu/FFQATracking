@@ -9,6 +9,7 @@ type DataPickerTemplateModel struct {
 	Collection   []VarModelProtocol
 }
 
+// ControllerType implements VarModelProtocol interface
 func (c DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {
 	return Number
 }

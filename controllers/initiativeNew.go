@@ -15,6 +15,7 @@ type InitiativeNewController struct {
 	FFBaseController
 }
 
+// Get handler InitiativeNewController's GET http request
 func (c *InitiativeNewController) Get() {
 
 	c.FFBaseController.Get()

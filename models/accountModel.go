@@ -29,10 +29,15 @@ const (
 type JobType int64
 
 const (
-	JobManager      JobType = 0
-	JobLeader       JobType = 1
-	JobDeveloper    JobType = 2
-	JobQATester     JobType = 3
+	// JobManager ...
+	JobManager JobType = 0
+	// JobLeader ...
+	JobLeader JobType = 1
+	// JobDeveloper ...
+	JobDeveloper JobType = 2
+	// JobQATester ...
+	JobQATester JobType = 3
+	// JobProductOwner ...
 	JobProductOwner JobType = 4
 )
 
