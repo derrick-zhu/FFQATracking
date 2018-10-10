@@ -319,6 +319,8 @@ func AddBug(title, description string, status, priority, creatorID, assignorID, 
 	o, _ := GetQuerySeterWithTable(BugsTable)
 	if _, err := o.Insert(pBug); err != nil {
 		beego.Error(err)
+		o.Rollback()
+
 		return nil, err
 	}
 
@@ -372,6 +374,7 @@ func UpdateBug(pBug *BugModel) error {
 
 	if _, err := o.Update(pBug); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return err
 	}
 
@@ -386,6 +389,7 @@ func DeleteBug(id int64) error {
 	bug := &BugModel{ID: id}
 	if _, err := o.Delete(bug); err != nil {
 		beego.Error(err)
+		o.Rollback()
 		return err
 	}
 
