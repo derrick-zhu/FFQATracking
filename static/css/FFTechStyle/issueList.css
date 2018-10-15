@@ -1,25 +1,6 @@
 
-a:hover {
-    color: blue;
-}
-
-table {
-    width: 100%;
-    border-spacing: 0;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    color: #5E6B7A;
-    font-size: 1.25rem;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 .th-big {
     width: 45%;
-}
-
-tr {
-    font-weight: normal;
-    font-size: 1.25rem;
 }
 
 .table tr:hover td {

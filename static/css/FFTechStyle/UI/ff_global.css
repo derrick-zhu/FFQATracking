@@ -3,9 +3,28 @@ body {
     line-height: none;
 }
 
+tr {
+    font-weight: normal;
+    font-size: 1.25rem;
+}
+
 label.standard-ff {
     min-width: 95px;
     max-width: 100%;
+}
+
+a:hover {
+    color: blue;
+}
+
+table {
+    /* width: 100%; */
+    border-spacing: 0;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    color: #5E6B7A;
+    font-size: 1.25rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 canvas.avatar {
