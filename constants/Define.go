@@ -24,8 +24,8 @@ const (
 	KeyIssueLogHistory = "issueLogHistory"
 
 	// KeyIsHome flag for show HOME page.
-	KeyIsHome      = "IsHome"
-	KeyIsIssueList = "IsIssueList"
+	KeyIsHome       = "IsHome"
+	KeyIsBlackBoard = "IsBlackBoard"
 )
 
 const (

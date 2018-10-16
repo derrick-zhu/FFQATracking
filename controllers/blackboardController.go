@@ -7,16 +7,16 @@ import (
 	"github.com/astaxie/beego"
 )
 
-// IssueListController the class of issue list
-type IssueListController struct {
+// BlackboardController the class of issue list
+type BlackboardController struct {
 	FFBaseController
 }
 
 // Get for handling issue list page HTTP GET request
-func (c *IssueListController) Get() {
+func (c *BlackboardController) Get() {
 
 	c.FFBaseController.Get()
-	c.Data[constants.KeyIsIssueList] = 1
+	c.Data[constants.KeyIsBlackBoard] = 1
 
 	var allBugs *[]models.BugModel
 	var allUsers *[]models.AccountModel
@@ -33,5 +33,5 @@ func (c *IssueListController) Get() {
 	c.Data["allIssue"] = allBugs
 	c.Data["allAccount"] = allUsers
 
-	c.TplName = "issueList.html"
+	c.TplName = "blackboardController.html"
 }

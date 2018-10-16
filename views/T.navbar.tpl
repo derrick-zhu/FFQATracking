@@ -6,7 +6,7 @@
     <ul class="nav navbar-nav">
         <li><img src="/static/img/ftech.jpg" height="50em"></li>
         <li {{if .IsHome}} class="active" {{end}}><a href="/">Home</a></li>
-        <li {{if .IsIssueList}} class="active" {{end}}><a href="/issuelist">Issue</a></li>
+        <li {{if .IsBlackBoard}} class="active" {{end}}><a href="/blackboard">Blackboard</a></li>
         <li {{if .IsAnalysis}} class="active" {{end}}><a href="/analysis">Analysis</a></li>
     </ul>
 </div>

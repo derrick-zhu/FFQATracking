@@ -91,7 +91,7 @@ func (c *IssueNewController) Get() {
 	c.FFBaseController.Get()
 
 	c.Data[constants.Title] = "New Issue"
-	c.Data[constants.KeyIsIssueList] = 1
+	c.Data[constants.KeyIsBlackBoard] = 1
 
 	c.initPageVariables()
 	c.initPageContent()
@@ -131,7 +131,7 @@ func (c *IssueNewController) Create() {
 		return
 	}
 
-	c.Redirect("/issuelist", 302)
+	c.Redirect("/blackboard", 302)
 }
 
 // NewAttchment handle append attachment POST request

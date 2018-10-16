@@ -18,7 +18,7 @@ func init() {
 	beego.Router("/person/:uid", &controllers.PersonController{})
 	beego.Router("/account/:uid", &controllers.AccountController{})
 
-	beego.Router("/issuelist", &controllers.IssueListController{})
+	beego.Router("/blackboard", &controllers.BlackboardController{})
 
 	beego.Router("/issue", &controllers.IssueNewController{})
 	beego.AutoRouter(&controllers.IssueNewController{})

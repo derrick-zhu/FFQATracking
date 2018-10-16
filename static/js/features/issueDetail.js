@@ -170,12 +170,7 @@ function issueDetailUpdate(issueId, key, value) {
         trackCallStack();
         console.log('error: no result data');
       } else {
-        if (result.Code == 302) {
-          window.location.href = result.URL;
-        } else if (result.Code == 200) {
-          reloadDiv('issue_log_history');  // issue log history section
-          reloadDiv('issue-level-band');   // colour band at top
-        }
+        window.location.href = window.location.href;
       }
     },
     error: function(result) {

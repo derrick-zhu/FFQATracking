@@ -185,7 +185,7 @@ func (c *IssueDetailController) NewAttachment() {
 	var err error
 	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
 		beego.Error(err)
-		c.Redirect("/issuelist", 303)
+		c.Redirect("/blackboard", 303)
 		return
 	}
 
@@ -390,13 +390,13 @@ func (c *IssueDetailController) setupNormalResponseData() {
 
 	if issueID, err = strconv.ParseInt(c.Ctx.Input.Param(":issue"), 10, 64); err != nil {
 		beego.Error(err)
-		c.Redirect("/issuelist", 302)
+		c.Redirect("/blackboard", 302)
 		return
 	}
 
 	if currentIssue, err = models.BugWithID(issueID); err != nil {
 		beego.Error(err)
-		c.Redirect("/issuelist", 302)
+		c.Redirect("/blackboard", 302)
 		return
 	}
 
