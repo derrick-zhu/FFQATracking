@@ -7,7 +7,7 @@
 }
 
 .span {
-    margin: 1rem 0rem 1rem 0rem;}
+    margin: 0.725rem 0rem 0.725rem 0rem;}
 
     .span.span_1of6 {
     width: 16%;}
@@ -52,7 +52,8 @@
             float:right;}
 
 .text {
-    font-size: 1.5rem; }
+    font-size: 1.5rem;
+    padding: 6px 12px; }
     .text.text-align-left {
         text-align: left;}
     .text.text-align-right {

@@ -1,6 +1,8 @@
 {{define "bootstrap_end"}}
 
-<!-- <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="/static/js/bootstrap.min.js"></script> -->
+<!-- 
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script> 
+-->
 
 {{end}}

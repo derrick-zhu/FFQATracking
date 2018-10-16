@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"FFQATracking/models"
+	"FFQATracking/utils"
 
 	"github.com/astaxie/beego"
 )
@@ -95,6 +96,19 @@ func (c *InitiativeNewController) initCommonVar() {
 			DefaultValue: 0,
 			Value:        0,
 			Collection:   allUsersVar,
+		},
+	)
+
+	initiativeProperties = append(
+		initiativeProperties,
+		models.DataDatePickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      "Start Date:",
+				Identifier: "startDate",
+				Type:       models.Date,
+			},
+			DefaultValue: utils.TimeTickSince1970(),
+			Value:        utils.TimeTickSince1970(),
 		},
 	)
 

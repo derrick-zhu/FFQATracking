@@ -14,6 +14,7 @@ const (
 	TextField
 	TextArea
 	Number
+	Date
 )
 
 // VarModelProtocol common variable model

@@ -18,6 +18,8 @@ type InitiativeModel struct {
 	Description string `orm:"size(4096)"`
 	Creator     int64
 	Assignor    int64
+	StartDate   int64
+	EndDate     int64
 }
 
 func init() {
