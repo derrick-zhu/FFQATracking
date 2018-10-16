@@ -29,7 +29,7 @@ func (c *LoginController) Signin() {
 
 	beego.Debug(fmt.Sprintf("email: %s, pwd: %s", email, pwd))
 
-	for true {
+	for {
 		result, acc := biz.CheckAccount(email, pwd)
 		if result == true {
 

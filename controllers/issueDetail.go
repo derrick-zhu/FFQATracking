@@ -64,7 +64,7 @@ func (c *IssueDetailController) Get() {
 func (c *IssueDetailController) SubmitNewLog() {
 	c.FFBaseController.Post()
 
-	for true {
+	for {
 
 		var err error
 		var currentIssue *models.BugModel
@@ -103,7 +103,7 @@ func (c *IssueDetailController) SubmitNewLog() {
 func (c *IssueDetailController) UpdateIssue() {
 	c.FFBaseController.Post()
 
-	for true {
+	for {
 		var err error
 		var nIssueID int64
 		var pIssue *models.BugModel
@@ -219,7 +219,7 @@ func (c *IssueDetailController) DeleteComment() {
 	var issueCommentID int64
 	var err error
 
-	for true {
+	for {
 
 		var finalURL = fmt.Sprintf("/issuedetail/%d", issueID)
 

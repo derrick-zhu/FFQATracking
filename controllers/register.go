@@ -33,7 +33,7 @@ func (c *RegisterController) Post() {
 
 	beego.Info("Get ready for register account email: " + email + ", pwd: " + pwd)
 
-	for true {
+	for {
 		if biz.HasAccountIfNot(email) == true {
 
 			result, err = biz.Login(c.Ctx, email, pwd)
