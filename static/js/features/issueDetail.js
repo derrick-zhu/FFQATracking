@@ -75,6 +75,22 @@ $(function() {
           });
     }
   };
+
+  /**
+   * issue的属性选择器value发生变化时
+   * @param {*} id 
+   * @param {*} type
+   * @param {*} desc 
+   * @param {*} extID
+   */
+  $.fn.fnDataPickerDidChangeValue = function(id, type, desc, extID) {
+    trackCallStack();
+
+    setInnerHtmlWithID(id + '-btn', desc);
+    setHtmlValueWithID(id, type);
+  
+    issueDetailUpdate(extID, id, type);
+  };
 });
 
 
@@ -143,16 +159,6 @@ function refreshAllMarkdown() {
     }
     document.getElementById(item.elemId).innerHTML = result;
   }
-}
-
-// change issue property by click the drop-down menu
-function didSelectWith(id, type, desc, extID) {
-  trackCallStack();
-
-  setInnerHtmlWithID(id + '-btn', desc);
-  setHtmlValueWithID(id, type);
-
-  issueDetailUpdate(extID, id, type);
 }
 
 // issue property change event

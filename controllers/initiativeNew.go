@@ -47,6 +47,7 @@ func (c *InitiativeNewController) initCommonVar() {
 
 	initiativeProperties = append(
 		initiativeProperties,
+
 		models.DataFieldTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Title:",
@@ -56,10 +57,7 @@ func (c *InitiativeNewController) initCommonVar() {
 			DefaultValue: "",
 			Value:        "",
 		},
-	)
 
-	initiativeProperties = append(
-		initiativeProperties,
 		models.DataTextareaTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Description:",
@@ -69,10 +67,7 @@ func (c *InitiativeNewController) initCommonVar() {
 			DefaultValue: "",
 			Value:        "",
 		},
-	)
 
-	initiativeProperties = append(
-		initiativeProperties,
 		models.DataPickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Creator:",
@@ -83,10 +78,7 @@ func (c *InitiativeNewController) initCommonVar() {
 			Value:        0,
 			Collection:   allUsersVar,
 		},
-	)
 
-	initiativeProperties = append(
-		initiativeProperties,
 		models.DataPickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Assignor:",
@@ -97,10 +89,17 @@ func (c *InitiativeNewController) initCommonVar() {
 			Value:        0,
 			Collection:   allUsersVar,
 		},
-	)
-
-	initiativeProperties = append(
-		initiativeProperties,
+		// start date
+		models.DataDatePickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      "Start Date:",
+				Identifier: "startDate",
+				Type:       models.Date,
+			},
+			DefaultValue: utils.TimeTickSince1970(),
+			Value:        utils.TimeTickSince1970(),
+		},
+		// end date
 		models.DataDatePickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				Title:      "Start Date:",

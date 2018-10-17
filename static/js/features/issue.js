@@ -1,15 +1,14 @@
+$(function () {
+    $.fn.fnDataPickerDidChangeValue = function (id, type, desc, extID) {
+        console.log(didSelectWith.caller);
+        console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
-function didSelectWith(id, type, desc, extID) 
-{
-    console.log(didSelectWith.caller);
-    console.log('id: ' + id + ', type:' + type + ', param:' + desc);
+        setInnerHtmlWithID(id + '-btn', desc);
+        setHtmlValueWithID(id, type);
+    };
+});
 
-    setInnerHtmlWithID(id + '-btn', desc);
-    setHtmlValueWithID(id, type);
-}
-
-function newIssueCheckInputContent() 
-{    
+function newIssueCheckInputContent() {
     if (checkInputLength("issueTitle", 1, 1024) == false) {
         alert("invalid title");
         return false;

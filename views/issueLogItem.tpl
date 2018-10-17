@@ -49,14 +49,6 @@
             });
         </script>
         {{end}}
-
-        <script type="text/javascript">
-            $('#{{$avatarName}}').ready(function () {
-                appendAvatarCanvasCollection(
-                    "{{$avatarName}}",
-                    "{{.CreatorName}}");
-            });
-        </script>
     </div>
 
 </div>
