@@ -22,8 +22,20 @@ func (c *InitiativeNewController) Get() {
 	c.FFBaseController.Get()
 
 	c.initCommonVar()
-	beego.Error(c.Data)
+	// beego.Error(c.Data)
 	c.TplName = "initiativeNew.html"
+}
+
+// SubmitNewProject handle POST http request for creating project
+func (c *InitiativeNewController) SubmitNewProject() {
+
+	c.FFBaseController.Post()
+
+	beego.Info(c.Input().Get("title"))
+	beego.Debug(c.GetString("title"))
+
+	utils.MakeRedirectURL(&c.Data, 302, "/initiative", "")
+	c.ServeJSON()
 }
 
 /**
@@ -102,8 +114,8 @@ func (c *InitiativeNewController) initCommonVar() {
 		// end date
 		models.DataDatePickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
-				Title:      "Start Date:",
-				Identifier: "startDate",
+				Title:      "End Date:",
+				Identifier: "endDate",
 				Type:       models.Date,
 			},
 			DefaultValue: utils.TimeTickSince1970(),

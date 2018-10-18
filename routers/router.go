@@ -25,6 +25,7 @@ func init() {
 
 	// 工程相关的控制器
 	beego.Router("/initiative", &controllers.InitiativeNewController{})
+	beego.Router("/initiative/new", &controllers.InitiativeNewController{}, "post:SubmitNewProject")
 
 	// issue详情页的控制器
 	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})

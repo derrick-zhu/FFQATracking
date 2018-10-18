@@ -1,68 +1,74 @@
 <!doctype html>
 <html>
 
-    <head>
-        {{template "header" .}}
-        <link rel="stylesheet" href="/static/css/FFTechStyle/UI/ff_global.css">
-        <link rel="stylesheet" href="/static/css/FFTechStyle/UI/ff_common.css">
+<head>
+    {{template "header" .}}
+    <link rel="stylesheet" href="/static/css/FFTechStyle/UI/ff_global.css">
+    <link rel="stylesheet" href="/static/css/FFTechStyle/UI/ff_common.css">
 
-        <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
-        <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
+    <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
 
-        <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
+    <script type="text/javascript" src="/static/js/utils.js"></script>
+    <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <div class="navbar navbar-default">
-            <div class="container">
-                {{template "navbar" .}}
-            </div>
-        </div>
-
+    <div class="navbar navbar-default">
         <div class="container">
-            <h1>Create new project:</h1>
+            {{template "navbar" .}}
+        </div>
+    </div>
 
-            <div class="card clearfix">
+    <div class="container">
+        <h1>Create new project:</h1>
 
-                <div class="span span_4of6 span_float_left clearfix">
-                    {{range $index, $section := .modelPropertySection}}
-                    <div class="span span_full clearfix">
-                        <!-- {{$section}} -->
-                        {{$ctrlType := ControllerTypeOfTemplateData $section}}
+        <div class="card">
+            <div class="clearfix">
+                <div class="span span_4of6 span_float_left">
+                    <form id="frmProjectProperties" method="post" action="#" onsubmit="return false;">
+                        {{range $index, $section := .modelPropertySection}}
+                        <div class="span span_full clearfix">
+                            <!-- {{$section}} -->
+                            {{$ctrlType := ControllerTypeOfTemplateData $section}}
 
-                        {{if eq $ctrlType 1}}
-                        {{template "dataFieldTemplate" $section}}
+                            {{if eq $ctrlType 1}}
+                            {{template "dataFieldTemplate" $section}}
 
-                        {{else if eq $ctrlType 2}}
-                        {{template "dataTextareaTemplate" $section}}
+                            {{else if eq $ctrlType 2}}
+                            {{template "dataTextareaTemplate" $section}}
 
-                        {{else if eq $ctrlType 3}}
-                        {{template "dataPickerTemplate" $section}}
+                            {{else if eq $ctrlType 3}}
+                            {{template "dataPickerTemplate" $section}}
 
-                        {{else if eq $ctrlType 4}}
-                        {{template "dataDatePickerTemplate" $section}}
+                            {{else if eq $ctrlType 4}}
+                            {{template "dataDatePickerTemplate" $section}}
 
+                            {{end}}
+                        </div>
                         {{end}}
-                    </div>
-                    {{end}}
-
+                    </form>
                 </div>
 
-                <div class="span span_2of6 span_float_right clearfix">
+                <div class="span span_2of6 span_float_right ">
                     <span>hello world, hello world, hello world, hello world, hello world, hello world, hello world,
                         hello world, hello world, hello world, hello world, hello world, hello world, hello world,
                         hello world, hello world, hello world, hello world, hello world, hello world, hello world,
                         hello world, hello world, hello world, hello world, hello world, hello world, </span>
                 </div>
+            </div>
 
+            <div class="span span_full " style="display: block;">
+                <input id="btnCommitNewProject" name="btnCommitNewProject" type="submit" class="btn btn-danger center-block" style="width:150px;" value="Create Project">
             </div>
         </div>
+    </div>
 
 
-    </body>
+</body>
 
-    {{template "bootstrap_end"}}
+{{template "bootstrap_end"}}
 
 </html>
