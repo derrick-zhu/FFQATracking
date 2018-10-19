@@ -22,6 +22,12 @@ type InitiativeModel struct {
 	EndDate     int64
 }
 
+// Type get initiative's id
+func (c InitiativeModel) Type() int64 { return c.ID }
+
+// Desc get initiative's name
+func (c InitiativeModel) Desc() string { return c.Name }
+
 func init() {
 	orm.RegisterModel(new(InitiativeModel))
 }
@@ -32,11 +38,15 @@ func (c *InitiativeModel) TableName() string {
 }
 
 // NewInitiative new and insert initiative data
-func NewInitiative(name, desc string, creatorID int64) (*InitiativeModel, error) {
+func NewInitiative(name, desc string, creator, assignor, startDate, endDate int64) (*InitiativeModel, error) {
 
 	aNewInit := &InitiativeModel{
 		Name:        name,
 		Description: desc,
+		Creator:     creator,
+		Assignor:    assignor,
+		StartDate:   startDate,
+		EndDate:     endDate,
 	}
 
 	o := GetOrmObject()
@@ -78,15 +88,15 @@ func InitiativeUpdate(newInitiative *InitiativeModel) error {
 	return nil
 }
 
-// Initiatives fetch initiative data
-func Initiatives(low, count int64) (*[]InitiativeModel, error) {
+// AllInitiatives fetch initiative data
+func AllInitiatives(low, count int64) (*[]InitiativeModel, error) {
 
 	var results = &[]InitiativeModel{}
 	var err error
 	var rawSeter orm.RawSeter
 
 	o := GetOrmObject()
-	sqlQuery := fmt.Sprintf("SELECT * FORM %s LIMIT %d OFFSET %d", initiativeModelTblName, count, low)
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", initiativeModelTblName, count, low)
 	rawSeter = o.Raw(sqlQuery)
 
 	if _, err = rawSeter.QueryRows(results); err != nil {

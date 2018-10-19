@@ -19,8 +19,7 @@ $(function () {
         startDate: '-3d',
         autoclose: true,
     }).on('changeDate', function (ev) {
-        
-        console.log('start date: ' + ev.timeStamp);
+        $('#value_startDate').val(ev.timeStamp);
     });
 
     $('#date_endDate').datepicker({
@@ -28,7 +27,7 @@ $(function () {
         startDate: '-3d',
         autoclose: true,
     }).on('changeDate', function (ev) {
-        console.log('end date: ' + ev.timeStamp);
+        $('#value_endDate').val(ev.timeStamp);
     });
 
     $('#btnCommitNewProject').click(function(){
@@ -41,12 +40,32 @@ $(function () {
                 description: $('#name_description_0').val(),
                 creator: $('#creator').val(),
                 assignor: $('#assignor').val(),
-                startdate: $('#date_startDate').val(),
-                endDate: $('#date_endDate').val(),
+                startDate: $('#value_startDate').val(),
+                endDate: $('#value_endDate').val(),
             },
             function(data, status) {
-                console.log(status);
-                window.location.href = window.location.href;
+                if ((data.Code >= 200) && (data.Code < 400)) {
+                    $.toast({
+                        text: "Success in create new project!",
+                        icon: "success",
+                        hideAfter: 1200,
+                        position: "bottom-center",
+                        afterHidden: function() {
+                            window.location.href = data.URL;
+                        }
+                    });
+                }
+                else {
+                    $.toast({
+                        text: "Fails in submit new project!",
+                        icon: "error",
+                        hideAfter: 2000,
+                        position: "bottom-center",
+                        afterHidden: function() {
+                            window.location.href = data.URL;
+                        }
+                    });
+                }
             }
         );
     });

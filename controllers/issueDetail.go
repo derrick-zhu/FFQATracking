@@ -260,46 +260,62 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 		err = nil
 	}
 
-	statusData := IssueStatusData
-	statusData.DefaultValue = aIssue.Status
-	statusData.ID = nIssueID
-
-	priorityData := IssuePriorityData
-	priorityData.DefaultValue = aIssue.Priority
-	priorityData.ID = nIssueID
-
-	reproductData := IssueReproductionData
-	reproductData.DefaultValue = aIssue.Reproductability
-	reproductData.ID = nIssueID
-
-	// all account
-	allCreators := models.DataPickerTemplateModel{}
-	allCreators.Title = IssueCreatorKey
-	allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allCreators.Title)
-	allCreators.DefaultValue = indexOf(int64(aIssue.Creator), allUsers)
-	allCreators.Collection = allUsers
-	allCreators.ID = nIssueID
-
-	// //
-	// allUsers, err = models.AllAccounts()
-	// if err != nil {
-	// 	beego.Error(err)
-	// 	err = nil
-	// }
-
-	allAssignors := models.DataPickerTemplateModel{}
-	allAssignors.Title = IssueAssignorKey
-	allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, allAssignors.Title)
-	allAssignors.DefaultValue = indexOf(int64(aIssue.Assignor), allUsers)
-	allAssignors.Collection = allUsers
-	allAssignors.ID = nIssueID
-
 	*dataSource = &TIssueNewCollectionType{
-		statusData,
-		priorityData,
-		reproductData,
-		allCreators,
-		allAssignors,
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				ID:         nIssueID,
+				Title:      IssueStatusKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
+				Type:       models.Number,
+			},
+			DefaultValue: aIssue.Status,
+			Value:        aIssue.Status,
+			Collection:   models.AllBugStatus,
+		},
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				ID:         nIssueID,
+				Title:      IssuePriorityKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
+				Type:       models.Number,
+			},
+			DefaultValue: aIssue.Priority,
+			Value:        aIssue.Priority,
+			Collection:   models.AllPriorities,
+		},
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				ID:         nIssueID,
+				Title:      IssueReproductionKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
+				Type:       models.Number,
+			},
+			DefaultValue: aIssue.Reproductability,
+			Value:        aIssue.Reproductability,
+			Collection:   models.AllReproductabilities,
+		},
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				ID:         nIssueID,
+				Title:      IssueCreatorKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueCreatorKey),
+				Type:       models.Number,
+			},
+			DefaultValue: indexOf(int64(aIssue.Creator), allUsers),
+			Value:        indexOf(int64(aIssue.Creator), allUsers),
+			Collection:   allUsers,
+		},
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				ID:         nIssueID,
+				Title:      IssueAssignorKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueAssignorKey),
+				Type:       models.Number,
+			},
+			DefaultValue: indexOf(int64(aIssue.Assignor), allUsers),
+			Value:        indexOf(int64(aIssue.Assignor), allUsers),
+			Collection:   allUsers,
+		},
 	}
 }
 

@@ -1,8 +1,6 @@
 package models
 
 import (
-	"reflect"
-
 	"github.com/astaxie/beego"
 )
 
@@ -48,8 +46,7 @@ func (c DataBaseTemplateModel) ControllerType() TemplateDataCtrlType {
 // ControllerTypeOfTemplateData get controller type of this template model
 func ControllerTypeOfTemplateData(tplData DataControllerTypeProtocol) TemplateDataCtrlType {
 
-	typeName := reflect.TypeOf(tplData).Name()
-	beego.Info(typeName, " ", tplData.ControllerType())
-
+	// typeName := reflect.TypeOf(tplData).Name()
+	// beego.Info(typeName, " ", tplData.ControllerType()
 	return tplData.ControllerType()
 }

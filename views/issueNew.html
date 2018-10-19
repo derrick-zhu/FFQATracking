@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
     <head>
-        {{template "header"}}
-        <script type="text/javascript" src="/static/js/features/issue.js"></script>
+        {{template "header" .}}
+        <script type="text/javascript" src="/static/js/features/issueNew.js"></script>
 
     </head>
 <body>
@@ -31,7 +31,7 @@
 
             <!-- bug的各种状态设置 -->
             {{range $idx, $issueTpl := .issueHTMLValue}}
-                <div class="col-xs-3" style="margin:0.5px;"> 
+                <div class="span span_3of6 span_float_left" style="margin:0.5px;"> 
                 {{$ctrlType := ControllerTypeOfTemplateData $issueTpl}}
                 {{if eq $ctrlType 3}}
                 {{template "dataPickerTemplate" $issueTpl}}
@@ -46,7 +46,7 @@
 
             <!-- 提交按钮 -->
             <div class="form-group col-xs-12">
-                <input class="btn btn-default" type="submit" value="Submit" onclick="return newIssueCheckInputContent();">
+                <input class="btn btn-danger center-block" style="width:150px;" type="submit" value="Submit" onclick="return newIssueCheckInputContent();">
             </div>
 
         </form>

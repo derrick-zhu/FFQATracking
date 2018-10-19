@@ -11,6 +11,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 
+<!-- toatse -->
+<link href="/static/jquery-toaste/dist/jquery.toast.min.css" type="text/css" rel="stylesheet">
+<script src="/static/jquery-toaste/dist/jquery.toast.min.js" type="text/javascript"></script>
+
 <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <script src="/static/js/bootstrap.min.js" type="text/javascript"></script>
 

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        {{template "header"}}
+        {{template "header" .}}
         <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
         <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
     </head>
@@ -18,6 +18,9 @@
             <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
         </div>
 
+        <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
+
+        <!-- 操作区，可以创建 initiative, version, target 等 -->
         <a href="/initiative"><span class="btn btn-default">New Project</span></a>
         <a href="/issue"><span class="btn btn-default">New issue</span></a>
 
@@ -26,6 +29,7 @@
             <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
         </div>
 
+        <!-- issue list -->
         <table class="table table-hover table-condensed">
             <thead>
                 <tr>

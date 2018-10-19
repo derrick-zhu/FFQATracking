@@ -15,6 +15,8 @@ import (
 const (
 	issueIDPrefix = ""
 
+	// IssueProjectKey ...
+	IssueProjectKey = "Project"
 	// IssueTitleKey ...
 	IssueTitleKey = "Title"
 	// IssueDescriptionKey ...
@@ -41,60 +43,18 @@ func issuePickerKey(key string) string {
 // TIssueNewCollectionType for issue template
 type TIssueNewCollectionType []interface{}
 
-// IssueStatusData status data (temperary)
-var IssueStatusData = models.DataPickerTemplateModel{
-	DataBaseTemplateModel: models.DataBaseTemplateModel{
-		Title:      IssueStatusKey,
-		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
-		Type:       models.Number,
-	},
-	DefaultValue: 0,
-	Value:        0,
-	Collection:   models.AllBugStatus,
-}
-
-// IssuePriorityData priority data (temperary)
-var IssuePriorityData = models.DataPickerTemplateModel{
-	DataBaseTemplateModel: models.DataBaseTemplateModel{
-		Title:      IssuePriorityKey,
-		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
-		Type:       models.Number,
-	},
-	DefaultValue: 0,
-	Value:        0,
-	Collection:   models.AllPriorities,
-}
-
-// IssueReproductionData reproduction data (temperary)
-var IssueReproductionData = models.DataPickerTemplateModel{
-	DataBaseTemplateModel: models.DataBaseTemplateModel{
-		Title:      IssueReproductionKey,
-		Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
-		Type:       models.Number,
-	},
-	DefaultValue: 0,
-	Value:        0,
-	Collection:   models.AllReproductabilities,
-}
-
 // IssueNewController base issue create page
 type IssueNewController struct {
 	FFBaseController
-
-	issueTemplateData TIssueNewCollectionType
-	allCreators       models.DataPickerTemplateModel
-	allAssignors      models.DataPickerTemplateModel
 }
 
 // Get for handle new issue controller GET request
 func (c *IssueNewController) Get() {
 	c.FFBaseController.Get()
 
-	c.Data[constants.Title] = "New Issue"
 	c.Data[constants.KeyIsBlackBoard] = 1
 
 	c.initPageVariables()
-	c.initPageContent()
 
 	c.TplName = "issueNew.html"
 }
@@ -149,6 +109,17 @@ func (c *IssueNewController) NewAttchment() {
 // MARK - private helpers
 
 func (c *IssueNewController) initPageVariables() {
+
+	// fetech all projectss
+	allInitiatives, err := models.AllInitiatives(0, -1)
+	if err != nil {
+		beego.Error(err)
+	}
+	allInitiativeVars := []models.VarModelProtocol{}
+	for _, v := range *allInitiatives {
+		allInitiativeVars = append(allInitiativeVars, v)
+	}
+
 	// fetch all user data
 	allUsers, err := models.AllAccounts()
 	if err != nil {
@@ -160,11 +131,7 @@ func (c *IssueNewController) initPageVariables() {
 		allUsersVar = append(allUsersVar, v)
 	}
 
-	c.issueTemplateData = TIssueNewCollectionType{
-
-		IssueStatusData, IssuePriorityData, IssueReproductionData,
-	}
-
+	// default creator index
 	acc, err := biz.CurrentAccount(c.Ctx)
 	createorDefaultIndex := 0 // the index of current logged in user in allUser array
 
@@ -177,29 +144,72 @@ func (c *IssueNewController) initPageVariables() {
 		}
 	}
 
-	// append all creators data into `pickData`
-	c.allCreators = models.DataPickerTemplateModel{}
-	c.allCreators.Title = IssueCreatorKey
-	c.allCreators.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allCreators.Title)
-	c.allCreators.Type = models.Number
-	c.allCreators.DefaultValue = int64(createorDefaultIndex)
-	c.allCreators.Collection = allUsersVar
-
-	c.issueTemplateData = append(c.issueTemplateData, c.allCreators)
-
-	// append all assignor data into `pickData`
-	c.allAssignors = models.DataPickerTemplateModel{}
-	c.allAssignors.Title = IssueAssignorKey
-	c.allAssignors.Identifier = fmt.Sprintf("%s%s", issueIDPrefix, c.allAssignors.Title)
-	c.allAssignors.Type = models.Number
-	c.allAssignors.DefaultValue = 0
-	c.allAssignors.Collection = allUsersVar
-
-	c.issueTemplateData = append(c.issueTemplateData, c.allAssignors)
-}
-
-// initPageContent initial settings in current page
-func (c *IssueNewController) initPageContent() {
-
-	c.Data[constants.KeyIssueHTMLValue] = c.issueTemplateData
+	c.Data[constants.KeyIssueHTMLValue] = TIssueNewCollectionType{
+		// initiative (project)
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssueProjectKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueProjectKey),
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   allInitiativeVars,
+		},
+		// status
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssueStatusKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   models.AllBugStatus,
+		},
+		// priority
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssuePriorityKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   models.AllPriorities,
+		},
+		// reproductoion
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssueReproductionKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
+				Type:       models.Number,
+			},
+			DefaultValue: 0,
+			Value:        0,
+			Collection:   models.AllReproductabilities,
+		},
+		// creator
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssueCreatorKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueCreatorKey),
+				Type:       models.Number,
+			},
+			DefaultValue: int64(createorDefaultIndex),
+			Value:        int64(createorDefaultIndex),
+			Collection:   allUsersVar,
+		},
+		// assignor
+		models.DataPickerTemplateModel{
+			DataBaseTemplateModel: models.DataBaseTemplateModel{
+				Title:      IssueAssignorKey,
+				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueAssignorKey),
+				Type:       models.Number,
+			},
+			DefaultValue: int64(createorDefaultIndex),
+			Value:        int64(createorDefaultIndex),
+			Collection:   allUsersVar,
+		},
+	}
 }

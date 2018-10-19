@@ -1,6 +1,6 @@
 $(function () {
     $.fn.fnDataPickerDidChangeValue = function (id, type, desc, extID) {
-        console.log(didSelectWith.caller);
+        trackCallStack();
         console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
         setInnerHtmlWithID(id + '-btn', desc);
