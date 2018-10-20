@@ -1,65 +1,82 @@
 <!doctype html>
 <html>
+
     <head>
         {{template "header" .}}
         <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
         <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
+
+        <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
+        <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
+
+        <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
+        <script type="text/javascript" src="/static/js/features/issueNew.js"></script>
+        
     </head>
-<body>
 
-    <div class="navbar navbar-default">
+    <body>
+
+        <div class="navbar navbar-default">
+            <div class="container">
+                {{template "navbar" .}}
+            </div>
+        </div>
+
         <div class="container">
-            {{template "navbar" .}}
-        </div>
-    </div>
+            <div>
+                <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
+            </div>
 
-    <div class="container">
-        <div>
-            <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
-        </div>
+            <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
 
-        <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
+            <!-- 操作区，可以创建 initiative, version, target 等 -->
+            <!-- <a href="/initiative"><span class="btn btn-default">New Project</span></a> -->
+            <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewInitiativeModal" value="New Project"></input>
+            <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewIssueModal" value="New Issue"></input>
+            <!-- <a href="/issue"><span class="btn btn-default">New issue</span></a> -->
 
-        <!-- 操作区，可以创建 initiative, version, target 等 -->
-        <a href="/initiative"><span class="btn btn-default">New Project</span></a>
-        <a href="/issue"><span class="btn btn-default">New issue</span></a>
+            <!-- 分割线 -->
+            <div style="height:1px">
+                <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+            </div>
 
-        <!-- 分割线 -->
-        <div style="height:1px">
-            <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
-        </div>
-
-        <!-- issue list -->
-        <table class="table table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>#</th>
-                    <th class="th-big">Title</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                    <th>Version</th>
-                    <th>Creator</th>
-                    <th>Assignor</th>
-                    <th>Create Date</th>
-                </tr>
-            </thead>
-            <script type="text/javascript">
-                function didIssueClicked(params) {
-                    if (params.length > 0) {
-                        var url = "/issuedetail/" + params;
-                        console.log(url);
-                        window.location.href = url;
+            <!-- issue list -->
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th class="th-big">Title</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Version</th>
+                        <th>Creator</th>
+                        <th>Assignor</th>
+                        <th>Create Date</th>
+                    </tr>
+                </thead>
+                <script type="text/javascript">
+                    function didIssueClicked(params) {
+                        if (params.length > 0) {
+                            var url = "/issuedetail/" + params;
+                            console.log(url);
+                            window.location.href = url;
+                        }
                     }
-                }
-            </script>
-            <tbody>
-                {{template "issueListTableRow" .}}
-            </tbody>
-        </table>
-    </div>
-</body>
+                </script>
 
-{{template "bootstrap_end"}}
+                <tbody>
+                    {{template "issueListTableRow" .}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- modal popup for  -->
+        {{template "bbNewInitiativeTemplate" .modelPropertySection}}
+        {{template "bbNewIssueTemplate" .issueHTMLValue}}
+
+    </body>
+
+    {{template "bootstrap_end"}}
 
 </html>

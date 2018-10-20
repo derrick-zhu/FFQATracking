@@ -51,7 +51,7 @@ $(function () {
                         hideAfter: 1200,
                         position: "bottom-center",
                         afterHidden: function() {
-                            window.location.href = data.URL;
+                            $('#bbNewInitiativeModal').modal("hide");
                         }
                     });
                 }
@@ -62,7 +62,7 @@ $(function () {
                         hideAfter: 2000,
                         position: "bottom-center",
                         afterHidden: function() {
-                            window.location.href = data.URL;
+                            // window.location.href = data.URL;
                         }
                     });
                 }

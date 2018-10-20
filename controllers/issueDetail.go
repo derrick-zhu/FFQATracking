@@ -250,7 +250,7 @@ func (c *IssueDetailController) DeleteComment() {
 }
 
 // initVariables issue's properties
-func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers []models.VarModelProtocol) {
+func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollectionType, aIssue *models.BugModel, nIssueID int64, allUsers []models.VarModelProtocol) {
 
 	var err error
 
@@ -260,7 +260,7 @@ func (c *IssueDetailController) initVariables(dataSource **TIssueNewCollectionTy
 		err = nil
 	}
 
-	*dataSource = &TIssueNewCollectionType{
+	*dataSource = &models.TCommonCollectionType{
 		models.DataPickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
 				ID:         nIssueID,
@@ -371,7 +371,7 @@ func (c *IssueDetailController) initCommentContent() {
 }
 
 // initPageContent initial settings in current page
-func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSource TIssueNewCollectionType, logHistory []IssueDetailLogModel) {
+func (c *IssueDetailController) initPageContent(aIssue models.BugModel, dataSource models.TCommonCollectionType, logHistory []IssueDetailLogModel) {
 
 	c.Data[constants.KeyIssueHTMLValue] = dataSource
 	c.Data[constants.KeyIssueLogHistory] = logHistory
@@ -400,7 +400,7 @@ func (c *IssueDetailController) setupNormalResponseData() {
 	var err error
 	var issueID int64
 	var currentIssue *models.BugModel
-	var issueDetailData *TIssueNewCollectionType
+	var issueDetailData *models.TCommonCollectionType
 	var logHistory *[]IssueDetailLogModel
 	var allUsers *[]models.AccountModel
 

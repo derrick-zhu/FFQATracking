@@ -33,5 +33,8 @@ func (c *BlackboardController) Get() {
 	c.Data["allIssue"] = allBugs
 	c.Data["allAccount"] = allUsers
 
+	c.initNewInitiativeVar()
+	c.initNewIssueVar()
+
 	c.TplName = "blackboardController.html"
 }

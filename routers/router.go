@@ -8,20 +8,26 @@ import (
 
 func init() {
 
+	// router to main page
 	beego.Router("/", &controllers.MainController{})
 
+	// router to register account
 	beego.Router("/register", &controllers.RegisterController{})
-
+	// router for helping user to sign in
 	beego.Router("/login", &controllers.LoginController{})
 	beego.AutoRouter(&controllers.LoginController{})
 
+	// router for personal page or account page
 	beego.Router("/person/:uid", &controllers.PersonController{})
 	beego.Router("/account/:uid", &controllers.AccountController{})
 
+	// router to blackboard, control center
 	beego.Router("/blackboard", &controllers.BlackboardController{})
+	beego.Router("/blackboard/newissue", &controllers.BlackboardController{}, "post:SubmitNewIssue")
 
-	beego.Router("/issue", &controllers.IssueNewController{})
-	beego.AutoRouter(&controllers.IssueNewController{})
+	// // router for helping user to create new issue
+	// beego.Router("/issue", &controllers.IssueNewController{})
+	// beego.AutoRouter(&controllers.IssueNewController{})
 
 	// 工程相关的控制器
 	beego.Router("/initiative", &controllers.InitiativeNewController{})

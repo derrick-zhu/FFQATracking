@@ -19,14 +19,27 @@ func PropertyInAccount(property string, account *AccountModel) string {
 
 // AccountForIndex fetch account in account array
 func AccountForIndex(accounts *[]AccountModel, index int64) *AccountModel {
+
 	if index < 0 || int(index) >= len(*accounts) {
 		return nil
 	}
 	return &(*accounts)[index]
 }
 
+// AccountIndexOfID index of data with account's id
+func AccountIndexOfID(accounts *[]AccountModel, id int64) int {
+
+	for idx, acc := range *accounts {
+		if acc.ID == id {
+			return idx
+		}
+	}
+	return -1
+}
+
 // AccountForIDInArray fetch account object in account array
 func AccountForIDInArray(accounts *[]AccountModel, id int64) *AccountModel {
+
 	for _, acc := range *accounts {
 		if acc.ID == id {
 			return &acc

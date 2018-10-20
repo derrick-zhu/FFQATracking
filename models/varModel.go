@@ -4,6 +4,9 @@ import (
 	"github.com/astaxie/beego"
 )
 
+// TCommonCollectionType for issue template
+type TCommonCollectionType []interface{}
+
 func init() {
 
 	beego.AddFuncMap("GetTypeFromModel", GetTypeFromModel)
@@ -40,7 +43,7 @@ func GetBriefTitleFromModel(value interface{}) string {
 			return ""
 		}
 		return newValue.Desc()
-		
+
 	default:
 		beego.Info("other", value)
 	}

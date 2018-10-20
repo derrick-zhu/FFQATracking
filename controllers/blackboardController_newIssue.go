@@ -3,64 +3,43 @@ package controllers
 import (
 	"FFQATracking/biz"
 	"FFQATracking/constants"
-	"FFQATracking/helpers"
 	"FFQATracking/models"
-	"FFQATracking/utils"
 	"fmt"
 	"strconv"
 
 	"github.com/astaxie/beego"
 )
 
-// const (
-// 	issueIDPrefix = ""
+const (
+	issueIDPrefix = ""
 
-// 	// IssueProjectKey ...
-// 	IssueProjectKey = "Project"
-// 	// IssueTitleKey ...
-// 	IssueTitleKey = "Title"
-// 	// IssueDescriptionKey ...
-// 	IssueDescriptionKey = "Description"
-// 	// IssueStatusKey ...
-// 	IssueStatusKey = "Status"
-// 	// IssuePriorityKey ...
-// 	IssuePriorityKey = "Priority"
-// 	// IssueReproductionKey ...
-// 	IssueReproductionKey = "Reproductability"
-// 	// IssueCreatorKey ...
-// 	IssueCreatorKey = "Creator"
-// 	// IssueAssignorKey ...
-// 	IssueAssignorKey = "Assignor"
-// )
+	// IssueProjectKey ...
+	IssueProjectKey = "Project"
+	// IssueTitleKey ...
+	IssueTitleKey = "Title"
+	// IssueDescriptionKey ...
+	IssueDescriptionKey = "Description"
+	// IssueStatusKey ...
+	IssueStatusKey = "Status"
+	// IssuePriorityKey ...
+	IssuePriorityKey = "Priority"
+	// IssueReproductionKey ...
+	IssueReproductionKey = "Reproductability"
+	// IssueCreatorKey ...
+	IssueCreatorKey = "Creator"
+	// IssueAssignorKey ...
+	IssueAssignorKey = "Assignor"
+)
 
-// func issuePickerKey(key string) string {
-// 	if len(key) > 0 {
-// 		return issueIDPrefix + key
-// 	}
-// 	return key
-// }
-
-// // TCommonCollectionType for issue template
-// type TCommonCollectionType []interface{}
-
-// IssueNewController base issue create page
-type IssueNewController struct {
-	FFBaseController
+func issuePickerKey(key string) string {
+	if len(key) > 0 {
+		return issueIDPrefix + key
+	}
+	return key
 }
 
-// Get for handle new issue controller GET request
-func (c *IssueNewController) Get() {
-	c.FFBaseController.Get()
-
-	c.Data[constants.KeyIsBlackBoard] = 1
-
-	c.initPageVariables()
-
-	c.TplName = "issueNew.html"
-}
-
-// Create the method for creating issue
-func (c *IssueNewController) Create() {
+// SubmitNewIssue handler create issue http POST request
+func (c *BlackboardController) SubmitNewIssue() {
 
 	var err error
 	var nStatus int64
@@ -94,22 +73,7 @@ func (c *IssueNewController) Create() {
 	c.Redirect("/blackboard", 302)
 }
 
-// NewAttchment handle append attachment POST request
-func (c *IssueNewController) NewAttchment() {
-	c.FFBaseController.Post()
-
-	if _, err := helpers.SaveAttachFile(c.Ctx.Request, "myfile", constants.ServerUploadDir); err != nil {
-		beego.Error(err)
-	}
-
-	utils.MakeRedirectURL(&c.Data, 302, "#", "")
-	c.ServeJSON()
-}
-
-// MARK - private helpers
-
-func (c *IssueNewController) initPageVariables() {
-
+func (c *BlackboardController) initNewIssueVar() {
 	// fetech all projectss
 	allInitiatives, err := models.AllInitiatives(0, -1)
 	if err != nil {
