@@ -1,5 +1,6 @@
 package models
 
+// DataDatePickerTemplateModel picker's model
 type DataDatePickerTemplateModel struct {
 	DataBaseTemplateModel
 
@@ -7,6 +8,7 @@ type DataDatePickerTemplateModel struct {
 	Value        int64
 }
 
+// ControllerType implement VarModelProtocol
 func (c DataDatePickerTemplateModel) ControllerType() TemplateDataCtrlType {
 	return Date
 }
