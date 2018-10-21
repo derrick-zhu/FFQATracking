@@ -4,6 +4,11 @@
 
 {{range $issue := .allIssue}}
 
+    {{$creatorIdx := AccountIndexOfID $accounts $issue.Creator}}
+    {{$assignorIdx := AccountIndexOfID $accounts $issue.Assignor}}
+    
+    {{if ge $creatorIdx 0}}{{if ge $assignorIdx 0}}
+    
     {{$creator := AccountForIDInArray $accounts $issue.Creator}}
     {{$assignor := AccountForIDInArray $accounts $issue.Assignor}}
 
@@ -20,6 +25,9 @@
         <td>{{PropertyInIssue "CreateDate" $issue}}</td>
 
     </tr>
+
+    {{end}}{{end}}
+
 {{end}}
 
 {{end}}

@@ -9,6 +9,7 @@ import (
 func init() {
 	beego.AddFuncMap("PropertyInAccount", PropertyInAccount)
 	beego.AddFuncMap("AccountForIDInArray", AccountForIDInArray)
+	beego.AddFuncMap("AccountIndexOfID", AccountIndexOfID)
 }
 
 // PropertyInAccount ge property value for account
