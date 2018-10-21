@@ -30,9 +30,18 @@ func (c *BlackboardController) Get() {
 		beego.Error(err)
 	}
 
+	allProjects, err := models.AllInitiatives(0, -1)
+	if err != nil {
+		_ = allProjects
+		beego.Error(err)
+		return
+	}
+
 	c.Data["allIssue"] = allBugs
 	c.Data["allAccount"] = allUsers
 
+	c.initFilterVars(allUsers, allProjects)
+	c.initProjectListVar(allUsers, allProjects)
 	c.initNewInitiativeVar()
 	c.initNewIssueVar()
 

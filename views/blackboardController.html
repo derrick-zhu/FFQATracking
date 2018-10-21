@@ -1,55 +1,73 @@
 <!doctype html>
 <html>
 
-    <head>
-        {{template "header" .}}
-        <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
-        <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
+<head>
+    {{template "header" .}}
+    <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
+    <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
 
-        <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
-        <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
+    <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
 
-        <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
-        <script type="text/javascript" src="/static/js/features/issueNew.js"></script>
-        
-    </head>
+    <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
+    <script type="text/javascript" src="/static/js/features/issueNew.js"></script>
 
-    <body>
+</head>
 
-        <div class="navbar navbar-default">
-            <div class="container">
-                {{template "navbar" .}}
+<body>
+
+    <div class="navbar navbar-default">
+        <div class="container">
+            {{template "navbar" .}}
+        </div>
+    </div>
+
+    <div class="container">
+        <div>
+            <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
+        </div>
+
+        <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
+        <div class="card clearfix">
+            <!-- <div class="span span_full">
+                {{template "dataIntiativeTemplate" .allInitiativesList}}
+            </div> -->
+
+            <span><h4>Choose filters:</h4></span>
+
+            <div class="span span_4of6">
+                {{range $eachFilter := .allFilters}}
+                {{template "dataPickerTemplate" $eachFilter}}
+                {{end}}
+            </div>
+
+            <div class="span span_full">
+                <!-- 操作区，可以创建 initiative, version, target 等 -->
+                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewInitiativeModal" value="New Project"></input>
+                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewIssueModal" value="New Issue"></input>
             </div>
         </div>
 
-        <div class="container">
-            <div>
-                <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
-            </div>
+        <!-- 分割线 -->
+        <div style="height:1px">
+            <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
+        </div>
 
-            <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
+        <!-- issue list -->
+        <div class="card span span_full">
 
-            <!-- 操作区，可以创建 initiative, version, target 等 -->
-            <!-- <a href="/initiative"><span class="btn btn-default">New Project</span></a> -->
-            <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewInitiativeModal" value="New Project"></input>
-            <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewIssueModal" value="New Issue"></input>
-            <!-- <a href="/issue"><span class="btn btn-default">New issue</span></a> -->
 
-            <!-- 分割线 -->
-            <div style="height:1px">
-                <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
-            </div>
-
-            <!-- issue list -->
             {{template "dataIssueTableTemplate" .}}
         </div>
 
-        <!-- modal popup for  -->
-        {{template "bbNewInitiativeTemplate" .modelPropertySection}}
-        {{template "bbNewIssueTemplate" .issueHTMLValue}}
+    </div>
 
-    </body>
+    <!-- modal popup for  -->
+    {{template "bbNewInitiativeTemplate" .modelPropertySection}}
+    {{template "bbNewIssueTemplate" .issueHTMLValue}}
 
-    {{template "bootstrap_end"}}
+</body>
+
+{{template "bootstrap_end"}}
 
 </html>
