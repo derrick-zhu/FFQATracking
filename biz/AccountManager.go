@@ -115,7 +115,7 @@ func (am *AccountManager) CurrentAccount(ctx *context.Context) (*models.AccountM
 	}
 
 	if am.HadLogin(ctx) == false {
-		return nil, errors.New("Not login")
+		return nil, errors.New("No user account login")
 	}
 
 	ckEmail := utils.CookieInstance().Get(ctx, constants.KeyEMAIL)

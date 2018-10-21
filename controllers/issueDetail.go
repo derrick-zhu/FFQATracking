@@ -328,12 +328,12 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]Is
 
 	if logs, err = models.AllCommentsForIssue(nIssueID); err != nil {
 		beego.Error(err)
-		return
+		err = nil
 	}
 
 	if viewerAcc, err = biz.AccountManagerInstance().CurrentAccount(c.Ctx); err != nil {
 		beego.Error(err)
-		return
+		err = nil
 	}
 
 	models.SortCommentByTime(logs)
@@ -351,7 +351,10 @@ func (c *IssueDetailController) initLogHistory(nIssueID int64, logHistory **[]Is
 			}
 		}
 
-		isViewersLog := viewerAcc.ID == eachLog.CreatorID
+		var isViewersLog = false
+		if viewerAcc != nil {
+			isViewersLog = viewerAcc.ID == eachLog.CreatorID
+		}
 
 		newIssueLog := IssueDetailLogModel{}
 		newIssueLog.initWith(&eachLog, pAcc, isViewersLog)
