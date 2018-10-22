@@ -23,13 +23,14 @@ type MilestoneModel struct {
 }
 
 // Type implement VarModelProtocol
-func (c MilestoneModel) Type() int64 {
-	return c.ID
-}
+func (c MilestoneModel) Type() int64 { return c.ID }
 
 // Desc implement VarModelProtocol
-func (c MilestoneModel) Desc() string {
-	return c.Name
+func (c MilestoneModel) Desc() string { return c.Name }
+
+//ZeroMilestone implement EmptyDataProtocol, create an empty milestone model data,
+func ZeroMilestone() *MilestoneModel {
+	return &MilestoneModel{ID: -1}
 }
 
 func init() {
@@ -104,7 +105,8 @@ func MilestonesWithInitiative(initiativeID, offset, count int64) (*[]MilestoneMo
 	var err error
 
 	o := GetOrmObject()
-	sqlquery := fmt.Sprintf("SELECT * FROM %s WHICH initiative_i_d = %d LIMIT %d OFFSET %d", milestoneTableNameConst, initiativeID, count, offset)
+	sqlquery := fmt.Sprintf("SELECT * FROM %s WHERE initiative_i_d = %d LIMIT %d OFFSET %d", milestoneTableNameConst, initiativeID, count, offset)
+	beego.Info(sqlquery)
 	rawResult := o.Raw(sqlquery)
 
 	if _, err = rawResult.QueryRows(result); err != nil {

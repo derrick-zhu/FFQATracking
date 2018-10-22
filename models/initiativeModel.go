@@ -37,6 +37,11 @@ func (c *InitiativeModel) TableName() string {
 	return initiativeModelTblName
 }
 
+// ZeroInitiative return a empty initiative data
+func ZeroInitiative() *InitiativeModel {
+	return &InitiativeModel{ID: -1}
+}
+
 // NewInitiative new and insert initiative data
 func NewInitiative(name, desc string, creator, assignor, startDate, endDate int64) (*InitiativeModel, error) {
 
