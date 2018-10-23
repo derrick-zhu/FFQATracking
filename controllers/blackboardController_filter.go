@@ -12,25 +12,13 @@ const (
 
 func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, allInitiatives *[]models.InitiativeModel) {
 
-	const defIndex int64 = 0
+	const defIndex int = 0
 	var initID int64
 
 	// all initiatives
-	var initiativeFilterArrs = []interface{}{}
-	var allInitiativeVar = []models.VarModelProtocol{}
+	var blackboardFilterArrs = []interface{}{}
 
-	if len(allInitiativeVar) == 0 {
-		_foo := models.ZeroInitiative()
-		_foo.Name = "-- No filter --"
-		allInitiativeVar = append(allInitiativeVar, _foo)
-	}
-
-	for idx, eachInit := range *allInitiatives {
-		if int64(idx) == defIndex {
-			initID = eachInit.ID
-		}
-		allInitiativeVar = append(allInitiativeVar, eachInit)
-	}
+	allInitiativeVar := c.generateInitiativeFilters(defIndex, &initID, allInitiatives)
 
 	// all milestone filters
 	msFilterArrs, err := c.fetchMilestoneFilterWithInitiativeID(initID, 0, -1)
@@ -52,8 +40,8 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 		msFilterVar = append(msFilterVar, eachMS)
 	}
 
-	initiativeFilterArrs = append(
-		initiativeFilterArrs,
+	blackboardFilterArrs = append(
+		blackboardFilterArrs,
 		// initiatives
 		models.DataPickerTemplateModel{
 			DataBaseTemplateModel: models.DataBaseTemplateModel{
@@ -61,9 +49,9 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 				Identifier: "initiatives",
 				Type:       models.Number,
 			},
-			DefaultValue: defIndex,
+			DefaultValue: int64(defIndex),
 			Value:        0,
-			Collection:   allInitiativeVar,
+			Collection:   *allInitiativeVar,
 		},
 		// milestone
 		models.DataPickerTemplateModel{
@@ -78,16 +66,27 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 		},
 	)
 
-	c.Data[allFilterConst] = initiativeFilterArrs
+	c.Data[allFilterConst] = blackboardFilterArrs
 }
 
-func (c *BlackboardController) fetchMilestoneFilterWithInitiativeID(initID, offset, count int64) (*[]models.MilestoneModel, error) {
+// private helpers
 
-	result, err := models.MilestonesWithInitiative(initID, offset, count)
-	if err != nil {
-		beego.Error(err)
-		return nil, err
+func (c *BlackboardController) generateInitiativeFilters(defIndex int, initID *int64, allInitiatives *[]models.InitiativeModel) *[]models.VarModelProtocol {
+
+	var allInitiativeVar = []models.VarModelProtocol{}
+
+	if len(allInitiativeVar) == 0 {
+		_foo := models.ZeroInitiative()
+		_foo.Name = "-- No filter --"
+		allInitiativeVar = append(allInitiativeVar, _foo)
 	}
 
-	return result, nil
+	for idx, eachInit := range *allInitiatives {
+		if idx == defIndex {
+			*initID = eachInit.ID
+		}
+		allInitiativeVar = append(allInitiativeVar, eachInit)
+	}
+
+	return &allInitiativeVar
 }

@@ -30,7 +30,7 @@ func (c *BlackboardController) Get() {
 		beego.Error(err)
 	}
 
-	allProjects, err := models.AllInitiatives(0, -1)
+	allProjects, err := c.fetchAllInitiatives()
 	if err != nil {
 		_ = allProjects
 		beego.Error(err)
@@ -46,4 +46,22 @@ func (c *BlackboardController) Get() {
 	c.initNewIssueVar()
 
 	c.TplName = "blackboardController.html"
+}
+
+// private helpers
+
+func (c *BlackboardController) fetchAllInitiatives() (*[]models.InitiativeModel, error) {
+
+	return models.AllInitiatives(0, -1)
+}
+
+func (c *BlackboardController) fetchMilestoneFilterWithInitiativeID(initID, offset, count int64) (*[]models.MilestoneModel, error) {
+
+	result, err := models.MilestonesWithInitiative(initID, offset, count)
+	if err != nil {
+		beego.Error(err)
+		return nil, err
+	}
+
+	return result, nil
 }
