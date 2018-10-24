@@ -1,6 +1,7 @@
-body {
+#main body {
     background-color: #f9f9f9;
-    line-height: none;
+    line-height: 1.425;
+    /* line-height: none; */
 }
 
 tr {

@@ -15,6 +15,7 @@ type DataBaseTemplateModel struct {
 	Title      string
 	Identifier string
 	Type       TemplateDataCtrlType
+	JSCmd      JSCommandModel
 }
 
 func init() {

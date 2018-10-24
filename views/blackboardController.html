@@ -33,18 +33,17 @@
                 {{template "dataIntiativeTemplate" .allInitiativesList}}
             </div> -->
 
-            <span><h4>Choose filters:</h4></span>
+            <div class="span span_full clearfix"><h4>Choose filters:</h4></div>
 
-            <div class="span span_4of6">
+            <div class="span span_4of6 clearfix">
                 {{range $eachFilter := .allFilters}}
-                {{template "dataPickerTemplate" $eachFilter}}
-                {{end}}
-            </div>
 
-            <div class="span span_full">
-                <!-- 操作区，可以创建 initiative, version, target 等 -->
-                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewInitiativeModal" value="New Project"></input>
-                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#bbNewIssueModal" value="New Issue"></input>
+                    <div style="float:left;width:90%;">{{template "dataPickerTemplate" $eachFilter}}</div>
+                    <div style="float:left; margin: 4px 0px 4px 10px; width: 40px; height: 40px; line-height: 1.425;">
+                        {{template "modalPopupTemplate" $eachFilter}}
+                    </div>
+                
+                {{end}}
             </div>
         </div>
 
@@ -55,8 +54,6 @@
 
         <!-- issue list -->
         <div class="card span span_full">
-
-
             {{template "dataIssueTableTemplate" .}}
         </div>
 

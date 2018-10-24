@@ -14,31 +14,13 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 
 	const defIndex int = 0
 	var initID int64
-
-	// all initiatives
+	// all filters
 	var blackboardFilterArrs = []interface{}{}
 
+	// all initiative filters
 	allInitiativeVar := c.generateInitiativeFilters(defIndex, &initID, allInitiatives)
-
 	// all milestone filters
-	msFilterArrs, err := c.fetchMilestoneFilterWithInitiativeID(initID, 0, -1)
-	if err != nil {
-		beego.Error(err)
-		err = nil
-		msFilterArrs = &[]models.MilestoneModel{}
-	}
-
-	msFilterVar := []models.VarModelProtocol{}
-
-	if len(msFilterVar) == 0 {
-		_foo := models.ZeroMilestone()
-		_foo.Name = "-- No data --"
-		msFilterVar = append(msFilterVar, _foo)
-	}
-
-	for _, eachMS := range *msFilterArrs {
-		msFilterVar = append(msFilterVar, eachMS)
-	}
+	allMilestoneFilterVar := c.generateMilestoneFilters(initID)
 
 	blackboardFilterArrs = append(
 		blackboardFilterArrs,
@@ -48,6 +30,10 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 				Title:      "Initiatives",
 				Identifier: "initiatives",
 				Type:       models.Number,
+				JSCmd: models.JSCommandModel{
+					ID:   "#bbNewInitiativeModal",
+					Name: "New Project",
+				},
 			},
 			DefaultValue: int64(defIndex),
 			Value:        0,
@@ -59,10 +45,14 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 				Title:      "Version",
 				Identifier: "versions",
 				Type:       models.Number,
+				JSCmd: models.JSCommandModel{
+					ID:   "#bbNewIssueModal",
+					Name: "New Issue",
+				},
 			},
 			DefaultValue: 0,
 			Value:        0,
-			Collection:   msFilterVar,
+			Collection:   *allMilestoneFilterVar,
 		},
 	)
 
@@ -89,4 +79,28 @@ func (c *BlackboardController) generateInitiativeFilters(defIndex int, initID *i
 	}
 
 	return &allInitiativeVar
+}
+
+func (c *BlackboardController) generateMilestoneFilters(defInitID int64) *[]models.VarModelProtocol {
+
+	msFilterArrs, err := c.fetchMilestoneFilterWithInitiativeID(defInitID, 0, -1)
+	if err != nil {
+		beego.Error(err)
+		err = nil
+		msFilterArrs = &[]models.MilestoneModel{}
+	}
+
+	msFilterResult := []models.VarModelProtocol{}
+	// default item - "No data"
+	if len(msFilterResult) == 0 {
+		_foo := models.ZeroMilestone()
+		_foo.Name = "-- No data --"
+		msFilterResult = append(msFilterResult, _foo)
+	}
+
+	for _, eachMS := range *msFilterArrs {
+		msFilterResult = append(msFilterResult, eachMS)
+	}
+
+	return &msFilterResult
 }
