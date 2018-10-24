@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"FFQATracking/models"
+	"strconv"
 
 	"github.com/astaxie/beego"
 )
@@ -10,17 +11,27 @@ const (
 	allFilterConst = "allFilters"
 )
 
-func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, allInitiatives *[]models.InitiativeModel) {
+// FilterChanged handle picker's value changed event
+func (c *BlackboardController) FilterChanged() {
+	c.FFBaseController.Get()
 
-	const defIndex int = 0
-	var initID int64
+	selInitiativeID, _ := strconv.ParseInt(c.GetString("initiative_id"), 10, 64)
+	selMilestoneID, _ := strconv.ParseInt(c.GetString("milestone_id"), 10, 64)
+
+	c.commonInitForGet(selInitiativeID, selMilestoneID)
+
+	c.ServeJSON()
+}
+
+func (c *BlackboardController) initFilterVars(selectedProjID, selectedMilestoneID int64, allUser *[]models.AccountModel, allInitiatives *[]models.InitiativeModel) {
+
 	// all filters
 	var blackboardFilterArrs = []interface{}{}
 
 	// all initiative filters
-	allInitiativeVar := c.generateInitiativeFilters(defIndex, &initID, allInitiatives)
+	allInitiativeVar, defInitIndex := c.generateInitiativeFilters(allInitiatives, selectedProjID)
 	// all milestone filters
-	allMilestoneFilterVar := c.generateMilestoneFilters(initID)
+	allMilestoneFilterVar, defMSIndex := c.generateMilestoneFilters(selectedProjID, selectedMilestoneID)
 
 	blackboardFilterArrs = append(
 		blackboardFilterArrs,
@@ -35,7 +46,10 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 					Name: "New Project",
 				},
 			},
-			DefaultValue: int64(defIndex),
+			ValueChanged: models.JSCommandModel{
+				ID: "initiativePickerChanged",
+			},
+			DefaultValue: int64(defInitIndex),
 			Value:        0,
 			Collection:   *allInitiativeVar,
 		},
@@ -46,11 +60,14 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 				Identifier: "versions",
 				Type:       models.Number,
 				JSCmd: models.JSCommandModel{
-					ID:   "#bbNewIssueModal",
+					ID:   "#bbNewMilestoneModal",
 					Name: "New Issue",
 				},
 			},
-			DefaultValue: 0,
+			ValueChanged: models.JSCommandModel{
+				ID: "milestonePickerValueChanged",
+			},
+			DefaultValue: int64(defMSIndex),
 			Value:        0,
 			Collection:   *allMilestoneFilterVar,
 		},
@@ -61,7 +78,25 @@ func (c *BlackboardController) initFilterVars(allUser *[]models.AccountModel, al
 
 // private helpers
 
-func (c *BlackboardController) generateInitiativeFilters(defIndex int, initID *int64, allInitiatives *[]models.InitiativeModel) *[]models.VarModelProtocol {
+func (c *BlackboardController) indexOfInitiativeWith(projID int64, allInitiatives *[]models.InitiativeModel) int {
+	for idx, init := range *allInitiatives {
+		if init.ID == projID {
+			return idx
+		}
+	}
+	return -1
+}
+
+func (c *BlackboardController) indexOfMilestoneWith(msID int64, allMilestones *[]models.MilestoneModel) int {
+	for idx, ms := range *allMilestones {
+		if ms.ID == msID {
+			return idx
+		}
+	}
+	return -1
+}
+
+func (c *BlackboardController) generateInitiativeFilters(allInitiatives *[]models.InitiativeModel, selID int64) (*[]models.VarModelProtocol, int) {
 
 	var allInitiativeVar = []models.VarModelProtocol{}
 
@@ -71,19 +106,20 @@ func (c *BlackboardController) generateInitiativeFilters(defIndex int, initID *i
 		allInitiativeVar = append(allInitiativeVar, _foo)
 	}
 
+	var selIdx int
 	for idx, eachInit := range *allInitiatives {
-		if idx == defIndex {
-			*initID = eachInit.ID
-		}
 		allInitiativeVar = append(allInitiativeVar, eachInit)
+		if eachInit.ID == selID {
+			selIdx = idx
+		}
 	}
 
-	return &allInitiativeVar
+	return &allInitiativeVar, selIdx
 }
 
-func (c *BlackboardController) generateMilestoneFilters(defInitID int64) *[]models.VarModelProtocol {
+func (c *BlackboardController) generateMilestoneFilters(selInitID int64, selMSID int64) (*[]models.VarModelProtocol, int) {
 
-	msFilterArrs, err := c.fetchMilestoneFilterWithInitiativeID(defInitID, 0, -1)
+	msFilterArrs, err := c.fetchMilestoneFilterWithInitiativeID(selInitID, 0, -1)
 	if err != nil {
 		beego.Error(err)
 		err = nil
@@ -98,9 +134,13 @@ func (c *BlackboardController) generateMilestoneFilters(defInitID int64) *[]mode
 		msFilterResult = append(msFilterResult, _foo)
 	}
 
-	for _, eachMS := range *msFilterArrs {
+	var selIdx int
+	for idx, eachMS := range *msFilterArrs {
 		msFilterResult = append(msFilterResult, eachMS)
+		if eachMS.ID == selMSID {
+			selIdx = idx
+		}
 	}
 
-	return &msFilterResult
+	return &msFilterResult, selIdx
 }

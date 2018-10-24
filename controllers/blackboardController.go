@@ -10,45 +10,51 @@ import (
 // BlackboardController the class of issue list
 type BlackboardController struct {
 	FFBaseController
+
+	allBugs     *[]models.BugModel
+	allUsers    *[]models.AccountModel
+	allProjects *[]models.InitiativeModel
 }
 
 // Get for handling issue list page HTTP GET request
 func (c *BlackboardController) Get() {
-
 	c.FFBaseController.Get()
+
+	c.commonInitForGet(0, 0)
+}
+
+// private helpers
+
+func (c *BlackboardController) commonInitForGet(selectedProjID, selectedMilestoneID int64) {
 	c.Data[constants.KeyIsBlackBoard] = 1
 
-	var allBugs *[]models.BugModel
-	var allUsers *[]models.AccountModel
 	var err error
 
-	if allBugs, err = models.AllBugsData(); err != nil {
+	if c.allBugs, err = models.AllBugsData(); err != nil {
 		beego.Error(err)
 	}
 
-	if allUsers, err = models.AllAccounts(); err != nil {
+	if c.allUsers, err = models.AllAccounts(); err != nil {
 		beego.Error(err)
 	}
 
-	allProjects, err := c.fetchAllInitiatives()
+	c.allProjects, err = c.fetchAllInitiatives()
 	if err != nil {
-		_ = allProjects
+		_ = c.allProjects
 		beego.Error(err)
 		return
 	}
 
-	c.Data["allIssue"] = allBugs
-	c.Data["allAccount"] = allUsers
+	c.Data["allIssue"] = c.allBugs
+	c.Data["allAccount"] = c.allUsers
 
-	c.initFilterVars(allUsers, allProjects)
-	c.initProjectListVar(allUsers, allProjects)
+	c.initFilterVars(selectedProjID, selectedMilestoneID, c.allUsers, c.allProjects)
+	c.initProjectListVar(c.allUsers, c.allProjects)
 	c.initNewInitiativeVar()
 	c.initNewIssueVar()
 
 	c.TplName = "blackboardController.html"
 }
-
-// private helpers
 
 func (c *BlackboardController) fetchAllInitiatives() (*[]models.InitiativeModel, error) {
 

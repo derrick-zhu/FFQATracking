@@ -268,6 +268,9 @@ func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollect
 				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueStatusKey),
 				Type:       models.Number,
 			},
+			ValueChanged: models.JSCommandModel{
+				ID: "issueDetailUpdate",
+			},
 			DefaultValue: aIssue.Status,
 			Value:        aIssue.Status,
 			Collection:   models.AllBugStatus,
@@ -278,6 +281,9 @@ func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollect
 				Title:      IssuePriorityKey,
 				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssuePriorityKey),
 				Type:       models.Number,
+			},
+			ValueChanged: models.JSCommandModel{
+				ID: "issueDetailUpdate",
 			},
 			DefaultValue: aIssue.Priority,
 			Value:        aIssue.Priority,
@@ -290,6 +296,9 @@ func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollect
 				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueReproductionKey),
 				Type:       models.Number,
 			},
+			ValueChanged: models.JSCommandModel{
+				ID: "issueDetailUpdate",
+			},
 			DefaultValue: aIssue.Reproductability,
 			Value:        aIssue.Reproductability,
 			Collection:   models.AllReproductabilities,
@@ -301,6 +310,9 @@ func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollect
 				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueCreatorKey),
 				Type:       models.Number,
 			},
+			ValueChanged: models.JSCommandModel{
+				ID: "issueDetailUpdate",
+			},
 			DefaultValue: indexOf(int64(aIssue.Creator), allUsers),
 			Value:        indexOf(int64(aIssue.Creator), allUsers),
 			Collection:   allUsers,
@@ -311,6 +323,9 @@ func (c *IssueDetailController) initVariables(dataSource **models.TCommonCollect
 				Title:      IssueAssignorKey,
 				Identifier: fmt.Sprintf("%s%s", issueIDPrefix, IssueAssignorKey),
 				Type:       models.Number,
+			},
+			ValueChanged: models.JSCommandModel{
+				ID: "issueDetailUpdate",
 			},
 			DefaultValue: indexOf(int64(aIssue.Assignor), allUsers),
 			Value:        indexOf(int64(aIssue.Assignor), allUsers),

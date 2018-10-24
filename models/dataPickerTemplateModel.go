@@ -4,6 +4,7 @@ package models
 type DataPickerTemplateModel struct {
 	DataBaseTemplateModel
 
+	ValueChanged JSCommandModel // the JS callback when picker's value changed
 	DefaultValue int64
 	Value        int64
 	Collection   []VarModelProtocol

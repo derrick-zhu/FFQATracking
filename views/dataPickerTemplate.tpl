@@ -1,4 +1,4 @@
-{{define "dataPickerTemplate"}}    
+{{define "dataPickerTemplate"}}
 <!-- 
     param:
         ID              int64       // external index for anything
@@ -7,13 +7,14 @@
         DefaultValue    int64       // this is a index,
         collection      []interface{}
  -->
- 
- {{$extID := .ID}}
- {{$title := .Title}}
- {{$defaultContent := (index .Collection .DefaultValue | GetBriefTitleFromModel)}}
- {{$defaultValue := (index .Collection .DefaultValue | GetTypeFromModel)}}
- {{$id := .Identifier}}
- {{$data := .Collection}}
+
+{{$extID := .ID}}
+{{$title := .Title}}
+{{$defaultContent := (index .Collection .DefaultValue | GetBriefTitleFromModel)}}
+{{$defaultValue := (index .Collection .DefaultValue | GetTypeFromModel)}}
+{{$id := .Identifier}}
+{{$data := .Collection}}
+{{$callback := .ValueChanged.ID}}
 
 
 <span class="span span_2of6 span_float_left text text-align-right" style="line-height: 1.425">{{$title}}</span>
@@ -26,9 +27,9 @@
 
     <ul class="dropdown-menu" style="width:90%; max-height:20em; overflow-y: scroll">
         {{range $index, $item := $data}}
-            {{$itemValue := GetTypeFromModel $item}}
-            {{$itemContent := GetBriefTitleFromModel $item}}
-            <li><a onclick="$().fnDataPickerDidChangeValue('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$extID}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
+        {{$itemValue := GetTypeFromModel $item}}
+        {{$itemContent := GetBriefTitleFromModel $item}}
+        <li><a onclick="$().fnDataPickerDidChangeValue('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$extID}}', '{{$callback}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
         {{end}}
     </ul>
 </div>

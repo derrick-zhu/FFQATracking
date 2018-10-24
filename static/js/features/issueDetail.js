@@ -13,8 +13,8 @@ class jsLazyLoadModel {
 }
 
 
-$(function() {
-  $('#issue_detail_last_div').ready(function() {
+$(function () {
+  $('#issue_detail_last_div').ready(function () {
     initMarkdownEditorInstance();
     refreshAllMarkdown();
     refreshAllAvatar();
@@ -26,19 +26,17 @@ $(function() {
   $('#btnAttachImage').fileupload({
     dataType: 'json',
     type: 'POST',
-    loadImageFileTypes:
-        /^image\/(gif|jpeg|jpg|png|svg\+xml)$/,  // ?? 貌似目前没有作用
-    disableImageResize:
-        /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+    loadImageFileTypes: /^image\/(gif|jpeg|jpg|png|svg\+xml)$/, // ?? 貌似目前没有作用
+    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
     imageMaxWidth: 800,
     imageMaxHeight: 800,
-    imageCrop: false,  // Force cropped images
-    done: function(e, data) {
+    imageCrop: false, // Force cropped images
+    done: function (e, data) {
       if (null != data.result && null != data.result.UserInfo &&
-          0 < data.result.UserInfo.length) {
+        0 < data.result.UserInfo.length) {
         oldComment = gMDEditor.value();
         newComment = oldComment + '![' + data.files[0].name + '](' +
-            data.result.UserInfo + ')';
+          data.result.UserInfo + ')';
         gMDEditor.value(newComment);
       }
     }
@@ -47,14 +45,14 @@ $(function() {
   /**
    * 提交评论
    */
-  $('#btnCommitComment').click(function() {
+  $('#btnCommitComment').click(function () {
     $.post(
-        '/issuedetail/' + this.name + '/newlog', {
-          issue_comment: gMDEditor.value(),
-        },
-        function(data, status) {
-          window.location.href = window.location.href;
-        });
+      '/issuedetail/' + this.name + '/newlog', {
+        issue_comment: gMDEditor.value(),
+      },
+      function (data, status) {
+        window.location.href = window.location.href;
+      });
   });
 
   /**
@@ -62,34 +60,43 @@ $(function() {
    * @param {*} issueId 问题索引值
    * @param {*} issueCommentId 该问题下的评论索引值
    */
-  $.fn.fnDeleteComment = function(issueId, issueCommentId) {
+  $.fn.fnDeleteComment = function (issueId, issueCommentId) {
     if (true == confirm('Are you sure to delete this comment?')) {
       $.post(
-          '/issuedetail/' + issueId + '/deletecomment',
-          {comment: issueCommentId}, function(data, status) {
-            if (data.Code != 200) {
-              alert(data.Msg);
-            } else {
-              window.location.href = window.location.href;
-            }
-          });
+        '/issuedetail/' + issueId + '/deletecomment', {
+          comment: issueCommentId
+        },
+        function (data, status) {
+          if (data.Code != 200) {
+            alert(data.Msg);
+          } else {
+            window.location.href = window.location.href;
+          }
+        });
     }
   };
 
-  /**
-   * issue的属性选择器value发生变化时
-   * @param {*} id 
-   * @param {*} type
-   * @param {*} desc 
-   * @param {*} extID
-   */
-  $.fn.fnDataPickerDidChangeValue = function(id, type, desc, extID) {
-    trackCallStack();
+  // issue property change event
+  $.fn.issueDetailUpdate = function (key, value, issueId) {
+    var param = Object.create(null);
+    param[key] = value;
 
-    setInnerHtmlWithID(id + '-btn', desc);
-    setHtmlValueWithID(id, type);
-  
-    issueDetailUpdate(extID, id, type);
+    $.ajax({
+      dataType: 'json',
+      method: 'post',
+      url: '/issuedetail/' + issueId + '/update',
+      data: $.param(param),
+      success: function (result) {
+        if (result == null) {
+          console.log('error: no result data');
+        } else {
+          window.location.href = window.location.href;
+        }
+      },
+      error: function (result) {
+        console.log(result);
+      }
+    });
   };
 });
 
@@ -97,7 +104,7 @@ $(function() {
 
 // on finish loading
 function initMarkdownEditorInstance() {
-  trackCallStack();
+
   if (null == gMDEditor) {
     gMDEditor = new SimpleMDE({
       elements: $('#issue_comment')[0],
@@ -112,7 +119,7 @@ function initMarkdownEditorInstance() {
 
 // add elemId and content into avatar render collection
 function appendAvatarCanvasCollection(elemId, content) {
-  trackCallStack();
+
   if (content.length > 0 && elemId.length > 0) {
     for (let item of gAllAvatarCanvasSet) {
       if (item.elemId == elemId) {
@@ -127,14 +134,14 @@ function appendAvatarCanvasCollection(elemId, content) {
 
 // render all avatars which listed in avatar render collection.
 function refreshAllAvatar() {
-  trackCallStack();
+
   for (let item of gAllAvatarCanvasSet) {
     AvatarDrawCanvasWith(item.content, item.elemId);
   }
 }
 
 function appendMarkdownCollection(elemId, content) {
-  trackCallStack();
+
   if (content.length > 0 && elemId.length > 0) {
     for (let item of gAllMarkDownSet) {
       if (item.elemId == elemId) {
@@ -150,7 +157,7 @@ function appendMarkdownCollection(elemId, content) {
 // render all markdown script into html script by markdown collection. this will
 // be runs after finishing load whole page.
 function refreshAllMarkdown() {
-  trackCallStack();
+
   var result = '';
   for (let item of gAllMarkDownSet) {
     result = gMDEditor.markdown(item.content);
@@ -159,28 +166,4 @@ function refreshAllMarkdown() {
     }
     document.getElementById(item.elemId).innerHTML = result;
   }
-}
-
-// issue property change event
-function issueDetailUpdate(issueId, key, value) {
-  var param = Object.create(null);
-  param[key] = value;
-
-  $.ajax({
-    dataType: 'json',
-    method: 'post',
-    url: '/issuedetail/' + issueId + '/update',
-    data: $.param(param),
-    success: function(result) {
-      if (result == null) {
-        trackCallStack();
-        console.log('error: no result data');
-      } else {
-        window.location.href = window.location.href;
-      }
-    },
-    error: function(result) {
-      console.log(result);
-    }
-  });
 }

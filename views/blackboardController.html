@@ -5,11 +5,14 @@
     {{template "header" .}}
     <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
 
-    <script type="text/javascript" src="/static/js/common/utils.js"></script>
-    <script type="text/javascript" src="/static/js/common/dataPickerTemplate.js"></script>
     <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
+    <script type="text/javascript" src="/static/js/features/blackboardController_filter.js"></script>
     <script type="text/javascript" src="/static/js/features/blackboardController_newIssue.js"></script>
     <script type="text/javascript" src="/static/js/features/blackboardController_newInitiative.js"></script>
+    <script type="text/javascript" src="/static/js/features/blackboardController_newMilestone.js"></script>
+
+    <script type="text/javascript" src="/static/js/common/utils.js"></script>
+    <script type="text/javascript" src="/static/js/common/dataPickerTemplate.js"></script>
 
     <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
     <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
@@ -38,7 +41,7 @@
                 {{range $eachFilter := .allFilters}}
 
                     <div style="float:left;width:90%;">{{template "dataPickerTemplate" $eachFilter}}</div>
-                    <div style="float:left; margin: 4px 0px 4px 10px; width: 40px; height: 40px; line-height: 1.425;">
+                    <div style="float:left; margin: 4px 0px 4px auto; width: 40px; height: 40px; line-height: 1.425;">
                         {{template "modalPopupTemplate" $eachFilter}}
                     </div>
                 
@@ -61,6 +64,7 @@
     <!-- modal popup for  -->
     {{template "bbNewInitiativeTemplate" .modelPropertySection}}
     {{template "bbNewIssueTemplate" .issueHTMLValue}}
+    {{template "bbNewMilestoneTemplate" .}}
 
 </body>
 

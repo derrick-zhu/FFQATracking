@@ -25,6 +25,7 @@ func init() {
 	beego.Router("/blackboard", &controllers.BlackboardController{})
 	beego.Router("/blackboard/newissue", &controllers.BlackboardController{}, "post:SubmitNewIssue")
 	beego.Router("/blackboard/newinitiative", &controllers.BlackboardController{}, "post:SubmitNewProject")
+	beego.Router("/blackboard/filter/change/", &controllers.BlackboardController{}, "get:FilterChanged")
 
 	// // router for helping user to create new issue
 	// beego.Router("/issue", &controllers.IssueNewController{})
