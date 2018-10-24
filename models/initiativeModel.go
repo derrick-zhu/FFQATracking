@@ -109,8 +109,6 @@ func AllInitiatives(low, count int64) (*[]InitiativeModel, error) {
 		return nil, err
 	}
 
-	beego.Info(results)
-
 	return results, nil
 }
 

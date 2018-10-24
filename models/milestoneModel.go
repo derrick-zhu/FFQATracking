@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego"
-
 	"github.com/astaxie/beego/orm"
 )
 
@@ -106,7 +105,6 @@ func MilestonesWithInitiative(initiativeID, offset, count int64) (*[]MilestoneMo
 
 	o := GetOrmObject()
 	sqlquery := fmt.Sprintf("SELECT * FROM %s WHERE initiative_i_d = %d LIMIT %d OFFSET %d", milestoneTableNameConst, initiativeID, count, offset)
-	beego.Info(sqlquery)
 	rawResult := o.Raw(sqlquery)
 
 	if _, err = rawResult.QueryRows(result); err != nil {
