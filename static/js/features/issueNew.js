@@ -1,10 +1,10 @@
 $(function () {
   $.fn.fnDataPickerDidChangeValue = function (id, type, desc, extID) {
-    trackCallStack()
-    console.log('id: ' + id + ', type:' + type + ', param:' + desc)
+    trackCallStack();
+    console.log('id: ' + id + ', type:' + type + ', param:' + desc);
 
-    setInnerHtmlWithID(id + '-btn', desc)
-    setHtmlValueWithID(id, type)
+    setInnerHtmlWithID(id + '-btn', desc);
+    setHtmlValueWithID(id, type);
   };
 
   $('#btnCommitNewIssue').click(function () {
@@ -20,6 +20,7 @@ $(function () {
         }
     );
   });
+
 });
 
 function newIssueCheckInputContent () {

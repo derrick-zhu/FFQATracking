@@ -24,15 +24,12 @@
 
     <div class="container">
         <div>
-            <h1>Hi{{.ProjectTitle}} <small> world</small></h1>
+            <h1>Hi {{.ProjectTitle}} <small> world</small></h1>
         </div>
 
         <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
         <div class="card clearfix">
-            <!-- <div class="span span_full">
-                {{template "dataIntiativeTemplate" .allInitiativesList}}
-            </div> -->
-
+            
             <div class="span span_full clearfix"><h4>Choose filters:</h4></div>
 
             <div class="span span_4of6 clearfix">

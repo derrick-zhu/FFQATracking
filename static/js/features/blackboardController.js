@@ -1,4 +1,4 @@
 
-function fetchAccountWithID(allAccounts, uid) {
-    
-}
+$(function() {
+
+});

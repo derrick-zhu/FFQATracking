@@ -9,10 +9,6 @@
             </div>
             <div class="modal-body">
 
-
-
-                <!-- <h1>Create new project:</h1> -->
-
                 <div>
                     <div class="clearfix">
                         <div class="span span_full">
@@ -41,8 +37,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
             <div class="modal-footer">
