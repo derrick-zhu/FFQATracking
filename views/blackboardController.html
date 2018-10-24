@@ -4,13 +4,15 @@
 <head>
     {{template "header" .}}
     <link rel="stylesheet" href="/static/css/FFTechStyle/blackboardController.css" type="text/css">
+
+    <script type="text/javascript" src="/static/js/common/utils.js"></script>
+    <script type="text/javascript" src="/static/js/common/dataPickerTemplate.js"></script>
     <script type="text/javascript" src="/static/js/features/blackboardController.js"></script>
+    <script type="text/javascript" src="/static/js/features/blackboardController_newIssue.js"></script>
+    <script type="text/javascript" src="/static/js/features/blackboardController_newInitiative.js"></script>
 
     <link href="/static/bootstrap-datepicker-1.6.4/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
     <script src="/static/bootstrap-datepicker-1.6.4/js/bootstrap-datepicker.min.js"></script>
-
-    <script type="text/javascript" src="/static/js/features/initiativeNew.js"></script>
-    <script type="text/javascript" src="/static/js/features/issueNew.js"></script>
 
 </head>
 
@@ -29,7 +31,7 @@
 
         <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
         <div class="card clearfix">
-            
+
             <div class="span span_full clearfix"><h4>Choose filters:</h4></div>
 
             <div class="span span_4of6 clearfix">

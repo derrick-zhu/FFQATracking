@@ -24,14 +24,15 @@ func init() {
 	// router to blackboard, control center
 	beego.Router("/blackboard", &controllers.BlackboardController{})
 	beego.Router("/blackboard/newissue", &controllers.BlackboardController{}, "post:SubmitNewIssue")
+	beego.Router("/blackboard/newinitiative", &controllers.BlackboardController{}, "post:SubmitNewProject")
 
 	// // router for helping user to create new issue
 	// beego.Router("/issue", &controllers.IssueNewController{})
 	// beego.AutoRouter(&controllers.IssueNewController{})
 
 	// 工程相关的控制器
-	beego.Router("/initiative", &controllers.InitiativeNewController{})
-	beego.Router("/initiative/new", &controllers.InitiativeNewController{}, "post:SubmitNewProject")
+	// beego.Router("/initiative", &controllers.InitiativeNewController{})
+	// beego.Router("/initiative/new", &controllers.InitiativeNewController{}, "post:SubmitNewProject")
 
 	// issue详情页的控制器
 	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})

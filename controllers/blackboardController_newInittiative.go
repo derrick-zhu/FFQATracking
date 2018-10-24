@@ -3,9 +3,66 @@ package controllers
 import (
 	"FFQATracking/models"
 	"FFQATracking/utils"
+	"strconv"
 
 	"github.com/astaxie/beego"
 )
+
+const (
+	modelPropertySectionKey = "modelPropertySection"
+)
+
+// SubmitNewProject handle POST http request for creating project
+func (c *BlackboardController) SubmitNewProject() {
+
+	c.FFBaseController.Post()
+
+	beego.Info(c.Input())
+	beego.Info(c.GetString("title"))
+
+	var err error
+	var creator, assignor, startDate, endDate int64
+
+	for {
+		title := c.GetString("title")
+		description := c.GetString("description")
+
+		if creator, err = strconv.ParseInt(c.GetString("creator"), 10, 64); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, "/#", "")
+			break
+		}
+
+		if assignor, err = strconv.ParseInt(c.GetString("assignor"), 10, 64); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, "/#", "")
+			break
+		}
+
+		if startDate, err = strconv.ParseInt(c.GetString("startDate"), 10, 64); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, "/#", "")
+			break
+		}
+
+		if endDate, err = strconv.ParseInt(c.GetString("endDate"), 10, 64); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, "/#", "")
+			break
+		}
+
+		if _, err = models.NewInitiative(title, description, creator, assignor, startDate, endDate); err != nil {
+			beego.Error(err)
+			utils.MakeRedirectURL(&c.Data, 500, "/#", "")
+			break
+		}
+
+		utils.MakeRedirectURL(&c.Data, 302, "/blackboard", "")
+		break
+	}
+
+	c.ServeJSON()
+}
 
 func (c *BlackboardController) initNewInitiativeVar() {
 	var initiativeProperties = []interface{}{}

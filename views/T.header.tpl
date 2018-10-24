@@ -18,7 +18,7 @@
 <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <script src="/static/js/bootstrap.min.js" type="text/javascript"></script>
 
-<script type="text/javascript" src="/static/js/utils.js"></script>
+<script type="text/javascript" src="/static/js/common/utils.js"></script>
 
 <title>{{.Title}}</title>
 

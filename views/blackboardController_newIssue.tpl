@@ -32,25 +32,12 @@
                         </div>
                         {{end}}
 
-                        <!-- 分割线 -->
-                        <!-- <div class="form-group col-xs-12">
-                            <hr class="seperate-line" width="80%" color=#987cb9 SIZE=3>
-                        </div> -->
-
-                        <!-- 提交按钮 -->
-                        <!-- <div class="form-group col-xs-12">
-                            <input class="btn btn-danger center-block" style="width:150px;" type="submit" value="Submit"
-                                onclick="return newIssueCheckInputContent();">
-                        </div> -->
-
                     </form>
                 </div>
 
             </div>
             <div class="modal-footer">
                 <input id="btnCommitNewIssue" name="btnCommitNewIssue" class="btn btn-danger" style="width:150px;" type="submit" value="Submit">
-                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button> -->
             </div>
         </div>
     </div>

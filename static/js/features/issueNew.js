@@ -1,27 +1,4 @@
-$(function () {
-  $.fn.fnDataPickerDidChangeValue = function (id, type, desc, extID) {
-    trackCallStack();
-    console.log('id: ' + id + ', type:' + type + ', param:' + desc);
-
-    setInnerHtmlWithID(id + '-btn', desc);
-    setHtmlValueWithID(id, type);
-  };
-
-  $('#btnCommitNewIssue').click(function () {
-    trackCallStack();
-    console.log($('#frmSubmitNewIssue').serialize());
-    $.post(
-        '/blackboard/newissue',
-        {
-
-        },
-        function(data, status){
-            window.location.href = "#";
-        }
-    );
-  });
-
-});
+require('../common/dataPickerTemplate.js');
 
 function newIssueCheckInputContent () {
   if (checkInputLength('issueTitle', 1, 1024) == false) {

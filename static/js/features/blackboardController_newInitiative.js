@@ -1,19 +1,5 @@
 $(function () {
 
-    /**
-     * issue的属性选择器value发生变化时
-     * @param {*} id 
-     * @param {*} type
-     * @param {*} desc 
-     * @param {*} extID
-     */
-    $.fn.fnDataPickerDidChangeValue = function (ID, type, desc, extID) {
-        trackCallStack();
-
-        setInnerHtmlWithID(ID + '-btn', desc);
-        setHtmlValueWithID(ID, type);
-    };
-
     $('#date_startDate').datepicker({
         format: 'yyyy-mm-dd',
         startDate: '-3d',
@@ -34,7 +20,7 @@ $(function () {
         trackCallStack();
         console.log($('#frmProjectProperties').serialize());
         $.post(
-            '/initiative/new', 
+            '/blackboard/newinitiative', 
             {
                 title: $('#name_title_0').val(),
                 description: $('#name_description_0').val(),
