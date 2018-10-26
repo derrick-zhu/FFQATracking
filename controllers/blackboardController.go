@@ -31,7 +31,7 @@ func (c *BlackboardController) commonInitForGet(selectedProjID, selectedMileston
 
 	var err error
 
-	if c.allBugs, err = models.AllBugsData(); err != nil {
+	if c.allBugs, err = models.BugsFromProjectID(-1, selectedProjID, selectedMilestoneID, 0, -1); err != nil {
 		beego.Error(err)
 	}
 

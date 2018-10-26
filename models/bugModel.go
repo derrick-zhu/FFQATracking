@@ -4,6 +4,7 @@ import (
 	"FFQATracking/utils"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -359,14 +360,29 @@ func BugsWithRange(offset, count int) (*[]BugModel, error) {
 }
 
 // BugsFromProjectID fetch bugs which belong some project.
-func BugsFromProjectID(projID, offset, count int64) (*[]BugModel, error) {
+func BugsFromProjectID(sprintID, projectID, versionID, offset, count int64) (*[]BugModel, error) {
 
 	var result = &[]BugModel{}
 	var err error
 	var rawResult orm.RawSeter
 
+	var conditionQuerySlice []string
+
+	if sprintID >= 0 {
+		conditionQuerySlice = append(conditionQuerySlice, fmt.Sprintf("found_in_sprint = %d", sprintID))
+	}
+
+	if projectID >= 0 {
+		conditionQuerySlice = append(conditionQuerySlice, fmt.Sprintf("found_in_project = %d", projectID))
+	}
+
+	if versionID >= 0 {
+		conditionQuerySlice = append(conditionQuerySlice, fmt.Sprintf("found_in_version = %d", versionID))
+	}
+
 	o := GetOrmObject()
-	sqlQuery := fmt.Sprintf("SELECT * FROM %s WHERE source = %d LIMIT %d OFFSET %d", BugsTable, projID, count, offset)
+
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s WHERE %s LIMIT %d OFFSET %d;", BugsTable, strings.Join(conditionQuerySlice, " AND "), count, offset)
 	rawResult = o.Raw(sqlQuery)
 
 	if _, err = rawResult.QueryRows(result); err != nil {

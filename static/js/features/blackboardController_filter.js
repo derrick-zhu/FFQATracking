@@ -8,8 +8,10 @@ $(function() {
             {},
             function (data, result) {
                 console.log(result);
-                var divToLoad = ' #datapicker-initiatives';
-                $(divToLoad).load(window.location.href + divToLoad);
+                // window.location.href = '#';
+                // var divToLoad = ' #datapicker-versions';
+                $('#datapicker-versions').html('sdas');
+                // $('#issue-table').load(window.location.href + ' #issue-table');
             });
     };
 
