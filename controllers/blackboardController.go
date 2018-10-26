@@ -3,6 +3,7 @@ package controllers
 import (
 	"FFQATracking/constants"
 	"FFQATracking/models"
+	"strconv"
 
 	"github.com/astaxie/beego"
 )
@@ -47,6 +48,8 @@ func (c *BlackboardController) commonInitForGet(selectedProjID, selectedMileston
 
 	c.Data["allIssue"] = c.allBugs
 	c.Data["allAccount"] = c.allUsers
+	c.Data["initiativeID"] = strconv.FormatInt(selectedProjID, 10)
+	c.Data["milestoneID"] = strconv.FormatInt(selectedMilestoneID, 10)
 
 	c.initFilterVars(selectedProjID, selectedMilestoneID, c.allUsers, c.allProjects)
 	c.initProjectListVar(c.allUsers, c.allProjects)

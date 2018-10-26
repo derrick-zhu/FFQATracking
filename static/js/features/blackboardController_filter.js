@@ -8,6 +8,8 @@ $(function() {
             {},
             function (data, result) {
                 console.log(result);
+                var divToLoad = ' #datapicker-initiatives';
+                $(divToLoad).load(window.location.href + divToLoad);
             });
     };
 

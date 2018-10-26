@@ -124,13 +124,12 @@ var AllReproductabilities = []VarModelProtocol{
 
 // BugModel the model of bug
 type BugModel struct {
-	ID               int64  `orm:"index;pk;auto"`  // index
-	Title            string `orm:"size(512)"`      // bug title
-	Description      string `orm:"size(4096)"`     // description about bug
-	Version          string `orm:"null"`           // test version number
-	Source           string `orm:"null;size(128)"` // source feature request
-	Target           string `orm:"null;size(128)"` // target milestone
-	DevPeriod        string `orm:"null;size(128)"` // sprint
+	ID               int64  `orm:"index;pk;auto"` // index
+	Title            string `orm:"size(512)"`     // bug title
+	Description      string `orm:"size(4096)"`    // description about bug
+	FoundInSprint    int64  `orm:"index"`         // sprint - sprint
+	FoundInProject   int64  `orm:"index"`         // source feature request - project
+	FoundInVersion   int64  `orm:"index"`         // test version number - version
 	CreateDate       int64  // date creating
 	SolveDate        int64  // date solving
 	LastUpdateDate   int64  // date about latest update
@@ -255,17 +254,14 @@ func BugGetReadableProperty(pname string, issue *BugModel) (int64, string) {
 	case "Description":
 		return 0, issue.Description
 
-	case "Version":
-		return 0, issue.Version
+	case "FoundInVersion":
+		return issue.FoundInVersion, ""
 
-	case "Source":
-		return 0, issue.Source
+	case "FoundInProject":
+		return issue.FoundInProject, ""
 
-	case "Target":
-		return 0, issue.Target
-
-	case "DevPeriod":
-		return 0, issue.DevPeriod
+	case "FoundInSprint":
+		return issue.FoundInSprint, ""
 
 	case "SolveDate":
 		return int64(issue.SolveDate), utils.StandardFormatedTimeFromTick(int64(issue.SolveDate))
@@ -342,18 +338,39 @@ func BugWithID(id int64) (*BugModel, error) {
 	return pbug, nil
 }
 
-// BugsWithRange fetch bug data with range [lower, lower + count)
-func BugsWithRange(lower, count int) (*[]BugModel, error) {
+// BugsWithRange fetch bug data with range [offset, offset + count)
+func BugsWithRange(offset, count int) (*[]BugModel, error) {
 
 	var result = &[]BugModel{}
 	var err error
 	var rawResult orm.RawSeter
 
 	o := GetOrmObject()
-	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", BugsTable, count, lower)
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d", BugsTable, count, offset)
 	rawResult = o.Raw(sqlQuery)
 
 	if _, err = rawResult.QueryRows(result); err != nil {
+
+		beego.Error(err)
+		return nil, err
+	}
+
+	return result, nil
+}
+
+// BugsFromProjectID fetch bugs which belong some project.
+func BugsFromProjectID(projID, offset, count int64) (*[]BugModel, error) {
+
+	var result = &[]BugModel{}
+	var err error
+	var rawResult orm.RawSeter
+
+	o := GetOrmObject()
+	sqlQuery := fmt.Sprintf("SELECT * FROM %s WHERE source = %d LIMIT %d OFFSET %d", BugsTable, projID, count, offset)
+	rawResult = o.Raw(sqlQuery)
+
+	if _, err = rawResult.QueryRows(result); err != nil {
+
 		beego.Error(err)
 		return nil, err
 	}
