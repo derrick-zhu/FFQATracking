@@ -52,6 +52,7 @@ func (c *BlackboardController) commonInitForGet(selectedProjID, selectedMileston
 	c.initProjectListVar(c.allUsers, c.allProjects)
 	c.initNewInitiativeVar()
 	c.initNewIssueVar()
+	c.initNewMilestoneVar()
 
 	c.TplName = "blackboardController.html"
 }

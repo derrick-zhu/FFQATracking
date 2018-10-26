@@ -37,7 +37,8 @@
 
             </div>
             <div class="modal-footer">
-                <input id="btnCommitNewIssue" name="btnCommitNewIssue" class="btn btn-danger" style="width:150px;" type="submit" value="Submit">
+                <input id="btnCommitNewIssue" name="btnCommitNewIssue" class="btn btn-danger" style="width:150px;" type="submit"
+                    value="Submit">
             </div>
         </div>
     </div>

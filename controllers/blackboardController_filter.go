@@ -8,7 +8,9 @@ import (
 )
 
 const (
-	allFilterConst = "allFilters"
+	allFilterConst         = "allFilters"
+	currentInitiativeConst = "currentInitiative"
+	currentMilestoneConst  = "currentMilestone"
 )
 
 // FilterChanged handle picker's value changed event
