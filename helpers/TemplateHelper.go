@@ -6,11 +6,12 @@ import (
 	"log"
 )
 
-func TemplateToHTML(tmplFile, tmplName string, obj interface{}) string {
+// TemplateToHTML - convert template into html
+func TemplateToHTML(tmplFile, tmplName string, funcMap template.FuncMap, obj interface{}) string {
 
 	var out bytes.Buffer
 
-	t := template.Must(template.ParseFiles(tmplFile))
+	t := template.Must(template.New(tmplName).Funcs(funcMap).ParseFiles(tmplFile))
 	if err := t.ExecuteTemplate(&out, tmplName, obj); err != nil {
 		log.Fatal(err)
 		return ""

@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"FFQATracking/helpers"
 	"FFQATracking/models"
+	"FFQATracking/utils"
+	"html/template"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -21,6 +24,17 @@ func (c *BlackboardController) FilterChanged() {
 	selMilestoneID, _ := strconv.ParseInt(c.GetString("milestone_id"), 10, 64)
 
 	c.commonInitForGet(selInitiativeID, selMilestoneID)
+
+	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]           /// filter data
+	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl") /// filter template file
+	tmplFuncMap := template.FuncMap{
+		"GetBriefTitleFromModel": models.GetBriefTitleFromModel,
+		"GetTypeFromModel":       models.GetTypeFromModel,
+	} /// filter template func map
+
+	newVersionFilterHTML := helpers.TemplateToHTML(pickerFilePath, "dataPickerTemplate", tmplFuncMap, newVersionFilter)
+
+	utils.MakeRedirectURLWithUserInfo(&c.Data, 200, "#", "", newVersionFilterHTML)
 
 	c.ServeJSON()
 }

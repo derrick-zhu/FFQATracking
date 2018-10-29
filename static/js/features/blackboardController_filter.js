@@ -8,10 +8,7 @@ $(function() {
             {},
             function (data, result) {
                 console.log(result);
-                // window.location.href = '#';
-                // var divToLoad = ' #datapicker-versions';
-                $('#datapicker-versions').html('sdas');
-                // $('#issue-table').load(window.location.href + ' #issue-table');
+                $('#datapicker-versions').html(data.UserInfo);
             });
     };
 
