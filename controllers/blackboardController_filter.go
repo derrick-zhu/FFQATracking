@@ -23,18 +23,30 @@ func (c *BlackboardController) FilterChanged() {
 	selInitiativeID, _ := strconv.ParseInt(c.GetString("initiative_id"), 10, 64)
 	selMilestoneID, _ := strconv.ParseInt(c.GetString("milestone_id"), 10, 64)
 
-	c.commonInitForGet(selInitiativeID, selMilestoneID)
+	c.commonInitForGet(-1, selInitiativeID, selMilestoneID)
 
 	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]           /// filter data
 	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl") /// filter template file
+	// issueTableFilePath := helpers.AbosolutePath("views/dataIssueTableTemplate.tpl") /// issue table template file
+
 	tmplFuncMap := template.FuncMap{
 		"GetBriefTitleFromModel": models.GetBriefTitleFromModel,
 		"GetTypeFromModel":       models.GetTypeFromModel,
+		"AccountIndexOfID":       models.AccountIndexOfID,
+		"AccountForIDInArray":    models.AccountForIDInArray,
 	} /// filter template func map
 
-	newVersionFilterHTML := helpers.TemplateToHTML(pickerFilePath, "dataPickerTemplate", tmplFuncMap, newVersionFilter)
+	milestonePickerFilterHTML := helpers.TemplateToHTML(pickerFilePath, "dataPickerTemplate", tmplFuncMap, newVersionFilter)
+	// issueTableDataHTML := helpers.TemplateToHTML(issueTableFilePath, "dataIssueTableTemplate", tmplFuncMap, c.Data)
 
-	utils.MakeRedirectURLWithUserInfo(&c.Data, 200, "#", "", newVersionFilterHTML)
+	argForJS := models.GOCommandModel{
+		Param: map[string]interface{}{
+			"versions": milestonePickerFilterHTML,
+			// "issues":   issueTableDataHTML,
+		},
+	}
+
+	utils.MakeRedirectURLWithUserInfo(&c.Data, 200, "#", "", argForJS)
 
 	c.ServeJSON()
 }

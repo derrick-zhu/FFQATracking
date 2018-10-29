@@ -21,17 +21,37 @@ type BlackboardController struct {
 func (c *BlackboardController) Get() {
 	c.FFBaseController.Get()
 
-	c.commonInitForGet(0, 0)
+	var err error
+	var selSprintID int64
+	var selProjID int64
+	var selMSID int64
+
+	if selSprintID, err = strconv.ParseInt(c.GetString("sprint", "0"), 10, 64); err != nil {
+		beego.Error(err)
+		selSprintID = -1
+	}
+
+	if selProjID, err = strconv.ParseInt(c.GetString("proj", "0"), 10, 64); err != nil {
+		beego.Error(err)
+		selProjID = -1
+	}
+
+	if selMSID, err = strconv.ParseInt(c.GetString("ms", "0"), 10, 64); err != nil {
+		beego.Error(err)
+		selMSID = -1
+	}
+
+	c.commonInitForGet(selSprintID, selProjID, selMSID)
 }
 
 // private helpers
 
-func (c *BlackboardController) commonInitForGet(selectedProjID, selectedMilestoneID int64) {
+func (c *BlackboardController) commonInitForGet(selectedSprint, selectedProjID, selectedMilestoneID int64) {
 	c.Data[constants.KeyIsBlackBoard] = 1
 
 	var err error
 
-	if c.allBugs, err = models.BugsFromProjectID(-1, selectedProjID, selectedMilestoneID, 0, -1); err != nil {
+	if c.allBugs, err = models.BugsFromProjectID(selectedSprint, selectedProjID, selectedMilestoneID, 0, -1); err != nil {
 		beego.Error(err)
 	}
 

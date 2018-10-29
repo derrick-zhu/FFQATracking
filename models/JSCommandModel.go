@@ -6,3 +6,9 @@ type JSCommandModel struct {
 	Name  string
 	Param []string
 }
+
+type GOCommandModel struct {
+	ID    string
+	Name  string
+	Param map[string]interface{}
+}

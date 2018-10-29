@@ -7,13 +7,23 @@ $(function() {
             "/blackboard/filter/change/?initiative_id=" + type,
             {},
             function (data, result) {
-                console.log(result);
-                $('#datapicker-versions').html(data.UserInfo);
+                
+                if (data.UserInfo != undefined) {
+                    if (data.UserInfo.Param.versions != undefined) {
+                        $('#datapicker-versions').html(data.UserInfo.Param.versions);
+                    }
+                    
+                    if (data.UserInfo.Param.issues != undefined) {
+                        $('#issue-table').html(data.UserInfo.Param.issues);
+                    }
+                }
+                
             });
     };
 
     $.fn.milestonePickerValueChanged = function(id, type, extID) {
         trackCallStack();
         console.log(id, type, extID);
+        console.log($('#initiatives').val());
     };
 });

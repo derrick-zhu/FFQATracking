@@ -22,9 +22,10 @@ func init() {
 	beego.Router("/account/:uid", &controllers.AccountController{})
 
 	// router to blackboard, control center
-	beego.Router("/blackboard", &controllers.BlackboardController{})
+	beego.Router("/blackboard", &controllers.BlackboardController{}) // 这个通用入口恐怕可以允许数据默认置顶的project id, mile stone id等参数
 	beego.Router("/blackboard/newissue", &controllers.BlackboardController{}, "post:SubmitNewIssue")
 	beego.Router("/blackboard/newinitiative", &controllers.BlackboardController{}, "post:SubmitNewProject")
+	beego.Router("/blackboard/newmilestone", &controllers.BlackboardController{}, "post:SubmitNewMilestone")
 	beego.Router("/blackboard/filter/change/", &controllers.BlackboardController{}, "get:FilterChanged")
 
 	// // router for helping user to create new issue

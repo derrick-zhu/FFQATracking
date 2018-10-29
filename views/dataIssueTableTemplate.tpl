@@ -14,15 +14,6 @@
             <th>Create Date</th>
         </tr>
     </thead>
-    <script type="text/javascript">
-        function didIssueClicked(params) {
-            if (params.length > 0) {
-                var url = "/issuedetail/" + params;
-                console.log(url);
-                window.location.href = url;
-            }
-        }
-    </script>
 
     <tbody>
         {{template "issueListTableRow" .}}
