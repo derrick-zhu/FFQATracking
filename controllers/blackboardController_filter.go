@@ -25,24 +25,27 @@ func (c *BlackboardController) FilterChanged() {
 
 	c.commonInitForGet(-1, selInitiativeID, selMilestoneID)
 
-	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]           /// filter data
-	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl") /// filter template file
-	// issueTableFilePath := helpers.AbosolutePath("views/dataIssueTableTemplate.tpl") /// issue table template file
+	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]                   /// filter data
+	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl")         /// filter template file
+	issueTableFilePath := helpers.AbosolutePath("views/dataIssueTableTemplate.tpl") /// issue table template file
+	issueListTableRowFilePath := helpers.AbosolutePath("views/issueListTableRow.tpl")
 
-	tmplFuncMap := template.FuncMap{
+	tmplFuncMap := &template.FuncMap{
 		"GetBriefTitleFromModel": models.GetBriefTitleFromModel,
 		"GetTypeFromModel":       models.GetTypeFromModel,
 		"AccountIndexOfID":       models.AccountIndexOfID,
 		"AccountForIDInArray":    models.AccountForIDInArray,
+		"IssueCSSWithPriority":   models.IssueCSSWithPriority,
+		"PropertyInIssue":        models.PropertyInIssue,
 	} /// filter template func map
 
-	milestonePickerFilterHTML := helpers.TemplateToHTML(pickerFilePath, "dataPickerTemplate", tmplFuncMap, newVersionFilter)
-	// issueTableDataHTML := helpers.TemplateToHTML(issueTableFilePath, "dataIssueTableTemplate", tmplFuncMap, c.Data)
+	milestonePickerFilterHTML := helpers.TemplateToHTML(newVersionFilter, "dataPickerTemplate", tmplFuncMap, pickerFilePath)
+	issueTableDataHTML := helpers.TemplateToHTML(c.Data, "dataIssueTableTemplate", tmplFuncMap, issueTableFilePath, issueListTableRowFilePath)
 
 	argForJS := models.GOCommandModel{
 		Param: map[string]interface{}{
 			"versions": milestonePickerFilterHTML,
-			// "issues":   issueTableDataHTML,
+			"issues":   issueTableDataHTML,
 		},
 	}
 
