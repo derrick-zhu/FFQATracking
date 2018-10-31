@@ -35,16 +35,18 @@
         <!-- 过滤器，可以选择 initiative, version, target 等，从而决定下面的 issue list 内容 -->
         <div class="card clearfix">
 
-            <div class="span span_full clearfix"><h4>Choose filters:</h4></div>
+            <div class="span span_full clearfix">
+                <h4>Choose filters:</h4>
+            </div>
 
             <div class="span span_4of6 clearfix">
                 {{range $eachFilter := .allFilters}}
 
-                    <div style="float:left;width:90%;">{{template "dataPickerTemplate" $eachFilter}}</div>
-                    <div style="float:left; margin: 4px 0px 4px auto; width: 40px; height: 40px; line-height: 1.425;">
-                        {{template "modalPopupTemplate" $eachFilter}}
-                    </div>
-                
+                <div style="float:left;width:90%;">{{template "dataPickerTemplate" $eachFilter}}</div>
+                <div style="float:left; margin: 4px 0px 4px auto; width: 40px; height: 40px; line-height: 1.425;">
+                    {{template "modalPopupTemplate" $eachFilter}}
+                </div>
+
                 {{end}}
             </div>
         </div>
@@ -56,6 +58,7 @@
 
         <!-- issue list -->
         <div id="issue-table" class="card span span_full">
+            
             {{template "dataIssueTableTemplate" .}}
         </div>
 
