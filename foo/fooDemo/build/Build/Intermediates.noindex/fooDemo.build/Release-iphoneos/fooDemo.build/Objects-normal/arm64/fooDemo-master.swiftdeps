@@ -1,0 +1,5 @@
+version: "Apple Swift version 4.2.1 (swiftlang-1000.11.42 clang-1000.11.45.1)"
+options: "b3bef5e34e6bb44fa90d27231641da3f"
+build_time: [1541276293, 648613000]
+inputs:
+  "/Users/zhudelun/Documents/go/src/foo/fooDemo/fooDemo/clsFoo1.swift": [9223372036, 854775807]

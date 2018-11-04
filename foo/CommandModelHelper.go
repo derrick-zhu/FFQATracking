@@ -14,43 +14,43 @@ func (c *CommandModelHelper) GetExecDir() string {
 	return c.cmd.execDir
 }
 
-func (c *CommandModelHelper) GetWorkspace() string {
+func (c *CommandModelHelper) GetWorkspace() []string {
 	if c.cmd.IsBuildWorkspace() {
-		return " -workspace " + strings.Join([]string{c.cmd.execDir, c.cmd.xcworkspace}, "/")
+		return []string{"-workspace", strings.Join([]string{c.cmd.execDir, c.cmd.xcworkspace}, "/")}
 	}
-	return ""
+	return []string{}
 }
 
-func (c *CommandModelHelper) GetProject() string {
+func (c *CommandModelHelper) GetProject() []string {
 	if c.cmd.IsBuildProject() {
-		return " -project " + strings.Join([]string{c.cmd.execDir, c.cmd.xcproject}, "/")
+		return []string{"-project", strings.Join([]string{c.cmd.execDir, c.cmd.xcproject}, "/")}
 	}
-	return ""
+	return []string{}
 }
 
-func (c *CommandModelHelper) GetScheme() string {
+func (c *CommandModelHelper) GetScheme() []string {
 	if len(c.cmd.scheme) > 0 {
-		return " -scheme " + c.cmd.scheme
+		return []string{"-scheme", c.cmd.scheme}
 	}
-	return ""
+	return []string{}
 }
 
-func (c *CommandModelHelper) GetDerivedPath() string {
+func (c *CommandModelHelper) GetDerivedPath() []string {
 	if len(c.cmd.derivedPath) > 0 {
-		return " -derivedDataPath " + strings.Join([]string{c.cmd.execDir, c.cmd.derivedPath}, "/")
+		return []string{"-derivedDataPath", strings.Join([]string{c.cmd.execDir, c.cmd.derivedPath}, "/")}
 	}
-	return ""
+	return []string{}
 }
 
 func (c *CommandModelHelper) GetOutPath() string {
 	return strings.Join([]string{c.cmd.execDir, c.cmd.outPath}, "/")
 }
 
-func (c *CommandModelHelper) GetConfig() string {
+func (c *CommandModelHelper) GetConfig() []string {
 	if len(c.cmd.config) > 0 {
-		return " -configuration " + c.cmd.config
+		return []string{"-configuration", c.cmd.config}
 	}
-	return ""
+	return []string{}
 }
 
 func (c *CommandModelHelper) Description() {

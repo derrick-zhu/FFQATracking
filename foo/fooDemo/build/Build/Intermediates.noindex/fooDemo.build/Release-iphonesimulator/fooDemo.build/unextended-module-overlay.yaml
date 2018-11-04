@@ -1,0 +1,13 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/zhudelun/Documents/go/src/foo/fooDemo/build/Build/Products/Release-iphonesimulator/fooDemo.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/zhudelun/Documents/go/src/foo/fooDemo/build/Build/Intermediates.noindex/fooDemo.build/Release-iphonesimulator/fooDemo.build/unextended-module.modulemap",
+    }]
+  }]
+}
