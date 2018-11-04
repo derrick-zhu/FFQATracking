@@ -88,7 +88,10 @@ func main() {
 
 		buildArgs = append(buildArgs, cmdHelper.GetConfig()...)
 		buildArgs = append(buildArgs, "-jobs", "4")
-		// buildArgs = append(buildArgs, "-arch", eachArch)
+
+		for _, eachArch := range ArchList {
+			buildArgs = append(buildArgs, "-arch", eachArch)
+		}
 
 		buildArgs = append(buildArgs, "-sdk", eachTarget)
 		buildArgs = append(buildArgs, cmdHelper.GetDerivedPath()...)
