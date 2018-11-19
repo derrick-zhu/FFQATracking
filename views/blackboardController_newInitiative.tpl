@@ -1,5 +1,4 @@
 {{define "bbNewInitiativeTemplate"}}
-
 <div class="modal fade" id="bbNewInitiativeModal" tabindex="-1" role="dialog" aria-labelledby="bbNewInitiativeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -16,21 +15,21 @@
                                 {{range $index, $section := .}}
                                 <div class="span span_full clearfix">
                                     <!-- {{$section}} -->
-                                    {{$ctrlType := ControllerTypeOfTemplateData $section}}
+                                    {{- $ctrlType := ControllerTypeOfTemplateData $section}}
 
-                                    {{if eq $ctrlType 1}}
+                                    {{- if eq $ctrlType 1}}
                                     {{template "dataFieldTemplate" $section}}
 
-                                    {{else if eq $ctrlType 2}}
+                                    {{- else if eq $ctrlType 2}}
                                     {{template "dataTextareaTemplate" $section}}
 
-                                    {{else if eq $ctrlType 3}}
+                                    {{- else if eq $ctrlType 3}}
                                     {{template "dataPickerTemplate" $section}}
 
-                                    {{else if eq $ctrlType 4}}
+                                    {{- else if eq $ctrlType 4}}
                                     {{template "dataDatePickerTemplate" $section}}
 
-                                    {{end}}
+                                    {{- end}}
                                 </div>
                                 {{end}}
                             </form>
@@ -47,5 +46,4 @@
         </div>
     </div>
 </div>
-
 {{end}}

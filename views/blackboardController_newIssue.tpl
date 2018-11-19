@@ -1,5 +1,4 @@
 {{define "bbNewIssueTemplate"}}
-
 <div class="modal fade" id="bbNewIssueModal" tabindex="-1" role="dialog" aria-labelledby="bbNewIssueModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -18,20 +17,18 @@
 
                         <div class="form-group">
                             <label>Description: *</label>
-                            <textarea id="Description" name="Description" class="form-control" placeholder="Please input the description here."
-                                rows="10"></textarea>
+                            <textarea id="Description" name="Description" class="form-control" placeholder="Please input the description here." rows="10"></textarea>
                         </div>
 
                         <!-- bug的各种状态设置 -->
-                        {{range $idx, $issueTpl := .}}
+                        {{- range $idx, $issueTpl := .}}
                         <div class="span span_3of6 span_float_left" style="margin:0.5px;">
-                            {{$ctrlType := ControllerTypeOfTemplateData $issueTpl}}
-                            {{if eq $ctrlType 3}}
+                            {{- $ctrlType := ControllerTypeOfTemplateData $issueTpl}}
+                            {{- if eq $ctrlType 3}}
                             {{template "dataPickerTemplate" $issueTpl}}
-                            {{end}}
+                            {{- end}}
                         </div>
-                        {{end}}
-
+                        {{- end}}
                     </form>
                 </div>
 
@@ -43,5 +40,4 @@
         </div>
     </div>
 </div>
-
 {{end}}

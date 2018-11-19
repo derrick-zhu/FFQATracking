@@ -1,5 +1,4 @@
 {{define "dataIssueTableTemplate"}}
-
 <div>
     <span class="btn btn-success fileinput-button" style="width:120px">
         <i class="glyphicon glyphicon-plus"></i>
@@ -28,6 +27,4 @@
         </tbody>
     </table>
 </div>
-
-
 {{end}}

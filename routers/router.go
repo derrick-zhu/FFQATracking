@@ -26,15 +26,7 @@ func init() {
 	beego.Router("/blackboard/newissue", &controllers.BlackboardController{}, "post:SubmitNewIssue")
 	beego.Router("/blackboard/newinitiative", &controllers.BlackboardController{}, "post:SubmitNewProject")
 	beego.Router("/blackboard/newmilestone", &controllers.BlackboardController{}, "post:SubmitNewMilestone")
-	beego.Router("/blackboard/filter/change/", &controllers.BlackboardController{}, "get:FilterChanged")
-
-	// // router for helping user to create new issue
-	// beego.Router("/issue", &controllers.IssueNewController{})
-	// beego.AutoRouter(&controllers.IssueNewController{})
-
-	// 工程相关的控制器
-	// beego.Router("/initiative", &controllers.InitiativeNewController{})
-	// beego.Router("/initiative/new", &controllers.InitiativeNewController{}, "post:SubmitNewProject")
+	// beego.Router("/blackboard/filter/change/", &controllers.BlackboardController{}, "get:FilterChanged")
 
 	// issue详情页的控制器
 	beego.Router("/issuedetail/:issue(\\d+)", &controllers.IssueDetailController{})

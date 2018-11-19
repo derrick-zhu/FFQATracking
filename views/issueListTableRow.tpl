@@ -1,17 +1,16 @@
 {{define "issueListTableRow"}}
 
-{{$accounts := .allAccount}}
+{{- $accounts := .allAccount}}
 
-{{range $issue := .allIssue}}
+{{- range $issue := .allIssue}}
 
-    {{$creatorIdx := AccountIndexOfID $accounts $issue.Creator}}
-    {{$assignorIdx := AccountIndexOfID $accounts $issue.Assignor}}
+    {{- $creatorIdx := AccountIndexOfID $accounts $issue.Creator}}
+    {{- $assignorIdx := AccountIndexOfID $accounts $issue.Assignor}}
     
-    {{if ge $creatorIdx 0}}{{if ge $assignorIdx 0}}
+    {{- if ge $creatorIdx 0}}{{- if ge $assignorIdx 0}}
     
-    {{$creator := AccountForIDInArray $accounts $issue.Creator}}
-    {{$assignor := AccountForIDInArray $accounts $issue.Assignor}}
-
+    {{- $creator := AccountForIDInArray $accounts $issue.Creator}}
+    {{- $assignor := AccountForIDInArray $accounts $issue.Assignor}}
     <tr class='{{$issue | IssueCSSWithPriority}}'>
 
         <td></td>
@@ -25,9 +24,7 @@
         <td>{{PropertyInIssue "CreateDate" $issue}}</td>
 
     </tr>
+    {{- end}}{{- end}}
 
-    {{end}}{{end}}
-
-{{end}}
-
+{{- end}}
 {{end}}

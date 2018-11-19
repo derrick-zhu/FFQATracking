@@ -22,21 +22,21 @@ func (c *BlackboardController) Get() {
 	c.FFBaseController.Get()
 
 	var err error
-	var selSprintID int64
-	var selProjID int64
-	var selMSID int64
+	var selSprintID int64 = -1
+	var selProjID int64 = -1
+	var selMSID int64 = -1
 
-	if selSprintID, err = strconv.ParseInt(c.GetString("sprint", "0"), 10, 64); err != nil {
+	if selSprintID, err = strconv.ParseInt(c.GetString("sprint", "-1"), 10, 64); err != nil {
 		beego.Error(err)
 		selSprintID = -1
 	}
 
-	if selProjID, err = strconv.ParseInt(c.GetString("proj", "0"), 10, 64); err != nil {
+	if selProjID, err = strconv.ParseInt(c.GetString("proj", "-1"), 10, 64); err != nil {
 		beego.Error(err)
 		selProjID = -1
 	}
 
-	if selMSID, err = strconv.ParseInt(c.GetString("ms", "0"), 10, 64); err != nil {
+	if selMSID, err = strconv.ParseInt(c.GetString("ms", "-1"), 10, 64); err != nil {
 		beego.Error(err)
 		selMSID = -1
 	}

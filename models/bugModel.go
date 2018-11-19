@@ -363,6 +363,7 @@ func BugsWithRange(offset, count int) (*[]BugModel, error) {
 func BugsFromProjectID(sprintID, projectID, versionID, offset, count int64) (*[]BugModel, error) {
 
 	var result = &[]BugModel{}
+	var sqlQuery string
 	var err error
 	var rawResult orm.RawSeter
 
@@ -382,7 +383,12 @@ func BugsFromProjectID(sprintID, projectID, versionID, offset, count int64) (*[]
 
 	o := GetOrmObject()
 
-	sqlQuery := fmt.Sprintf("SELECT * FROM %s WHERE %s LIMIT %d OFFSET %d;", BugsTable, strings.Join(conditionQuerySlice, " AND "), count, offset)
+	if len(conditionQuerySlice) > 0 {
+		sqlQuery = fmt.Sprintf("SELECT * FROM %s WHERE %s LIMIT %d OFFSET %d;", BugsTable, strings.Join(conditionQuerySlice, " AND "), count, offset)
+	} else {
+		sqlQuery = fmt.Sprintf("SELECT * FROM %s LIMIT %d OFFSET %d;", BugsTable, count, offset)
+	}
+
 	rawResult = o.Raw(sqlQuery)
 
 	if _, err = rawResult.QueryRows(result); err != nil {
