@@ -28,8 +28,8 @@ func (c MilestoneModel) Type() int64 { return c.ID }
 func (c MilestoneModel) Desc() string { return c.Name }
 
 //ZeroMilestone implement EmptyDataProtocol, create an empty milestone model data,
-func ZeroMilestone() *MilestoneModel {
-	return &MilestoneModel{ID: -1}
+func ZeroMilestone() MilestoneModel {
+	return MilestoneModel{ID: -1}
 }
 
 func init() {

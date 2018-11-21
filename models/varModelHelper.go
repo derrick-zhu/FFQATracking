@@ -35,6 +35,11 @@ func GetTypeFromModel(value interface{}) int64 {
 // GetBriefTitleFromModel get Desc data from value which should be VarModelProtocol
 func GetBriefTitleFromModel(value interface{}) string {
 
+	if value == nil {
+		beego.Info("Hit null object")
+		return ""
+	}
+
 	switch value.(type) {
 	case VarModelProtocol:
 		newValue, err := value.(VarModelProtocol)

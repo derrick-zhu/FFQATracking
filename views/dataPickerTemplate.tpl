@@ -10,8 +10,8 @@
 
 {{- $extID := .ID}}
 {{- $title := .Title}}
-{{- $defaultContent := (index .Collection .DefaultValue | GetBriefTitleFromModel)}}
-{{- $defaultValue := (index .Collection .DefaultValue | GetTypeFromModel)}}
+{{- $defaultContent := (.ContentWithIndex .DefaultValue | GetBriefTitleFromModel)}}
+{{- $defaultValue := (.ContentWithIndex .DefaultValue | GetTypeFromModel)}}
 {{- $id := .Identifier}}
 {{- $data := .Collection}}
 {{- $callback := .ValueChanged.ID}}
@@ -26,8 +26,8 @@
 
         <ul class="dropdown-menu" style="width:90%; max-height:20em; overflow-y: scroll">
             {{- range $index, $item := $data}}
-            {{- $itemValue := GetTypeFromModel $item}}
-            {{- $itemContent := GetBriefTitleFromModel $item}}
+            {{- $itemValue := $item.Type}}
+            {{- $itemContent := $item.Desc}}
             <li><a onclick="$().fnDataPickerDidChangeValue('{{$.Identifier}}', '{{$itemValue}}', '{{$itemContent}}', '{{$extID}}', '{{$callback}}');" value="{{$itemValue}}">{{$itemContent}}</a></li>
             {{- end}}
         </ul>

@@ -14,3 +14,12 @@ type DataPickerTemplateModel struct {
 func (c DataPickerTemplateModel) ControllerType() TemplateDataCtrlType {
 	return Number
 }
+
+// ContentWithIndex get content obj with its index
+func (c DataPickerTemplateModel) ContentWithIndex(idx int64) interface{} {
+	if idx < 0 || idx >= int64(len(c.Collection)) {
+		return nil
+	}
+
+	return c.Collection[idx]
+}

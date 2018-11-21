@@ -1,11 +1,7 @@
 package controllers
 
 import (
-	"FFQATracking/helpers"
 	"FFQATracking/models"
-	"FFQATracking/utils"
-	"html/template"
-	"strconv"
 
 	"github.com/astaxie/beego"
 )
@@ -17,42 +13,42 @@ const (
 )
 
 // FilterChanged handle picker's value changed event
-func (c *BlackboardController) FilterChanged() {
-	c.FFBaseController.Get()
+// func (c *BlackboardController) FilterChanged() {
+// 	c.FFBaseController.Get()
 
-	selInitiativeID, _ := strconv.ParseInt(c.GetString("initiative_id"), 10, 64)
-	selMilestoneID, _ := strconv.ParseInt(c.GetString("milestone_id"), 10, 64)
+// 	selInitiativeID, _ := strconv.ParseInt(c.GetString("initiative_id"), 10, 64)
+// 	selMilestoneID, _ := strconv.ParseInt(c.GetString("milestone_id"), 10, 64)
 
-	c.commonInitForGet(-1, selInitiativeID, selMilestoneID)
+// 	c.commonInitForGet(-1, selInitiativeID, selMilestoneID)
 
-	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]                   /// filter data
-	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl")         /// filter template file
-	issueTableFilePath := helpers.AbosolutePath("views/dataIssueTableTemplate.tpl") /// issue table template file
-	issueListTableRowFilePath := helpers.AbosolutePath("views/issueListTableRow.tpl")
+// 	newVersionFilter := c.Data[allFilterConst].([]interface{})[1]                   /// filter data
+// 	pickerFilePath := helpers.AbosolutePath("views/dataPickerTemplate.tpl")         /// filter template file
+// 	issueTableFilePath := helpers.AbosolutePath("views/dataIssueTableTemplate.tpl") /// issue table template file
+// 	issueListTableRowFilePath := helpers.AbosolutePath("views/issueListTableRow.tpl")
 
-	tmplFuncMap := &template.FuncMap{
-		"GetBriefTitleFromModel": models.GetBriefTitleFromModel,
-		"GetTypeFromModel":       models.GetTypeFromModel,
-		"AccountIndexOfID":       models.AccountIndexOfID,
-		"AccountForIDInArray":    models.AccountForIDInArray,
-		"IssueCSSWithPriority":   models.IssueCSSWithPriority,
-		"PropertyInIssue":        models.PropertyInIssue,
-	} /// filter template func map
+// 	tmplFuncMap := &template.FuncMap{
+// 		"GetBriefTitleFromModel": models.GetBriefTitleFromModel,
+// 		"GetTypeFromModel":       models.GetTypeFromModel,
+// 		"AccountIndexOfID":       models.AccountIndexOfID,
+// 		"AccountForIDInArray":    models.AccountForIDInArray,
+// 		"IssueCSSWithPriority":   models.IssueCSSWithPriority,
+// 		"PropertyInIssue":        models.PropertyInIssue,
+// 	} /// filter template func map
 
-	milestonePickerFilterHTML := helpers.TemplateToHTML(newVersionFilter, "dataPickerTemplate", tmplFuncMap, pickerFilePath)
-	issueTableDataHTML := helpers.TemplateToHTML(c.Data, "dataIssueTableTemplate", tmplFuncMap, issueTableFilePath, issueListTableRowFilePath)
+// 	milestonePickerFilterHTML := helpers.TemplateToHTML(newVersionFilter, "dataPickerTemplate", tmplFuncMap, pickerFilePath)
+// 	issueTableDataHTML := helpers.TemplateToHTML(c.Data, "dataIssueTableTemplate", tmplFuncMap, issueTableFilePath, issueListTableRowFilePath)
 
-	argForJS := models.GOCommandModel{
-		Param: map[string]interface{}{
-			"versions": milestonePickerFilterHTML,
-			"issues":   issueTableDataHTML,
-		},
-	}
+// 	argForJS := models.GOCommandModel{
+// 		Param: map[string]interface{}{
+// 			"versions": milestonePickerFilterHTML,
+// 			"issues":   issueTableDataHTML,
+// 		},
+// 	}
 
-	utils.MakeRedirectURLWithUserInfo(&c.Data, 200, "#", "", argForJS)
+// 	utils.MakeRedirectURLWithUserInfo(&c.Data, 200, "#", "", argForJS)
 
-	c.ServeJSON()
-}
+// 	c.ServeJSON()
+// }
 
 func (c *BlackboardController) initFilterVars(selectedProjID, selectedMilestoneID int64, allUser *[]models.AccountModel, allInitiatives *[]models.InitiativeModel) {
 
@@ -131,17 +127,23 @@ func (c *BlackboardController) generateInitiativeFilters(allInitiatives *[]model
 
 	var allInitiativeVar = []models.VarModelProtocol{}
 
+	// fill with all options, including EMPTY one.
 	if len(allInitiativeVar) == 0 {
 		_foo := models.ZeroInitiative()
 		_foo.Name = "-- No filter --"
 		allInitiativeVar = append(allInitiativeVar, _foo)
 	}
 
-	var selIdx int
-	for idx, eachInit := range *allInitiatives {
+	for _, eachInit := range *allInitiatives {
 		allInitiativeVar = append(allInitiativeVar, eachInit)
-		if eachInit.ID == selID {
+	}
+
+	// then, find the selected item's index
+	var selIdx int
+	for idx, eachInit := range allInitiativeVar {
+		if eachInit.(models.InitiativeModel).ID == selID {
 			selIdx = idx
+			break
 		}
 	}
 
@@ -158,6 +160,7 @@ func (c *BlackboardController) generateMilestoneFilters(selInitID int64, selMSID
 	}
 
 	msFilterResult := []models.VarModelProtocol{}
+	// fill with all options, including EMPTY one.
 	// default item - "No data"
 	if len(msFilterResult) == 0 {
 		_foo := models.ZeroMilestone()
@@ -165,10 +168,14 @@ func (c *BlackboardController) generateMilestoneFilters(selInitID int64, selMSID
 		msFilterResult = append(msFilterResult, _foo)
 	}
 
-	var selIdx int
-	for idx, eachMS := range *msFilterArrs {
+	for _, eachMS := range *msFilterArrs {
 		msFilterResult = append(msFilterResult, eachMS)
-		if eachMS.ID == selMSID {
+	}
+
+	// then, find the selected item's index
+	var selIdx int
+	for idx, eachMS := range msFilterResult {
+		if eachMS.(models.MilestoneModel).ID == selMSID {
 			selIdx = idx
 		}
 	}

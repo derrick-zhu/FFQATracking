@@ -38,8 +38,8 @@ func (c *InitiativeModel) TableName() string {
 }
 
 // ZeroInitiative return a empty initiative data
-func ZeroInitiative() *InitiativeModel {
-	return &InitiativeModel{ID: -1}
+func ZeroInitiative() InitiativeModel {
+	return InitiativeModel{ID: -1}
 }
 
 // NewInitiative new and insert initiative data
