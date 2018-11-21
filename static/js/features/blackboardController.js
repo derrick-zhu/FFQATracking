@@ -1,7 +1,7 @@
 
 $(function() {
 
-    $.fn.fnGotoBlackboardPage = function(sprint, initiative, milestone) {
+    $.fn.fnRouterForBlackboardPageWith = function(sprint, initiative, milestone) {
         var query = [];
 
         if (sprint >= 0) {
@@ -17,9 +17,9 @@ $(function() {
         }
 
         if (query.length > 0) {
-            return query.join('&');
+            return "/blackboard/?" + query.join('&');
         } else {
-            return "";
+            return "/blackboard";
         }
     };
 

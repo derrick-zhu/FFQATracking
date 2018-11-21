@@ -35,7 +35,7 @@ $(function() {
 
                             $('#bbNewMilestoneModal').modal("hide");
 
-                            uri = $().fnGotoBlackboardPage(-1, data.UserInfo.Param.proj, data.UserInfo.Param.msid);
+                            uri = $().fnRouterForBlackboardPageWith(-1, data.UserInfo.Param.proj, data.UserInfo.Param.msid);
                             if (uri.length > 0) {
                                 window.location.href = '/blackboard?' + uri;
                             } else {
