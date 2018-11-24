@@ -10,7 +10,7 @@ type TCommonCollectionType []interface{}
 func init() {
 
 	beego.AddFuncMap("GetTypeFromModel", GetTypeFromModel)
-	beego.AddFuncMap("GetBriefTitleFromModel", GetBriefTitleFromModel)
+	// beego.AddFuncMap("GetBriefTitleFromModel", GetBriefTitleFromModel)
 }
 
 // GetTypeFromModel get Type data from value which should be VarModelProtocol
@@ -33,24 +33,24 @@ func GetTypeFromModel(value interface{}) int64 {
 }
 
 // GetBriefTitleFromModel get Desc data from value which should be VarModelProtocol
-func GetBriefTitleFromModel(value interface{}) string {
+// func GetBriefTitleFromModel(value interface{}) string {
 
-	if value == nil {
-		beego.Info("Hit null object")
-		return ""
-	}
+// 	if value == nil {
+// 		beego.Info("Hit null object")
+// 		return ""
+// 	}
 
-	switch value.(type) {
-	case VarModelProtocol:
-		newValue, err := value.(VarModelProtocol)
-		if err == false {
-			beego.Error(err)
-			return ""
-		}
-		return newValue.Desc()
+// 	switch value.(type) {
+// 	case VarModelProtocol:
+// 		newValue, err := value.(VarModelProtocol)
+// 		if err == false {
+// 			beego.Error(err)
+// 			return ""
+// 		}
+// 		return newValue.Desc()
 
-	default:
-		beego.Info("other", value)
-	}
-	return ""
-}
+// 	default:
+// 		beego.Info("other", value)
+// 	}
+// 	return ""
+// }

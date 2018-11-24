@@ -10,8 +10,7 @@
 
 {{- $extID := .ID}}
 {{- $title := .Title}}
-{{- $defaultContent := (.ContentWithIndex .DefaultValue | GetBriefTitleFromModel)}}
-{{- $defaultValue := (.ContentWithIndex .DefaultValue | GetTypeFromModel)}}
+{{- $defaultContent := .ContentWithIndex .DefaultValue}}
 {{- $id := .Identifier}}
 {{- $data := .Collection}}
 {{- $callback := .ValueChanged.ID}}
@@ -19,10 +18,10 @@
     <span class="span span_2of6 span_float_left text text-align-right" style="line-height: 1.425">{{$title}}</span>
     <div class="btn-group span span_4of6 span_float_right" style="line-height: 1.425">
         <button id="{{$id}}-btn" name="{{$id}}-btn" type="button" class="btn btn-normal shadow dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-width:1px; border-color:#eee; width:100%; min-width:1rem; text-align:left; padding-left: 4px; padding-right: 10px;">
-            {{$defaultContent}}
+            {{$defaultContent.Desc}}
         </button>
         <span class="caret" style="position:absolute; vertical-align:middle; right: 1rem; top:50%"></span>
-        <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultValue}}" style="width:95%;">
+        <input type="hidden" class="form-control" id="{{$id}}" name="{{$id}}" value="{{$defaultContent.Type}}" style="width:95%;">
 
         <ul class="dropdown-menu" style="width:90%; max-height:20em; overflow-y: scroll">
             {{- range $index, $item := $data}}
