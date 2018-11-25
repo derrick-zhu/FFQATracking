@@ -39,7 +39,7 @@
 <body>
 
     <div class="navbar navbar-default">
-        <div class="container">
+        <div class="container-fluid">
             {{template "navbar" .}}
         </div>
     </div>
@@ -47,7 +47,10 @@
     {{$issue := .issueData}}
 
     <div class="container">
-        <label style="font-size:3rem">Issue: </label><label style="font-size:2.25rem"><a href="#">#{{$issue.ID}} {{$issue.Title}}</a></label>
+        <label style="font-size:3rem">Issue: </label>
+        <label style="font-size:2.25rem">
+            <a href="#">#{{$issue.ID}} {{$issue.Title}}</a>
+        </label>
     </div>
 
     <div class="container alert-box alert-lvl-{{$issue.Priority}}">
