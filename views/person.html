@@ -9,7 +9,9 @@
 <body>
 
     <div class="navbar navbar-default">
-        {{template "navbar" .}}
+        <div class="container">
+            {{template "navbar" .}}
+        </div>
     </div>
 
     {{$account := .AccountData}}

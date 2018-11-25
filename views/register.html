@@ -7,7 +7,9 @@
 <body>
 
     <div class="navbar navbar-default">
-        {{template "navbar" .}}
+        <div class="container">
+            {{template "navbar" .}}
+        </div>
     </div>
 
     <div class="container" style="width:30em">
@@ -29,6 +31,28 @@
 
             <div class="form-group">
                 <input type="submit" class="btn btn-default" onclick="regiseter()" value="Register">
+                <!-- <script type="text/javascript">
+                    function checkInput() 
+                    {
+                        if (checkInputLength('email', 1, 1024) == false) {
+
+                            alert('Invalid account')
+                            return false;
+                        }
+
+                        if (false == checkWithRegex('email', "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?")) {
+
+                            alert('Invalid email account format')
+                            return false
+                        }
+
+                        if (checkInputLength('pwd', 1, 1024) == false) {
+
+                            alert('Invalid password')
+                            return false;
+                        }
+                    }  
+                </script> -->
             </div>
         </form>
     </div>

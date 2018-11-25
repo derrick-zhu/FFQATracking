@@ -22,7 +22,9 @@
 <body>
 
     <div class="navbar navbar-default">
-        {{template "navbar" .}}
+        <div class="container">
+            {{template "navbar" .}}
+        </div>
     </div>
 
     <div class="container">
@@ -54,7 +56,7 @@
 
         <!-- issue list -->
         <div id="issue-table" class="card span span_full">
-
+            
             {{template "dataIssueTableTemplate" .}}
         </div>
 
